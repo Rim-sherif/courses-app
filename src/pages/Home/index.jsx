@@ -1,7 +1,7 @@
 import { faBook, faCertificate, faGraduationCap, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import img from '../../../public/learning-concept-illustration.png';
+import img from '/learning-concept-illustration.png';
 // import Featuredinstructors from '../../components/Featuredinstractors';
 // import img1 from '../../assets/images/html-css-collage-concept.jpg';
 // import img2 from '../../assets/images/uiux.jpg';
@@ -76,7 +76,7 @@ const Home = () => {
             </section>
 
    
-        <section className="py-20  relative overflow-hidden">
+        {/* <section className="py-20  relative overflow-hidden">
             <div className="container mx-auto px-4">
                 <h2 className="text-4xl font-bold text-center mb-16 text-[#A5158C] relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
                     Explore Popular Categories
@@ -145,7 +145,7 @@ const Home = () => {
                     ))}
                 </div>
             </div>
-        </section>
+        </section> */}
 
                     {/* Featured Instructors */}
           <Featuredinstructors/>

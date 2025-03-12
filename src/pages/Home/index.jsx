@@ -1,7 +1,7 @@
 import { faBook, faCertificate, faGraduationCap, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-// import img from '../../assets/images/learning-concept-illustration.png';
+import img from '../../../public/learning-concept-illustration.png';
 // import Featuredinstructors from '../../components/Featuredinstractors';
 // import img1 from '../../assets/images/html-css-collage-concept.jpg';
 // import img2 from '../../assets/images/uiux.jpg';

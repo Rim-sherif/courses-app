@@ -1,5 +1,5 @@
 import React from "react";
-import signupImg from "/Signup.svg";
+import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";

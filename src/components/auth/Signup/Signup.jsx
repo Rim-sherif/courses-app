@@ -1,5 +1,5 @@
 import React from "react";
-import signupImg from "/Signup.svg";
+import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
@@ -56,7 +56,7 @@ export default function Signup() {
             <div className="w-full mb-5 sm:mb-0 sm:w-[49%] relative">
               <label
                 htmlFor=""
-                className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+                className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
               >
                 FirstName
               </label>
@@ -79,7 +79,7 @@ export default function Signup() {
             <div className="w-full sm:w-[49%] relative">
               <label
                 htmlFor=""
-                className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+                className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
               >
                 LastName
               </label>
@@ -104,7 +104,7 @@ export default function Signup() {
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
             >
               Email
             </label>
@@ -127,7 +127,7 @@ export default function Signup() {
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
             >
               Password
             </label>
@@ -150,7 +150,7 @@ export default function Signup() {
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
             >
               Repassword
             </label>
@@ -171,11 +171,11 @@ export default function Signup() {
             )}
           </div>
 
-          <button className="py-3 bg-black cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+          <button className="py-3 bg-[#A5158C] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
             Create Account
           </button>
           <section className="mt-3 text-gray-500 text-sm font-semibold">
-            Already have an account? <Link className="text-[#7144F1] font-semibold" to={"/login"}>Login</Link>
+            Already have an account? <Link className="text-[#410445] font-semibold" to={"/login"}>Login</Link>
           </section>
         </form>
       </div>

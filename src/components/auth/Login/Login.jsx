@@ -1,8 +1,8 @@
 import React from "react";
-import signupImg from "/Signup.svg";
+import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 export default function Login() {
   const initialValues = {
@@ -44,7 +44,7 @@ export default function Login() {
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
             >
               Email
             </label>
@@ -67,7 +67,7 @@ export default function Login() {
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
             >
               Password
             </label>
@@ -97,12 +97,12 @@ export default function Login() {
             </Link>
           </section>
 
-          <button className="py-3 bg-black cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+          <button className="py-3 bg-[#A5158C] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
             Login
           </button>
           <section className="mt-3 text-gray-500 text-sm font-semibold">
             Don't have an account?{" "}
-            <Link className="text-[#7144F1] font-semibold" to={"/signup"}>
+            <Link className="text-[#410445] font-semibold" to={"/signup"}>
               Signup
             </Link>
           </section>

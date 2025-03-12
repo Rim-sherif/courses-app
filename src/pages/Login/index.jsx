@@ -1,5 +1,5 @@
 import React from "react";
-import signupImg from "/Signup.svg";
+import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link} from "react-router-dom";
@@ -89,7 +89,7 @@ export default function Login() {
             <Link className="text-[#7144F1] font-semibold" to={"/forgetpassword"}>Forget Password</Link>
           </section>
 
-          <button className="py-3 bg-black cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+          <button className="py-3 bg-[#A5158C] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
             Login
           </button>
           <section className="mt-3 text-gray-500 text-sm font-semibold">

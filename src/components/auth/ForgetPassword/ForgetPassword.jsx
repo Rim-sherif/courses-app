@@ -1,5 +1,5 @@
 import React from "react";
-import signupImg from "/Signup.svg";
+import signupImg from "/My password-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
@@ -39,7 +39,7 @@ export default function ForgetPassword() {
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2 font-semibold bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
             >
               Email
             </label>
@@ -60,8 +60,8 @@ export default function ForgetPassword() {
             )}
           </div>
 
-          <button className="py-3 bg-black cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
-            Request A Reset Link
+          <button className="py-3 bg-[#A5158C] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+            Request a reset link
           </button>
         </form>
       </div>

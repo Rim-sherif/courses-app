@@ -83,7 +83,7 @@ const Home = () => {
                     <span className="block mt-2 text-[#F6DC43] text-lg font-medium">Master in-demand skills</span>
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 px-5">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:px-8 px-2">
                     {[
                         {
                             name: 'Web Development',

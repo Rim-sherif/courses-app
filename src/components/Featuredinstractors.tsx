@@ -1,23 +1,23 @@
 import React from 'react';
-import instr4 from '../assets/images/christina-wocintechchat-com-0Zx1bDv5BNY-unsplash.jpg';
-import instr1 from '../assets/images/darshan-patel-QJEVpydulGs-unsplash.jpg';
-import instr2 from '../assets/images/jonas-kakaroto-KIPqvvTOC1s-unsplash.jpg';
-import instr3 from '../assets/images/linkedin-sales-solutions-pAtA8xe_iVM-unsplash.jpg';
-import instr5 from '../assets/images/reza-biazar-eSjmZW97cH8-unsplash.jpg';
-import instr6 from '../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg';
-import instr7 from '../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg';
-import instr8 from '../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg';
+// import instr4 from '../assets/images/christina-wocintechchat-com-0Zx1bDv5BNY-unsplash.jpg';
+// import instr1 from '../assets/images/darshan-patel-QJEVpydulGs-unsplash.jpg';
+// import instr2 from '../assets/images/jonas-kakaroto-KIPqvvTOC1s-unsplash.jpg';
+// import instr3 from '../assets/images/linkedin-sales-solutions-pAtA8xe_iVM-unsplash.jpg';
+// import instr5 from '../assets/images/reza-biazar-eSjmZW97cH8-unsplash.jpg';
+// import instr6 from '../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg';
+// import instr7 from '../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg';
+// import instr8 from '../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg';
 
 export default function Featuredinstructors(){
     const instructors = [
-        { img: instr1, name: 'Amanda Chen', role: 'UX Research & Design Lead', rating: 4.9, reviews: 856 },
-        { img: instr2, name: 'Marcus Rodriguez', role: 'Senior Web Developer', rating: 4.8, reviews: 734 },
-        { img: instr3, name: 'Dr. James Wilson', role: 'AI & Machine Learning Expert', rating: 5.0, reviews: 623 },
-        { img: instr4, name: 'Sarah Mitchell', role: 'Product Design Director', rating: 4.9, reviews: 512 },
-        { img: instr5, name: 'Dr. Alex Kumar', role: 'Data Science Specialist', rating: 4.8, reviews: 445 },
-        { img: instr6, name: 'Laura Thompson', role: 'Mobile Development Lead', rating: 4.7, reviews: 389 },
-        { img: instr7, name: 'Dr. Michael Foster', role: 'Cloud Architecture Expert', rating: 4.9, reviews: 467 },
-        { img: instr8, name: 'Emma Davis', role: 'Digital Marketing Strategist', rating: 4.8, reviews: 378 }
+    //     { img: instr1, name: 'Amanda Chen', role: 'UX Research & Design Lead', rating: 4.9, reviews: 856 },
+    //     { img: instr2, name: 'Marcus Rodriguez', role: 'Senior Web Developer', rating: 4.8, reviews: 734 },
+    //     { img: instr3, name: 'Dr. James Wilson', role: 'AI & Machine Learning Expert', rating: 5.0, reviews: 623 },
+    //     { img: instr4, name: 'Sarah Mitchell', role: 'Product Design Director', rating: 4.9, reviews: 512 },
+    //     { img: instr5, name: 'Dr. Alex Kumar', role: 'Data Science Specialist', rating: 4.8, reviews: 445 },
+    //     { img: instr6, name: 'Laura Thompson', role: 'Mobile Development Lead', rating: 4.7, reviews: 389 },
+    //     { img: instr7, name: 'Dr. Michael Foster', role: 'Cloud Architecture Expert', rating: 4.9, reviews: 467 },
+    //     { img: instr8, name: 'Emma Davis', role: 'Digital Marketing Strategist', rating: 4.8, reviews: 378 }
     ];
 
     return (

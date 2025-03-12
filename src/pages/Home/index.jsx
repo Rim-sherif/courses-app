@@ -1,16 +1,16 @@
 import { faBook, faCertificate, faGraduationCap, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import img from '../../assets/images/learning-concept-illustration.png';
-import Featuredinstructors from '../../components/Featuredinstractors';
-import img1 from '../../assets/images/html-css-collage-concept.jpg';
-import img2 from '../../assets/images/uiux.jpg';
-import img3 from '../../assets/images/business-people-blue-background.jpg';
-import img4 from '../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg';
-import img5 from '../../assets/images/3409297.jpg';
-import img6 from '../../assets/images/top-view-photography-accesories-with-copy-space.jpg';
-import img7 from '../../assets/images/SL.123119.26540.04.jpg';        
-import img8 from '../../assets/images/man-jumping-impossible-possible-cliff-sunset-background-business-concept-idea.jpg';
+// import img from '../../assets/images/learning-concept-illustration.png';
+// import Featuredinstructors from '../../components/Featuredinstractors';
+// import img1 from '../../assets/images/html-css-collage-concept.jpg';
+// import img2 from '../../assets/images/uiux.jpg';
+// import img3 from '../../assets/images/business-people-blue-background.jpg';
+// import img4 from '../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg';
+// import img5 from '../../assets/images/3409297.jpg';
+// import img6 from '../../assets/images/top-view-photography-accesories-with-copy-space.jpg';
+// import img7 from '../../assets/images/SL.123119.26540.04.jpg';        
+// import img8 from '../../assets/images/man-jumping-impossible-possible-cliff-sunset-background-business-concept-idea.jpg';
 
 
 const Home = () => {

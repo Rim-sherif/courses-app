@@ -3,8 +3,10 @@ import App from '../App';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 import Courses from '../pages/Courses';
-import Login from '../pages/Login';
-import Signup from '../pages/Signup';
+import Login from '../components/auth/Login/Login';
+import Signup from '../components/auth/Signup/Signup';
+import ForgetPassword from '../components/auth/ForgetPassword/ForgetPassword';
+import ResetPassword from '../components/auth/ResetPassword/ResetPassword';
 
 
 
@@ -27,12 +29,19 @@ const router = createBrowserRouter([
   },
   {
     path:'login',
-    element:<Login/>
+    element:<Login />
   },
   {
     path:'signup',
     element:<Signup/>
-
+  },
+  {
+    path:'forgetpassword',
+    element:<ForgetPassword />
+  },
+  {
+    path:'resetPassword',
+    element:<ResetPassword />
   }
   
 ]);

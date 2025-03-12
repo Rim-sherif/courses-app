@@ -10,6 +10,8 @@ import {
   faSearch,
   faSignOutAlt,
   faUser,
+  faBars,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -21,10 +23,11 @@ const Navbar = () => {
   const [isLangOpen, setIsLangOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <nav className="bg-white shadow-md">
-       <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex gap-1">
             <svg
@@ -50,7 +53,7 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-          <div className="flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-6">
             <div className="relative">
               <button
                 onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
@@ -226,7 +229,145 @@ const Navbar = () => {
               </div>
             )}
           </div>
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-gray-700 hover:text-[#A5158C]"
+            >
+              <FontAwesomeIcon icon={isMobileMenuOpen ? faTimes : faBars} />
+            </button>
+          </div>
         </div>
+        {isMobileMenuOpen && (
+          <div className="md:hidden">
+            <div className="flex flex-col space-y-2 mt-4 pb-2">
+              <NavLink
+                to="/"
+                className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/courses"
+                className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Courses
+              </NavLink>
+              <button
+                onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                className="text-gray-700 hover:text-[#A5158C] px-4 py-2 flex items-center justify-between"
+              >
+                Categories
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="ml-2 text-xs"
+                />
+              </button>
+              {isCategoriesOpen && (
+                <div className="flex flex-col space-y-2 pl-4">
+                  <NavLink
+                    to="/category/programming"
+                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Programming
+                  </NavLink>
+                  <NavLink
+                    to="/category/design"
+                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Design
+                  </NavLink>
+                  <NavLink
+                    to="/category/business"
+                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Business
+                  </NavLink>
+                  <NavLink
+                    to="/categories"
+                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    View All Categories
+                  </NavLink>
+                </div>
+              )}
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="text-gray-700 hover:text-[#A5158C] px-4 py-2 flex items-center justify-between"
+              >
+                Language
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="ml-2 text-xs"
+                />
+              </button>
+              {isLangOpen && (
+                <div className="flex flex-col space-y-2 pl-4">
+                  <button className="text-gray-700 hover:text-[#A5158C] px-4 py-2">
+                    English
+                  </button>
+                  <button className="text-gray-700 hover:text-[#A5158C] px-4 py-2">
+                    عربي
+                  </button>
+                </div>
+              )}
+              {isAuthenticated ? (
+                <div className="flex flex-col space-y-2 mt-4">
+                  <NavLink
+                    to="/profile"
+                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Profile
+                  </NavLink>
+                  <NavLink
+                    to="/my-courses"
+                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    My Courses
+                  </NavLink>
+                  <NavLink
+                    to="/settings"
+                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Settings
+                  </NavLink>
+                  <button
+                    className="text-red-600 hover:text-[#A5158C] px-4 py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col space-y-2 mt-4">
+                  <NavLink
+                    to="/login"
+                    className="text-white bg-[#410445] rounded-3xl py-1.5 px-4 hover:bg-[#A5158C] transition-colors flex items-center"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Log In
+                  </NavLink>
+                  <NavLink
+                    to="/signup"
+                    className="text-[#410445] border-2 border-[#410445] rounded-3xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Sign Up
+                  </NavLink>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

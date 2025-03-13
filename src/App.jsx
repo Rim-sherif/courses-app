@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto ">
+      <main className=" w-full">
         <Outlet />
       </main>
       <Footer />

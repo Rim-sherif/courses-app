@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getToken } from "../../../redux/reducers/tokenSlice";
+
+
 
 export default function Login() {
+
+  const token = useSelector(store=>store.token);
+  const dispatch = useDispatch(); 
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    dispatch(getToken());
+  },[dispatch])
+
   const initialValues = {
     email: "",
     password: "",
@@ -26,9 +41,36 @@ export default function Login() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      loginSendData(values);
     },
   });
+
+  const loginSendData = async (values) => {
+    try {      
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`,
+        values
+      );
+      console.log(data);
+      
+      toast.success(data.message);
+      if(data?.user.role == "user"){
+        navigate("/");
+      }else{
+        navigate("/dashboard");
+      }
+
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      if(error?.response.data.message){
+        toast.error(error?.response?.data?.message);
+      }else{
+        toast.error(error.message);
+      }
+      
+    }
+  };
 
   return (
     <div className="md:h-[100vh] my-10 sm:my-0 lg:flex lg:items-center lg:justify-around w-[90%] mx-auto">

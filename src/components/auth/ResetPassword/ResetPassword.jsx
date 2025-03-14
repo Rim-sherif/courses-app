@@ -2,9 +2,14 @@ import React from "react";
 import signupImg from "/Signup.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function ResetPassword() {
+  const { token } = useParams();
+  const navigate = useNavigate();
+
   const initialValues = {
     password: "",
     confirmPassword: "",
@@ -26,9 +31,31 @@ export default function ResetPassword() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      resetPassword(values);
     },
   });
+
+  const resetPassword = async (values) => {
+    
+    try {      
+      const { data } = await axios.post(
+        `http://localhost:5000/api/v1/auth/reset/password/${token}`,
+        values
+      );
+      console.log(data);
+      
+      toast.success(data.message);
+      navigate("/login")
+    } catch (error) {
+      console.log(error);
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message);
+      }else{
+        toast.error(error.message);
+      }
+      
+    }
+  };
 
   return (
     <div className="md:h-[100vh] my-10 sm:my-0 lg:flex lg:items-center lg:justify-around w-[90%] mx-auto">

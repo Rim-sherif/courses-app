@@ -2,11 +2,15 @@ import React from "react";
 import signupImg from "/My password-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 
 
 export default function ForgetPassword() {
+  const navigate = useNavigate();
+  
   const initialValues = {
     email: "",
   };
@@ -21,9 +25,32 @@ export default function ForgetPassword() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      forgetPassword(values);
     },
   });
+
+  const forgetPassword = async (values) => {
+    try {      
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/auth/send/forget/password`,
+        values
+      );
+      console.log(data);
+      
+      toast.success(data.message);
+      
+      
+
+    } catch (error) {
+      console.log(error);
+      if(error?.response.data.message){
+        toast.error(error?.response?.data?.message);
+      }else{
+        toast.error(error.message);
+      }
+      
+    }
+  };
 
   return (
     <div className="md:h-[100vh] my-10 sm:my-0 lg:flex lg:items-center lg:justify-around w-[90%] mx-auto">

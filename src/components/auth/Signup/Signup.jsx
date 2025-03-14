@@ -2,15 +2,20 @@ import React from "react";
 import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const initialValues = {
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    repassword: "",
+    confirmPassword: "",
+    role: "user"
   };
 
   const validationSchema = Yup.object({
@@ -28,18 +33,42 @@ export default function Signup() {
     password: Yup.string()
       .matches(new RegExp("^(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()]).{8,}$") , "Password must have at least one Number, one special Character , one uppercase letter and count of characters 8 or more")
       .required("Password is required"),
-    repassword: Yup.string()
+    confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "confirm Password is not match password")
-      .required("repassword is required"),
+      .required("confirm Password is required"),
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      signupSendData(values);
     },
   });
+
+  const signupSendData = async (values) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`,
+        values
+      );
+      toast.success(data.message);
+      if(data?.user.role == "user"){
+        navigate("/");
+      }else{
+        navigate("/dashboard");
+      }
+
+    } catch (error) {
+      console.log(error);
+      if(error?.response.data.message){
+        toast.error(error?.response?.data?.message);
+      }else{
+        toast.error(error.message);
+      }
+      
+    }
+  };
 
   return (
     <div className="md:h-[100vh] my-10 sm:my-0 lg:flex lg:items-center lg:justify-around w-[90%] mx-auto">
@@ -152,23 +181,43 @@ export default function Signup() {
               htmlFor=""
               className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
             >
-              Repassword
+              confirmPassword
             </label>
             <input
               type="password"
               className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full"
-              name="repassword"
+              name="confirmPassword"
               onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.repassword}
+                value={formik.values.confirmPassword}
             />
-            {formik.errors.repassword && formik.touched.repassword ? (
+            {formik.errors.confirmPassword && formik.touched.confirmPassword ? (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
-                {formik.errors.repassword}
+                {formik.errors.confirmPassword}
               </div>
             ) : (
               ""
             )}
+          </div>
+          <div className="mb-5 relative">
+            <label
+              htmlFor=""
+              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
+            >
+              Role
+            </label>
+
+            <select
+              className="border-2 text-sm outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full bg-white hover:border-blue-400 focus:ring-2 focus:ring-blue-300 transition duration-200 cursor-pointer"
+              name="role"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.role}
+            >
+              <option value="user" className="p-2">User</option>
+              <option value="instructor" className="p-2">Instructor</option>
+            </select>
+
           </div>
 
           <button className="py-3 bg-[#A5158C] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">

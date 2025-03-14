@@ -220,7 +220,7 @@ export default function Signup() {
 
           </div>
 
-          <button className="py-3 bg-[#A5158C] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+          <button className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
             Create Account
           </button>
           <section className="mt-3 text-gray-500 text-sm font-semibold">

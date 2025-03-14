@@ -11,41 +11,76 @@ import img5 from '../../assets/images/3409297.jpg';
 import img6 from '../../assets/images/top-view-photography-accesories-with-copy-space.jpg';
 import img7 from '../../assets/images/SL.123119.26540.04.jpg';        
 import img8 from '../../assets/images/man-jumping-impossible-possible-cliff-sunset-background-business-concept-idea.jpg';
+import instr6 from '../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg';
+import instr7 from '../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg';
+import instr8 from '../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg';
 
 
 const Home = () => {
     return (
         <div className="space-y-20">
    
-            <section className="relative bg-[#410445] text-white py-20">
-                <div className="container mx-auto px-4">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="space-y-8 md:pl-16">
-                            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                                Start Your Learning Journey Today
-                            </h1>
-                            <p className="text-xl text-blue-100">
-                                Access thousands of online courses from leading experts worldwide. Learn at your own pace and earn certificates.
-                            </p>
-                            <div className="space-x-4">
-                                <button className="bg-[#F6DC43] text-[#410445] px-8 py-3 rounded-full font-semibold hover:bg-[#FF2DF1] hover:text-white transition-colors">
-                                    Get Started
-                                </button>
-                                <button className="border-2 border-[#F6DC43] text-[#F6DC43] px-8 py-3 rounded-full font-semibold hover:bg-[#F6DC43] hover:text-[#410445] transition-colors">
-                                    Browse Courses
-                                </button>
-                            </div>
+   <section className="relative bg-gradient-to-br from-[#2A0B2C] to-[#410445] text-white py-28 overflow-hidden">
+    <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative hidden md:block">
+                <div className="absolute -top-20 w-[600px] h-[600px] bg-gradient-to-r from-[#FF2DF1]/20 to-[#F6DC43]/20 rounded-full blur-2xl animate-pulse"></div>
+                <img 
+                    src={img}
+                    alt="Learning experience" 
+                    className="relative z-10 w-full max-w-[500px] mx-auto animate-float animate-custom-bounce"
+                />
+                <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-[#F6DC43]/10 rounded-full blur-xl"></div>
+                
+                <div className="absolute -right-12 bottom-40 bg-white/5 p-6 rounded-2xl backdrop-blur-lg border border-white/10 shadow-lg">
+                    <div className="flex items-center space-x-4">
+                        <div className="bg-[#F6DC43] p-3 rounded-xl">
+                            <svg className="w-8 h-8 text-[#410445]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
                         </div>
-                        <div className="hidden md:block">
-                            <img 
-                                src={img}
-                                alt="Learning illustration" 
-                                className="w-[400px] mx-auto animate-custom-bounce md:w-[500px]"
-                            />
+                        <div>
+                            <p className="text-sm text-blue-100">Daily Active Learners</p>
+                            <p className="text-2xl font-bold text-[#F6DC43]">15,000+</p>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+            <div className="relative z-10 space-y-8 md:pl-12">
+                <h1 className="text-5xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] bg-clip-text text-transparent">
+                    Transform Your Future Through Learning
+                </h1>
+                <p className="text-xl text-blue-100 opacity-90 max-w-xl leading-relaxed">
+                    Dive into immersive learning experiences with 10,000+ expert-led courses. Gain practical skills, earn certifications, and advance your career on your schedule.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <button className="relative group bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] text-[#410445] px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-[#FF2DF1]/30 transition-all duration-300 transform hover:-translate-y-1">
+                        <span className="relative z-10">Start Free Trial</span>
+                        <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-xl"></div>
+                    </button>
+                    <button className="relative group border-2 border-[#F6DC43]/50 text-[#F6DC43] px-8 py-4 rounded-xl font-semibold hover:bg-[#F6DC43]/10 hover:border-[#F6DC43] transition-all duration-300 transform hover:-translate-y-1">
+                        <span className="relative z-10">Explore Programs</span>
+                        <div className="absolute inset-0 bg-[#F6DC43] opacity-0 group-hover:opacity-5 transition-opacity rounded-xl"></div>
+                    </button>
+                </div>
+                <div className="flex items-center space-x-6 pt-4">
+                    <div className="flex -space-x-4">
+                        <img src={instr6} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
+                        <img src={instr7} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
+                        <img src={instr8} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
+                        <div className="w-12 h-12 rounded-full border-2 border-white bg-[#F6DC43] flex items-center justify-center text-[#410445] font-bold">5K+</div>
+                    </div>
+                    <span className="text-blue-100 opacity-80">Join our community of successful learners</span>
+                </div>
+            </div>
+            
+           
+        </div>
+    </div>
+    
+    <div className="absolute inset-0 opacity-5 bg-[url('/noise.png')]"></div>
+    <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#410445] to-transparent"></div>
+</section>
 
             {/* Stats Section */}
             <section className="py-16 bg-[#A5158C]/10">

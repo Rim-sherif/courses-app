@@ -5,13 +5,13 @@ import {
   faChevronRight,
   faCode,
   faGear,
-  faLanguage,
   faPalette,
   faSearch,
   faSignOutAlt,
   faUser,
   faBars,
   faTimes,
+  faGlobe,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -26,8 +26,8 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white py-3 shadow-md">
-      <div className="container mx-auto w-[90%]">
+    <nav className="bg-white py-3 shadow-md sticky top-0 z-50">
+      <div className="container mx-auto w-[95%]">
         <div className="flex justify-between items-center h-16">
           <div className="flex gap-1">
             <svg
@@ -159,11 +159,8 @@ const Navbar = () => {
                 onClick={() => setIsLangOpen(!isLangOpen)}
                 className="text-gray-700 hover:text-[#A5158C] flex items-center"
               >
-                <FontAwesomeIcon icon={faLanguage} className="text-xl" />
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className="ml-2 text-xs"
-                />
+                <FontAwesomeIcon icon={faGlobe} className="text-xl" />
+            
               </button>
               {isLangOpen && (
                 <div className="absolute top-full right-0 w-24 bg-white shadow-lg rounded-lg py-2 mt-2 z-20">
@@ -223,13 +220,13 @@ const Navbar = () => {
               <div className="flex items-center space-x-3 text-sm">
                 <NavLink
                   to="/login"
-                  className="text-white border-2 bg-[#410445] rounded-3xl py-2 px-5 hover:bg-[#A5158C] transition-colors flex items-center"
+                  className="text-white border-2 bg-[#410445] rounded-xl py-2 px-5 hover:bg-[#A5158C] transition-colors flex items-center"
                 >
                   <span className="hidden md:inline ">Log In</span>
                 </NavLink>
                 <NavLink
                   to="/signup"
-                  className="text-[#410445] border-2 border-[#410445] rounded-3xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
+                  className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
                 >
                   <span className="hidden md:inline">Sign Up</span>
                 </NavLink>
@@ -358,14 +355,14 @@ const Navbar = () => {
                 <div className="flex flex-col space-y-2 mt-4">
                   <NavLink
                     to="/login"
-                    className="text-white bg-[#410445] rounded-3xl py-1.5 px-4 hover:bg-[#A5158C] transition-colors flex items-center"
+                    className="text-white bg-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#A5158C] transition-colors flex items-center"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Log In
                   </NavLink>
                   <NavLink
                     to="/signup"
-                    className="text-[#410445] border-2 border-[#410445] rounded-3xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
+                    className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign Up

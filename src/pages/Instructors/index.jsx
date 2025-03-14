@@ -90,7 +90,7 @@ export default function Instructors() {
               id={`checkbox-${item.id}`}
               className="hidden peer border-gray-300"
             />
-            <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center transition-all duration-300 peer-checked:bg-blue-500 peer-checked:border-blue-500">
+            <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center transition-all duration-300 peer-checked:bg-[#2A0B2C] peer-checked:border-[#2A0B2C]">
               <svg
                 className="w-4 h-4 text-white opacity-0 transition-all duration-200 peer-checked:opacity-100"
                 xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +158,7 @@ export default function Instructors() {
                 </section>
               </div>
               <Link to="/">
-                <button className="bg-[#0194FE] cursor-pointer text-white block w-full py-2 rounded mt-3">Profile</button>
+                <button className="bg-[#2A0B2C] cursor-pointer text-white block w-full py-2 rounded mt-3">Profile</button>
               </Link>
             </div>
           ))

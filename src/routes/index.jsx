@@ -7,7 +7,7 @@ import Login from '../components/auth/Login/Login';
 import Signup from '../components/auth/Signup/Signup';
 import ForgetPassword from '../components/auth/ForgetPassword/ForgetPassword';
 import ResetPassword from '../components/auth/ResetPassword/ResetPassword';
-
+import Instructors from "../pages/Instructors"
 
 
 
@@ -23,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'courses',
         element: <Courses/>
+      },
+      {
+        path: 'instructors',
+        element: <Instructors/>
       },
       {
         path:'*',

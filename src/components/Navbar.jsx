@@ -26,8 +26,8 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4">
+    <nav className="bg-white py-3 shadow-md">
+      <div className="container mx-auto w-[90%]">
         <div className="flex justify-between items-center h-16">
           <div className="flex gap-1">
             <svg
@@ -57,7 +57,7 @@ const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-                className="text-gray-700 hover:text-[#A5158C] flex items-center"
+                className="text-gray-700 cursor-pointer hover:text-[#A5158C] flex items-center"
               >
                 Categories
                 <FontAwesomeIcon
@@ -146,6 +146,13 @@ const Navbar = () => {
               Courses
             </NavLink>
 
+            <NavLink
+              to="/instructors"
+              className="text-gray-700 hover:text-[#A5158C]"
+            >
+              Instructors
+            </NavLink>
+
             {/* Language Switcher */}
             <div className="relative">
               <button
@@ -213,10 +220,10 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-2 text-sm">
+              <div className="flex items-center space-x-3 text-sm">
                 <NavLink
                   to="/login"
-                  className="text-white bg-[#410445] rounded-3xl py-1.5 px-4 hover:bg-[#A5158C] transition-colors flex items-center"
+                  className="text-white border-2 bg-[#410445] rounded-3xl py-2 px-5 hover:bg-[#A5158C] transition-colors flex items-center"
                 >
                   <span className="hidden md:inline ">Log In</span>
                 </NavLink>

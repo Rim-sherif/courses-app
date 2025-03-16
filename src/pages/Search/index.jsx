@@ -39,7 +39,7 @@ export default function Search() {
     
 
   return (
-    <div className="w-[94%] mx-auto my-10 flex items-start flex-wrap justify-between">
+    <div className="w-[94%] mx-auto my-10 flex items-start flex-wrap justify-start gap-3">
 
         {loading ? <div className='inset-0 fixed bg-[rgba(0,0,0,0.5)] flex text-white justify-center items-center text-2xl'>Loading...</div>:""}
 
@@ -48,19 +48,21 @@ export default function Search() {
         {result.length > 0 ? (
           result.map((user) => (
             <div
-              className="lg:w-[32.5%] w-[100%] sm:w-[48%] border-1 rounded border-gray-200 p-5 mb-3 text-center"
+              className="lg:w-[24%] w-[100%] sm:w-[48%] border-1 rounded border-gray-200 p-5 mb-3 text-center"
               key={user._id}
             >
               <div className="mb-3">
                 <img
-                  src={user.avatar}
+                  src={key == "courses" ? user.thumbnail : user.avatar}
                   className="w-50 h-50 mx-auto object-cover rounded-full"
                   alt=""
                 />
               </div>
 
               <h2 className="text-xl font-semibold mb-1">
-                {user.firstName} {user.lastName}
+                {key == "courses" ? user.title.split(" ").slice(0,2)
+                .join(" ") : `${user.firstName} ${user.lastName}` }
+                {/* {user.firstName} {user.lastName} */}
               </h2>
 
               <span>

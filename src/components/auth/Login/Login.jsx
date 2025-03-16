@@ -48,9 +48,9 @@ export default function Login() {
 
   const loginSendData = async (values) => {
     try {      
-      const { data } = await axios.post(
+      const {data}  = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`,
-        values
+        values,{ withCredentials: true }
       );
       
       if(data?.user.role == "user"){

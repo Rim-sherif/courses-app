@@ -52,9 +52,11 @@ export default function Signup() {
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`,
         values
       );
+      console.log(data);
+      
       toast.success(data.message);
       if(data?.user.role == "user"){
-        navigate("/");
+        navigate("/login");
       }else{
         navigate("/dashboard");
       }

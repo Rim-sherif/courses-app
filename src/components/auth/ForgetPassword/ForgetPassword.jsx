@@ -87,7 +87,7 @@ export default function ForgetPassword() {
             )}
           </div>
 
-          <button className="py-3 bg-[#410445]cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+          <button className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
             Request a reset link
           </button>
         </form>

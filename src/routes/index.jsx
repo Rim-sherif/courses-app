@@ -10,6 +10,7 @@ import ResetPassword from '../components/auth/ResetPassword/ResetPassword';
 import Instructors from "../pages/Instructors"
 import Search from '../pages/Search';
 import Profile from '../pages/Profile';
+import ConfirmEmail from '../components/auth/ConfirmEmail';
 
 
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
   {
     path:'forgetpassword',
     element:<ForgetPassword />
+  },
+  {
+    path:'confirm/email/:token',
+    element:<ConfirmEmail />
   },
   {
     path:'resetPassword/:token',

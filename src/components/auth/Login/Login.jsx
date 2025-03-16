@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../../../redux/reducers/tokenSlice";
-// import { getToken } from "../../../redux/reducers/tokenSlice";
 
 
 
@@ -18,9 +17,8 @@ export default function Login() {
   const navigate = useNavigate();
   
   // useEffect(()=>{
-  //   dispatch(getToken());
-  //   console.log(token);
-  // },[token])
+  //   dispatch(getToken(loggedIn));
+  // },[loggedIn])
 
   const initialValues = {
     email: "",
@@ -58,6 +56,7 @@ export default function Login() {
         if(data?.user.isConfirmed){
           toast.success(data.message);
           dispatch(getToken(true))
+          window.localStorage.setItem("genToken" , true);
           navigate("/");
         }else{
           toast.error(data.message);

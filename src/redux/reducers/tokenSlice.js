@@ -3,9 +3,10 @@ import Cookies from "js-cookie";
 
 const tokenSlice = createSlice({
     name: "userToken",
-    initialState: {loggedIn: false},
+    initialState: {loggedIn: localStorage.getItem("genToken")},
     reducers:{
         getToken: (state, action)=>{
+            console.log(JSON.stringify(state));
             state.loggedIn = action.payload;
             return state;
         }

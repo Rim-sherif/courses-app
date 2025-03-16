@@ -3,16 +3,12 @@ import Cookies from "js-cookie";
 
 const tokenSlice = createSlice({
     name: "userToken",
-    initialState: "",
+    initialState: {loggedIn: false},
     reducers:{
-        // getToken: (state, action)=>{
-        //     if(Cookies.get("token") != undefined){
-        //         state = Cookies.get("token");
-        //         return state
-        //     }else{
-        //         state = false;
-        //     }
-        // }
+        getToken: (state, action)=>{
+            state.loggedIn = action.payload;
+            return state;
+        }
     }
 })
 

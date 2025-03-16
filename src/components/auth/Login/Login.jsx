@@ -6,13 +6,14 @@ import { Link, useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { getToken } from "../../../redux/reducers/tokenSlice";
 // import { getToken } from "../../../redux/reducers/tokenSlice";
 
 
 
 export default function Login() {
 
-  // const token = useSelector(store=>store.token);
+  const {loggedIn} = useSelector(store=>store.token);
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
   
@@ -47,7 +48,7 @@ export default function Login() {
   });
 
   const loginSendData = async (values) => {
-    try {      
+    try {
       const {data}  = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`,
         values,{ withCredentials: true }
@@ -56,6 +57,7 @@ export default function Login() {
       if(data?.user.role == "user"){
         if(data?.user.isConfirmed){
           toast.success(data.message);
+          dispatch(getToken(true))
           navigate("/");
         }else{
           toast.error(data.message);
@@ -70,7 +72,9 @@ export default function Login() {
       }
 
     } catch (error) {
-      if(error?.response.data.message){
+      console.log(error);
+      
+      if(error?.response?.data?.message){
         toast.error(error?.response?.data?.message);
       }else{
         toast.error(error.message);

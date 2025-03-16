@@ -20,19 +20,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getData } from "../redux/reducers/searchSlice";
-// import { getToken } from "../redux/reducers/tokenSlice";
+import { getToken } from "../redux/reducers/tokenSlice";
 import profile from "/profile.png";
 
 const Navbar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchSelect , setSearchSelect] = useState("courses");
   const [searchValue , setSearchValue] = useState("");
-  const token = useSelector(store=>store.token);
+  const {loggedIn} = useSelector(store=>store.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -52,15 +51,16 @@ const Navbar = () => {
     }
   }
 
-  // useEffect(()=>{
-  //   dispatch(getToken());
-  // } , []);
+  useEffect(()=>{
+    console.log(loggedIn);
+    
+    // dispatch(getToken());
+  } , []);
 
 
   return (
     <nav style={{zIndex: 1111}} className="bg-white py-3 shadow-md sticky top-0 z-50">
-      {console.log(token)
-      }
+      
       <div className="mx-auto w-[95%]">
         <div className="flex justify-between items-center h-16">
           <div className="flex gap-1">
@@ -262,7 +262,7 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-3 text-sm">
-                {!token ?
+                {!loggedIn ?
                   <>
                     <NavLink
                       to="/login"

@@ -65,9 +65,9 @@ const Home = () => {
                 </div>
                 <div className="flex items-center space-x-6 pt-4">
                     <div className="flex -space-x-4">
-                        <img src={instr6} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
-                        <img src={instr7} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
-                        <img src={instr8} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
+                        <img src={instr6} alt="Student" className="w-12 h-12 object-cover rounded-full border-2 border-white"/>
+                        <img src={instr7} alt="Student" className="w-12 h-12 object-cover rounded-full border-2 border-white"/>
+                        <img src={instr8} alt="Student" className="w-12 h-12 object-cover rounded-full border-2 border-white"/>
                         <div className="w-12 h-12 rounded-full border-2 border-white bg-[#F6DC43] flex items-center justify-center text-[#410445] font-bold">5K+</div>
                     </div>
                     <span className="text-blue-100 opacity-80">Join our community of successful learners</span>

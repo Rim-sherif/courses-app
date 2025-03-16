@@ -113,7 +113,7 @@ const Footer = () => {
                 Get monthly insights on learning strategies and career
                 development
               </p>
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-wrap">
                 <input
                   type="email"
                   placeholder="Enter your email"

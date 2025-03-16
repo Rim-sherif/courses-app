@@ -14,8 +14,12 @@ import {
   faGlobe,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getData } from "../redux/reducers/searchSlice";
 
 const Navbar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -24,10 +28,30 @@ const Navbar = () => {
   // eslint-disable-next-line no-unused-vars
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchSelect , setSearchSelect] = useState("courses");
+  const [searchValue , setSearchValue] = useState("");
+  const navigate = useNavigate();
+
+  const searchBasedSelect = (e)=>{
+    setSearchSelect(e.target.value);
+  }
+  const handleSearchValue = (e)=>{
+    setSearchValue(e.target.value)
+  }
+
+  const sendData = async ()=>{
+    if(searchValue.length > 0){
+      navigate(`/search?key=${searchSelect}&q=${searchValue}`);
+      setSearchValue("");
+    }else{
+      toast.error("please Enter a valid search value")
+    }
+  }
+
 
   return (
-    <nav className="bg-white py-3 shadow-md sticky top-0 z-50">
-      <div className="container mx-auto w-[95%]">
+    <nav style={{zIndex: 1111}} className="bg-white py-3 shadow-md sticky top-0 z-50">
+      <div className="mx-auto w-[95%]">
         <div className="flex justify-between items-center h-16">
           <div className="flex gap-1">
             <svg
@@ -45,12 +69,22 @@ const Navbar = () => {
             <div className="relative w-full">
               <input
                 type="search"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full px-4 ps-33 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                 placeholder="Search for courses..."
+                value={searchValue}
+                onChange={handleSearchValue}
               />
-              <button className="absolute right-3 top-2.5 text-gray-400 hover:text-[#A5158C]">
+              <button onClick={sendData} className="absolute right-0 p-2 px-4 text-white rounded-br-lg rounded-tr-lg top-[1px] cursor-pointer bg-[#410445] top-0 text-gray-400 hover:bg-[#A5158C]">
                 <FontAwesomeIcon icon={faSearch} />
               </button>
+
+              <div className="absolute left-4 top-[9px]">
+                  <select name="searched" onChange={searchBasedSelect} className="outline-0 text-gray-600">
+                    <option value="courses">Courses</option>
+                    <option value="instructors">Instructors</option>
+                  </select>
+              </div>
+
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-6">
@@ -226,8 +260,7 @@ const Navbar = () => {
                 </NavLink>
                 <NavLink
                   to="/signup"
-                  className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
-                >
+                  className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center">
                   <span className="hidden md:inline">Sign Up</span>
                 </NavLink>
               </div>

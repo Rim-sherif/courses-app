@@ -8,6 +8,7 @@ import Signup from '../components/auth/Signup/Signup';
 import ForgetPassword from '../components/auth/ForgetPassword/ForgetPassword';
 import ResetPassword from '../components/auth/ResetPassword/ResetPassword';
 import Instructors from "../pages/Instructors"
+import Search from '../pages/Search';
 
 
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'instructors',
         element: <Instructors/>
+      },
+      {
+        path: 'search',
+        element: <Search/>
       },
       {
         path:'*',

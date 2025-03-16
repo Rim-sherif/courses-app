@@ -1,50 +1,65 @@
-import { faBook, faCertificate, faGraduationCap, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import img from '/learning-concept-illustration.png';
-import Featuredinstructors from '../../components/Featuredinstractors';
-import img1 from '../../assets/images/html-css-collage-concept.jpg';
-import img2 from '../../assets/images/uiux.jpg';
-import img3 from '../../assets/images/business-people-blue-background.jpg';
-import img4 from '../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg';
-import img5 from '../../assets/images/3409297.jpg';
-import img6 from '../../assets/images/top-view-photography-accesories-with-copy-space.jpg';
-import img7 from '../../assets/images/SL.123119.26540.04.jpg';        
-import img8 from '../../assets/images/man-jumping-impossible-possible-cliff-sunset-background-business-concept-idea.jpg';
-import instr6 from '../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg';
-import instr7 from '../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg';
-import instr8 from '../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg';
-
+import {
+  faBook,
+  faCertificate,
+  faGraduationCap,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import img from "/learning-concept-illustration.png";
+import Featuredinstructors from "../../components/Featuredinstractors";
+import img1 from "../../assets/images/html-css-collage-concept.jpg";
+import img2 from "../../assets/images/uiux.jpg";
+import img3 from "../../assets/images/business-people-blue-background.jpg";
+import img4 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
+import img5 from "../../assets/images/3409297.jpg";
+import img6 from "../../assets/images/top-view-photography-accesories-with-copy-space.jpg";
+import img7 from "../../assets/images/SL.123119.26540.04.jpg";
+import img8 from "../../assets/images/man-jumping-impossible-possible-cliff-sunset-background-business-concept-idea.jpg";
+import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg";
+import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
+import instr8 from "../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg";
 
 const Home = () => {
-    return (
-        <div className="space-y-20">
-   
-   <section className="relative bg-gradient-to-br from-[#2A0B2C] to-[#410445] text-white py-28 overflow-hidden">
-    <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div className="relative hidden md:block">
-                <div className="absolute -top-20 w-[600px] h-[600px] bg-gradient-to-r from-[#FF2DF1]/20 to-[#F6DC43]/20 rounded-full blur-2xl animate-pulse"></div>
-                <img 
-                    src={img}
-                    alt="Learning experience" 
-                    className="relative z-10 w-full max-w-[500px] mx-auto animate-float animate-custom-bounce"
-                />
-                <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-[#F6DC43]/10 rounded-full blur-xl"></div>
-                
-                <div className="absolute -right-12 bottom-40 bg-white/5 p-6 rounded-2xl backdrop-blur-lg border border-white/10 shadow-lg">
-                    <div className="flex items-center space-x-4">
-                        <div className="bg-[#F6DC43] p-3 rounded-xl">
-                            <svg className="w-8 h-8 text-[#410445]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p className="text-sm text-blue-100">Daily Active Learners</p>
-                            <p className="text-2xl font-bold text-[#F6DC43]">15,000+</p>
-                        </div>
-                    </div>
+  return (
+    <div className="space-y-20">
+      <section className="relative bg-gradient-to-br from-[#2A0B2C] to-[#410445] text-white py-28 overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="relative hidden md:block">
+              <div className="absolute -top-20 w-[600px] h-[600px] bg-gradient-to-r from-[#FF2DF1]/20 to-[#F6DC43]/20 rounded-full blur-2xl animate-pulse"></div>
+              <img
+                src={img}
+                alt="Learning experience"
+                className="relative z-10 w-full max-w-[500px] mx-auto animate-float animate-custom-bounce"
+              />
+              <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-[#F6DC43]/10 rounded-full blur-xl"></div>
+
+              <div className="absolute -right-12 bottom-40 bg-white/5 p-6 rounded-2xl backdrop-blur-lg border border-white/10 shadow-lg">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-[#F6DC43] p-3 rounded-xl">
+                    <svg
+                      className="w-8 h-8 text-[#410445]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm text-blue-100">
+                      Daily Active Learners
+                    </p>
+                    <p className="text-2xl font-bold text-[#F6DC43]">15,000+</p>
+                  </div>
                 </div>
+              </div>
             </div>
             <div className="relative z-10 space-y-8 md:pl-12">
                 <h1 className="text-5xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] bg-clip-text text-transparent">
@@ -65,321 +80,511 @@ const Home = () => {
                 </div>
                 <div className="flex items-center space-x-6 pt-4">
                     <div className="flex -space-x-4">
-                        <img src={instr6} alt="Student" className="w-12 h-12 object-cover rounded-full border-2 border-white"/>
-                        <img src={instr7} alt="Student" className="w-12 h-12 object-cover rounded-full border-2 border-white"/>
-                        <img src={instr8} alt="Student" className="w-12 h-12 object-cover rounded-full border-2 border-white"/>
+                        <img src={instr6} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
+                        <img src={instr7} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
+                        <img src={instr8} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
                         <div className="w-12 h-12 rounded-full border-2 border-white bg-[#F6DC43] flex items-center justify-center text-[#410445] font-bold">5K+</div>
                     </div>
                     <span className="text-blue-100 opacity-80">Join our community of successful learners</span>
                 </div>
             </div>
-            
-           
+          </div>
         </div>
-    </div>
-    
-    <div className="absolute inset-0 opacity-5 bg-[url('/noise.png')]"></div>
-    <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#410445] to-transparent"></div>
-</section>
+      </section>
 
-            {/* Stats Section */}
-            <section className="py-16 bg-[#A5158C]/10">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                        <div className="space-y-2">
-                            <FontAwesomeIcon icon={faUsers} className="text-4xl text-[#A5158C]" />
-                            <div className="text-3xl font-bold">100K+</div>
-                            <div className="text-gray-600">Active Students</div>
-                        </div>
-                        <div className="space-y-2">
-                            <FontAwesomeIcon icon={faBook} className="text-4xl text-[#A5158C]" />
-                            <div className="text-3xl font-bold">500+</div>
-                            <div className="text-gray-600">Online Courses</div>
-                        </div>
-                        <div className="space-y-2">
-                            <FontAwesomeIcon icon={faGraduationCap} className="text-4xl text-[#A5158C]" />
-                            <div className="text-3xl font-bold">1M+</div>
-                            <div className="text-gray-600">Graduates</div>
-                        </div>
-                        <div className="space-y-2">
-                            <FontAwesomeIcon icon={faCertificate} className="text-4xl text-[#A5158C]" />
-                            <div className="text-3xl font-bold">300+</div>
-                            <div className="text-gray-600">Expert Instructors</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-   
-        <section className="py-20  relative overflow-hidden">
-            <div className="container mx-auto px-4">
-                <h2 className="text-4xl font-bold text-center mb-16 text-[#A5158C] relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
-                    Explore Popular Categories
-                    <span className="block mt-2 text-[#F6DC43] text-lg font-medium">Master in-demand skills</span>
-                </h2>
-                
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:px-8 px-2">
-                    {[
-                        {
-                            name: 'Web Development',
-                            courses: '120+ Courses',
-                            bgImage: img1
-                        },
-                        {
-                            name: 'UI/UX Design',
-                            courses: '85+ Courses',
-                            bgImage: img2
-                        },
-                        {
-                            name: 'Business',
-                            courses: '200+ Courses',
-                            bgImage: img3
-                        },
-                        {
-                            name: 'Marketing',
-                            courses: '75+ Courses',
-                            bgImage: img4
-                        },
-                        {
-                            name: 'AI & Data Science',
-                            courses: '90+ Courses',
-                            bgImage: img5
-                        },
-                        {
-                            name: 'Photography',
-                            courses: '45+ Courses',
-                            bgImage: img6
-                        },
-                        {
-                            name: 'Music Production',
-                            courses: '30+ Courses',
-                            bgImage: img7
-                        },
-                        {
-                            name: 'Personal Growth',
-                            courses: '60+ Courses',
-                            bgImage: img8
-                        },
-                    ].map((category) => (
-                        <div 
-                            key={category.name}
-                            className="group relative h-48 rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
-                            style={{ 
-                                backgroundImage: `linear-gradient(to bottom, rgba(65, 4, 69, 0.3), rgba(10, 0, 18, 0.9)), url(${category.bgImage})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center'
-                            }}
-                        >
-                            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all"></div>
-                            
-                            <div className="relative z-10 p-6 h-full flex flex-col justify-end">
-                                <h3 className="text-xl font-semibold mb-2 text-white">{category.name}</h3>
-                                <p className="text-sm text-[#F6DC43]">{category.courses}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+      {/* Stats Section */}
+      <section className="py-16 bg-[#A5158C]/10">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="space-y-2">
+              <FontAwesomeIcon
+                icon={faUsers}
+                className="text-4xl text-[#A5158C]"
+              />
+              <div className="text-3xl font-bold">100K+</div>
+              <div className="text-gray-600">Active Students</div>
             </div>
-        </section>
+            <div className="space-y-2">
+              <FontAwesomeIcon
+                icon={faBook}
+                className="text-4xl text-[#A5158C]"
+              />
+              <div className="text-3xl font-bold">500+</div>
+              <div className="text-gray-600">Online Courses</div>
+            </div>
+            <div className="space-y-2">
+              <FontAwesomeIcon
+                icon={faGraduationCap}
+                className="text-4xl text-[#A5158C]"
+              />
+              <div className="text-3xl font-bold">1M+</div>
+              <div className="text-gray-600">Graduates</div>
+            </div>
+            <div className="space-y-2">
+              <FontAwesomeIcon
+                icon={faCertificate}
+                className="text-4xl text-[#A5158C]"
+              />
+              <div className="text-3xl font-bold">300+</div>
+              <div className="text-gray-600">Expert Instructors</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                    {/* Featured Instructors */}
-          <Featuredinstructors/>
+      <section className="py-20  relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-16 text-[#A5158C] relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
+            Explore Popular Categories
+            <span className="block mt-2 text-[#F6DC43] text-lg font-medium">
+              Master in-demand skills
+            </span>
+          </h2>
 
-            {/* CTA Section */}
-            <section className="bg-gradient-to-r from-[#410445] to-[#A5158C] text-white py-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold mb-4">Ready to Start Learning?</h2>
-                    <p className="text-xl mb-8">Join thousands of students already learning on our platform</p>
-                    <button className="bg-[#F6DC43] text-[#410445] px-8 py-3 rounded-full font-semibold hover:bg-[#FF2DF1] hover:text-white transition-colors">
-                        Get Started Now
-                    </button>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:px-8 px-2">
+            {[
+              {
+                name: "Web Development",
+                courses: "120+ Courses",
+                bgImage: img1,
+              },
+              {
+                name: "UI/UX Design",
+                courses: "85+ Courses",
+                bgImage: img2,
+              },
+              {
+                name: "Business",
+                courses: "200+ Courses",
+                bgImage: img3,
+              },
+              {
+                name: "Marketing",
+                courses: "75+ Courses",
+                bgImage: img4,
+              },
+              {
+                name: "AI & Data Science",
+                courses: "90+ Courses",
+                bgImage: img5,
+              },
+              {
+                name: "Photography",
+                courses: "45+ Courses",
+                bgImage: img6,
+              },
+              {
+                name: "Music Production",
+                courses: "30+ Courses",
+                bgImage: img7,
+              },
+              {
+                name: "Personal Growth",
+                courses: "60+ Courses",
+                bgImage: img8,
+              },
+            ].map((category) => (
+              <div
+                key={category.name}
+                className="group relative h-48 rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
+                style={{
+                  backgroundImage: `linear-gradient(to bottom, rgba(65, 4, 69, 0.3), rgba(10, 0, 18, 0.9)), url(${category.bgImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all"></div>
+
+                <div className="relative z-10 p-6 h-full flex flex-col justify-end">
+                  <h3 className="text-xl font-semibold mb-2 text-white">
+                    {category.name}
+                  </h3>
+                  <p className="text-sm text-[#F6DC43]">{category.courses}</p>
                 </div>
-            </section>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* About Us Section */}
-<section className="py-20 bg-gradient-to-b from-white to-[#410445]/5 ">
-    <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16 relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-[#410445]">
+      {/* Featured Instructors */}
+      <Featuredinstructors />
+
+      {/* CTA Section */}
+      <section className="relative bg-gradient-to-r from-[#410445] to-[#A5158C] text-white py-20 md:py-24 overflow-hidden">
+        <div className="container mx-auto px-4 text-center">
+          {/* Animated background elements */}
+          <div className="absolute top-0 left-0 w-full h-full opacity-10 animate-pulse-slow">
+            <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-300 rounded-full mix-blend-screen blur-xl"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-pink-300 rounded-full mix-blend-screen blur-xl"></div>
+          </div>
+
+          <div className="relative space-y-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in-up">
+              Ready to Start Learning?
+            </h2>
+
+            <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up animate-delay-100">
+              Join{" "}
+              <span className="font-semibold text-[#F6DC43]">
+                over 50,000 students
+              </span>{" "}
+              transforming their skills on our platform
+            </p>
+
+            <div className="animate-fade-in-up animate-delay-200">
+              <button
+                className="group relative inline-flex items-center justify-center bg-[#F6DC43] text-[#410445] px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-lg md:text-xl
+                           transform transition-all duration-300 hover:scale-105 hover:bg-[#FF2DF1] hover:text-white
+                           focus:outline-none focus:ring-4 focus:ring-[#F6DC43] focus:ring-opacity-50
+                           shadow-lg hover:shadow-xl"
+                aria-label="Get started with learning on our platform"
+              >
+                <span className="relative z-10">Get Started Now</span>
+                <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
+                  🚀
+                </span>
+
+                {/* Button hover effect background */}
+                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 bg-gradient-to-r from-[#FF2DF1] to-[#F6DC43] transition-opacity duration-300"></div>
+              </button>
+            </div>
+
+            {/* Trust badges */}
+            <div className="mt-8 flex flex-wrap justify-center items-center gap-6 opacity-90 animate-fade-in-up animate-delay-300">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <span className="text-[#410445] font-bold">4.9</span>
+                </div>
+                <span>Star Rating</span>
+              </div>
+              <div className="h-6 w-px bg-white/30"></div>
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-8 h-8 text-[#F6DC43]"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                </svg>
+                <span>Top Rated Courses</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section */}
+      <section className="py-20 bg-gradient-to-b from-white to-[#410445]/5 ">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-16 relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-[#410445]">
             About Us
-        </h2>
-        <div className="grid md:grid-cols-2 gap-16 items-center px-4">
+          </h2>
+          <div className="grid md:grid-cols-2 gap-16 items-center mt-5 px-4 md:px-8">
             <div className="space-y-6 relative">
-                <div className="absolute -top-8 -left-8 w-24 h-24 bg-[#A5158C]/10 rounded-full z-0"></div>
-                <h3 className="text-3xl font-bold text-[#410445] relative z-10">
-                    Empowering Future Leaders Through Innovation
-                </h3>
-                <p className="text-gray-700 leading-relaxed text-lg">
-                    At the heart of our mission is a commitment to democratizing education. We connect 500,000+ learners worldwide with industry experts from top-tier organizations, fostering a dynamic ecosystem of knowledge exchange.
-                </p>
-                <ul className="grid grid-cols-2 gap-4">
-                    <li className="flex items-center space-x-2 text-[#410445]">
-                        <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
-                        </svg>
-                        <span>200+ Expert Instructors</span>
-                    </li>
-                    <li className="flex items-center space-x-2 text-[#410445]">
-                        <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
-                        </svg>
-                        <span>85% Career Advancement</span>
-                    </li>
-                </ul>
-                <button className="mt-6 px-8 py-3 bg-[#410445] text-white rounded-full hover:bg-[#A5158C] transition-all transform hover:scale-105">
-                    Meet Our Team
-                </button>
+              <div className="absolute -top-8 -left-8 w-24 h-24 bg-[#A5158C]/10 rounded-full z-0"></div>
+              <h3 className="text-3xl font-bold text-[#410445] relative z-10">
+                Empowering Future Leaders Through Innovation
+              </h3>
+              <p className="text-gray-700 leading-relaxed text-lg">
+                At the heart of our mission is a commitment to democratizing
+                education. We connect 500,000+ learners worldwide with industry
+                experts from top-tier organizations, fostering a dynamic
+                ecosystem of knowledge exchange.
+              </p>
+              <ul className="grid grid-cols-2 gap-4">
+                <li className="flex items-center space-x-2 text-[#410445]">
+                  <svg
+                    className="w-5 h-5 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                  </svg>
+                  <span>200+ Expert Instructors</span>
+                </li>
+                <li className="flex items-center space-x-2 text-[#410445]">
+                  <svg
+                    className="w-5 h-5 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                  </svg>
+                  <span>85% Career Advancement</span>
+                </li>
+              </ul>
+              <button className="mt-6 px-8 py-3 bg-[#410445] text-white rounded-full hover:bg-[#A5158C] transition-all transform hover:scale-105">
+                Meet Our Team
+              </button>
             </div>
             <div className="space-y-8 relative">
-                <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <div className="grid grid-cols-1 gap-6">
-                        <div className="p-6 bg-[#410445]/5 rounded-xl">
-                            <div className="flex items-center space-x-4">
-                                <div className="p-3 bg-[#410445] rounded-lg">
-                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 className="text-xl font-bold text-[#410445]">Our Mission</h4>
-                                    <p className="text-gray-600 mt-1">Democratizing quality education through technology</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="p-6 bg-[#A5158C]/5 rounded-xl">
-                            <div className="flex items-center space-x-4">
-                                <div className="p-3 bg-[#A5158C] rounded-lg">
-                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 className="text-xl font-bold text-[#A5158C]">Our Vision</h4>
-                                    <p className="text-gray-600 mt-1">Global learning community without boundaries</p>
-                                </div>
-                            </div>
-                        </div>
+              <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="p-6 bg-[#410445]/5 rounded-xl">
+                    <div className="flex items-center space-x-4">
+                      <div className="p-3 bg-[#410445] rounded-lg">
+                        <svg
+                          className="w-8 h-8 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold text-[#410445]">
+                          Our Mission
+                        </h4>
+                        <p className="text-gray-600 mt-1">
+                          Democratizing quality education through technology
+                        </p>
+                      </div>
                     </div>
+                  </div>
+                  <div className="p-6 bg-[#A5158C]/5 rounded-xl">
+                    <div className="flex items-center space-x-4">
+                      <div className="p-3 bg-[#A5158C] rounded-lg">
+                        <svg
+                          className="w-8 h-8 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold text-[#A5158C]">
+                          Our Vision
+                        </h4>
+                        <p className="text-gray-600 mt-1">
+                          Global learning community without boundaries
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</section>
+      </section>
 
-{/* Contact Us Section */}
-<section className="py-20 bg-[#410445] relative overflow-hidden">
-    <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
-    <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
-    
-    <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16 text-white relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
+      {/* Contact Us Section */}
+      <section className="py-20 bg-[#410445] relative overflow-hidden">
+        <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
+        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
+
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-16 text-white relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
             Contact Us
-        </h2>
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+          </h2>
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 mt-6 ">
             <div className="space-y-8 text-white">
-                <div>
-                    <h3 className="text-2xl font-bold mb-4">Get in Touch</h3>
-                    <p className="text-gray-200 leading-relaxed">
-                        Have questions or need support? Our team is here to help you succeed. Reach out for course guidance, technical assistance, or partnership opportunities.
+              <div>
+                <h3 className="text-2xl font-bold mb-4">Get in Touch</h3>
+                <p className="text-gray-200 leading-relaxed">
+                  Have questions or need support? Our team is here to help you
+                  succeed. Reach out for course guidance, technical assistance,
+                  or partnership opportunities.
+                </p>
+              </div>
+              <div className="space-y-6">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 bg-white/10 rounded-lg">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-semibold">+1 (555) 123-4567</p>
+                    <p className="text-gray-200 text-sm">
+                      Mon-Fri, 9am-5pm EST
                     </p>
+                  </div>
                 </div>
-                <div className="space-y-6">
-                    <div className="flex items-center space-x-4">
-                        <div className="p-3 bg-white/10 rounded-lg">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p className="font-semibold">+1 (555) 123-4567</p>
-                            <p className="text-gray-200 text-sm">Mon-Fri, 9am-5pm EST</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <div className="p-3 bg-white/10 rounded-lg">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p className="font-semibold">support@eduguide.com</p>
-                            <p className="text-gray-200 text-sm">24/7 Support Center</p>
-                        </div>
-                    </div>
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 bg-white/10 rounded-lg">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-semibold">support@eduguide.com</p>
+                    <p className="text-gray-200 text-sm">24/7 Support Center</p>
+                  </div>
                 </div>
-                <div className="pt-8 border-t border-white/20">
-                    <h4 className="text-lg font-bold mb-4">Follow Us</h4>
-                    <div className="flex space-x-4">
-                        <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
-                            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-                        {/* Add other social icons */}
-                    </div>
+              </div>
+              <div className="pt-8 border-t border-white/20">
+                <h4 className="text-lg font-bold mb-4">Follow Us</h4>
+                <div className="flex space-x-4">
+                  <a
+                    href="#"
+                    className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+                  >
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                    </svg>
+                  </a>
+
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-[#1877F2] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
+                    aria-label="Visit our Facebook page"
+                  >
+                    <svg
+                      className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </a>
+
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-gradient-to-r hover:from-[#405DE6] hover:via-[#C13584] hover:to-[#FFDC80] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
+                    aria-label="Visit our Instagram profile"
+                  >
+                    <svg
+                      className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                    </svg>
+                  </a>
+
+                  <a
+                    href="https://tiktok.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-[#000000] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
+                    aria-label="Visit our TikTok profile"
+                  >
+                    <svg
+                      className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M19.589 6.686a4.793 4.793 0 01-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 01-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 013.183-4.51v-3.5a6.329 6.329 0 00-5.394 10.692 6.33 6.33 0 0010.857-4.424V8.687a8.182 8.182 0 004.773 1.526V6.79a4.831 4.831 0 01-1.003-.104z" />
+                    </svg>
+                  </a>
                 </div>
+              </div>
             </div>
             <div className="bg-white rounded-2xl shadow-2xl p-8">
-                <form className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="relative">
-                            <input 
-                                type="text" 
-                                id="name"
-                                className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
-                                placeholder=" "
-                            />
-                            <label 
-                                htmlFor="name" 
-                                className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
-                            >
-                                Full Name
-                            </label>
-                        </div>
-                        <div className="relative">
-                            <input 
-                                type="email" 
-                                id="email"
-                                className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
-                                placeholder=" "
-                            />
-                            <label 
-                                htmlFor="email" 
-                                className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
-                            >
-                                Email Address
-                            </label>
-                        </div>
-                    </div>
-                    <div className="relative">
-                        <textarea 
-                            id="message"
-                            rows="4"
-                            className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
-                            placeholder=" "
-                        ></textarea>
-                        <label 
-                            htmlFor="message" 
-                            className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
-                        >
-                            Your Message
-                        </label>
-                    </div>
-                    <button 
-                        type="submit"
-                        className="w-full bg-[#410445] text-white px-8 py-4 rounded-lg hover:bg-[#A5158C] transition-all transform hover:scale-[1.02]"
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="name"
+                      className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
+                      placeholder=" "
+                    />
+                    <label
+                      htmlFor="name"
+                      className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
                     >
-                        Send Message
-                        <svg className="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                        </svg>
-                    </button>
-                </form>
+                      Full Name
+                    </label>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      id="email"
+                      className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
+                      placeholder=" "
+                    />
+                    <label
+                      htmlFor="email"
+                      className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
+                    >
+                      Email Address
+                    </label>
+                  </div>
+                </div>
+                <div className="relative">
+                  <textarea
+                    id="message"
+                    rows="4"
+                    className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
+                    placeholder=" "
+                  ></textarea>
+                  <label
+                    htmlFor="message"
+                    className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
+                  >
+                    Your Message
+                  </label>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-[#410445] text-white px-8 py-4 rounded-lg hover:bg-[#A5158C] transition-all transform hover:scale-[1.02]"
+                >
+                  Send Message
+                  <svg
+                    className="w-5 h-5 inline-block ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                    />
+                  </svg>
+                </button>
+              </form>
             </div>
+          </div>
         </div>
+      </section>
     </div>
-</section>
-        </div>
-    )
-}
+  );
+};
 
 export default Home;

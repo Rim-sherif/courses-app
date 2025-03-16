@@ -6,19 +6,20 @@ import { Link, useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../../../redux/reducers/tokenSlice";
+// import { getToken } from "../../../redux/reducers/tokenSlice";
 
 
 
 export default function Login() {
 
-  const token = useSelector(store=>store.token);
+  // const token = useSelector(store=>store.token);
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
-
-  useEffect(()=>{
-    dispatch(getToken());
-  },[dispatch])
+  
+  // useEffect(()=>{
+  //   dispatch(getToken());
+  //   console.log(token);
+  // },[token])
 
   const initialValues = {
     email: "",

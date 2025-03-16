@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getData } from "../redux/reducers/searchSlice";
-import { getToken } from "../redux/reducers/tokenSlice";
+// import { getToken } from "../redux/reducers/tokenSlice";
 import profile from "/profile.png";
 
 const Navbar = () => {
@@ -52,9 +52,9 @@ const Navbar = () => {
     }
   }
 
-  useEffect(()=>{
-    dispatch(getToken());
-  } , []);
+  // useEffect(()=>{
+  //   dispatch(getToken());
+  // } , []);
 
 
   return (

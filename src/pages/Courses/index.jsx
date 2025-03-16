@@ -1,166 +1,263 @@
-import { useEffect, useState } from "react";
-import img1 from '../../assets/images/react-basics.webp'
-import img2 from '../../assets/images/nodejs-mastery.webp'
-import img3 from '../../assets/images/fullstack.webp'
-import img4 from '../../assets/images/figma.webp'
-import img5 from '../../assets/images/xd.png'
-import img6 from '../../assets/images/ui-ux.webp'
-import img7 from '../../assets/images/camera-basics.webp'
-import img8 from '../../assets/images/portrait.png'
-import img9 from '../../assets/images/video-editing.png'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faClose, faStar } from "@fortawesome/free-solid-svg-icons";
+import noValueImg from "/no-value.png";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const coursesData = {
-  "Web Development": [
-    { 
-      name: "React Basics", 
-      image: img1,
-      description: "Master the fundamentals of React development",
-      duration: "6 hours",
-      level: "Beginner"
-    },
-    { 
-      name: "Node.js Mastery", 
-      image: img2,
-      description: "Become a Node.js backend expert",
-      duration: "8 hours",
-      level: "Intermediate"
-    },
-    { 
-      name: "Full Stack Guide", 
-      image: img3,
-      description: "Complete full stack development course",
-      duration: "10 hours",
-      level: "Advanced"
-    },
-  ],
-  "UI Design": [
-    { 
-      name: "Figma Essentials", 
-      image: img4,
-      description: "Learn professional UI design with Figma",
-      duration: "5 hours",
-      level: "Beginner"
-    },
-    { 
-      name: "Adobe XD Advanced", 
-      image: img5,
-      description: "Advanced prototyping techniques in XD",
-      duration: "7 hours",
-      level: "Intermediate"
-    },
-    { 
-      name: "UI/UX Best Practices", 
-      image: img6,
-      description: "Industry-standard UI/UX principles",
-      duration: "6 hours",
-      level: "Intermediate"
-    },
-  ],
-  "Photography": [
-    { 
-      name: "DSLR Fundamentals", 
-      image: img7,
-      description: "Master your DSLR camera settings",
-      duration: "4 hours",
-      level: "Beginner"
-    },
-    { 
-      name: "Portrait Photography", 
-      image: img8,
-      description: "Professional portrait techniques",
-      duration: "5 hours",
-      level: "Intermediate"
-    },
-    { 
-      name: "Video Editing", 
-      image: img9,
-      description: "From shooting to final edits",
-      duration: "9 hours",
-      level: "Beginner"
-    },
-  ],
-};
+export default function Instructors() {
+  const [courses, setCourses] = useState([]);
+  const [selectedCategories , setSelectedCategories] = useState([]);
+  const [originalUsers, setOriginalUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [categories, setCategories] = useState([
+    { id: "1", category: "Business and Entrepreneurship" },
+    { id: "2", category: "Health and Nutrition" },
+    { id: "3", category: "Science & Environment" },
+    { id: "4", category: "Education and Teaching" },
+    { id: "5", category: "Personal Development" },
+    { id: "6", category: "Technology" },
+    { id: "7", category: "Humanities" },
+    { id: "8", category: "Art, Design & Media" },
+    { id: "9", category: "Career Readiness" },
+    { id: "10", category: "Languages" },
+  ]);
+  const [filter , setFilter] = useState([]);
+  const [close , setClose] = useState(false);
+  const [selectedStar , setSelectedStar] = useState(0);
+  const stars = [1, 2, 3, 4, 5];
 
-const CourseCard = ({ course }) => (
-  <article className="bg-white text-purple-900 p-4 rounded-lg shadow-lg flex flex-col items-center transition-transform duration-300 hover:scale-105 focus-within:scale-105">
-    <img 
-      src={course.image} 
-      alt={course.name} 
-      className="w-full h-40 object-cover rounded-lg mb-2"
-      loading="lazy"
-      decoding="async"
-    />
-    <h3 className="text-lg font-semibold mb-2">{course.name}</h3>
-    {course.description && (
-      <p className="text-sm text-gray-600 text-center mb-2">{course.description}</p>
-    )}
-    <div className="flex gap-2 text-sm text-gray-500">
-      {course.duration && <span>⏳ {course.duration}</span>}
-      {course.level && <span>📈 {course.level}</span>}
-    </div>
-  </article>
-);
-
-const CategoriesSidebar = ({ categories, selectedCategory, onSelectCategory }) => (
-  <nav aria-label="Course categories" className="w-full md:w-1/5 p-6 border-r bg-[#2A0B2C] border-gray-700">
-    <h2 className="text-xl font-bold mb-4">Categories</h2>
-    <ul className="space-y-2">
-      {categories.map((category) => (
-        <li key={category}>
-          <button
-            onClick={() => onSelectCategory(category)}
-            className={`w-full text-left p-2 rounded-lg transition-colors duration-200 ${
-              selectedCategory === category
-                ? "bg-yellow-500 text-purple-900 opacity-90"
-                : "text-white hover:bg-yellow-400 hover:text-purple-900"
-            } focus:outline-none focus:ring-2 focus:ring-yellow-500`}
-            aria-current={selectedCategory === category ? "page" : undefined}
-          >
-            {category}
-          </button>
-        </li>
-      ))}
-    </ul>
-  </nav>
-);
-
-export default function CoursesPage() {
-  const [selectedCategory, setSelectedCategory] = useState("Web Development");
-  const categories = Object.keys(coursesData);
-
-  const getCourses = async ()=>{
+  const getAllCourses = async () => {
+    setLoading(true);
     try {
-      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/all`);
-      console.log(data);
-      
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/course/all`
+      );
+      setCourses(data?.courses);
+      setOriginalUsers(data?.courses);
+      setLoading(false);
+      setError("");
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getAllCourses();
+    setOriginalUsers(courses);
+  }, []);
+  
+  const handleCategory = (item ,e)=>{
+    let updatedCategories = [...selectedCategories];
+
+    if(e.target.checked){
+      updatedCategories.push(item);
+    }else{
+      updatedCategories = updatedCategories.filter(el=>el != item);
+    }
+
+    setSelectedCategories(updatedCategories);
+
+    if(updatedCategories.length > 0){
+      setCourses(originalUsers.filter(user=> updatedCategories.includes(user.category)))
+    }else{
+      setCourses(originalUsers)
+    }
+
+  }
+
+  const closeFun = (e)=>{
+    setClose(!close)
+  }
+
+  
+  const handleSearchValue = (e)=>{
+    
+    if(e.target.value.length > 0){
+      const searchFilteration = users.filter(item=>item.firstName.toLowerCase().startsWith(e.target.value.toLowerCase()))
+      if(searchFilteration.length > 0){
+        setError("")
+        setCourses(searchFilteration);     
+      }else{
+        setError("There are no instructors with this Name")
+        setCourses([]);
+      }
+      
+    }else{
+      setCourses(originalUsers);
+      setError("")
     }
   }
 
-  useEffect(()=>{
-    getCourses();
-  },[])
+  function handleSorting(e){
+    if(e.target.value == "Asc"){
+      const data = [...courses].sort((a,b)=>a.title.localeCompare(b.title))
+      setCourses(data)
+    }else{
+      const data = [...courses].sort((a,b)=>b.title.localeCompare(a.title))
+      setCourses(data)
+    }
+  }
+
+  const handleLimitSorting = (e)=>{
+    if(e.target.value == "all"){
+      setCourses(originalUsers)
+    }else{
+      const results = [...originalUsers];
+      const data = results.slice(0,+e.target.value);
+      setCourses(data);
+    }
+  }
+
+  const getStars = (star)=>{
+    console.log(star);
+    setSelectedStar(star);
+
+  }
 
   return (
-    <div className="min-h-screen text-white flex flex-col md:flex-row">
-      <CategoriesSidebar
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
-      />
-
-      <main className="flex-1 p-6">
-        <h1 className="text-2xl font-bold mb-6 text-purple-900">
-          {selectedCategory} Courses
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {coursesData[selectedCategory].map((course) => (
-            <CourseCard key={course.name} course={course} />
-          ))}
+    <div className="flex w-[90%] mx-auto justify-between">
+      <div style={{transition: "1s" , zIndex: 222}} className={`w-[50%] z-30 md:w-[23%] px-10 py-10 md:px-3 fixed mt-1 h-[100vh] md:left-0 md:static md:bg-[transparent] bg-white ${close ? 'left-[0%]' : 'left-[-50%]'}`}>
+        
+        <div onClick={closeFun} className="close block md:hidden absolute top-2 right-[-30px] bg-blue-300 py-1 px-2">
+          {close ? <FontAwesomeIcon icon={faClose} /> : <FontAwesomeIcon icon={faBars} />}
         </div>
-      </main>
+       
+       {loading ?
+        <div style={{zIndex: 1}} className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.5)]">Loading...</div>
+        :""}
+        {/* filter by instructor Name */}
+        <div className="mb-4 relative">
+          <label htmlFor="" className="absolute bg-white text-[13px] left-4 top-[-13px] text-gray-400 font-semibold p-1">Search Instructor</label>
+          <input type="text" onChange={handleSearchValue} className="border-2 w-full outline-0 px-3 py-3 text-[13px] rounded border-gray-300" />   
+        </div>
+
+        <h2 className="text-xl">Filter By Catgeories</h2>
+        
+        {categories
+          ? categories.map((item) => (
+            <div key={item.id} className="flex items-center gap-3 mb-3">
+            <input
+              type="checkbox"
+              onChange={(e)=>handleCategory(item.category , e)}
+              id={`checkbox-${item.id}`}
+              className="hidden peer border-gray-300"
+            />
+            <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center transition-all duration-300 peer-checked:bg-[#2A0B2C] peer-checked:border-[#2A0B2C]">
+              <svg
+                className="w-4 h-4 text-white opacity-0 transition-all duration-200 peer-checked:opacity-100"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <label
+              htmlFor={`checkbox-${item.id}`}
+              className="cursor-pointer text-gray-700 font-medium peer-checked:text-blue-600 transition-all duration-300"
+            >
+              {item.category}
+            </label>
+          </div>
+          
+            ))
+          : ""}
+
+          <div className="mt-5">
+            <h2>Filter By Rating</h2>
+            <div>
+              {stars ? stars.map(star=><FontAwesomeIcon onClick={()=>getStars(star)} className={`mr-1 cursor-pointer ${star <= selectedStar ? 'text-yellow-500' : 'text-gray-400'} text-xl`} key={star} icon={faStar} />):""}
+            </div>
+          </div>
+
+      </div>
+
+      <div className="w-[100%] lg:w-[75%] my-10 ">
+        {error ?
+          <img className="w-[50%] mx-auto" src={noValueImg} alt="not found"/>
+          : ""}
+
+        {courses?.length > 0 ?
+        <div className="flex gap-5 justify-end">
+          <div className="text-right mb-4">
+            <span>show: </span>
+            <select defaultValue="limit" onChange={handleLimitSorting} className="w-[150px] cursor-pointer outline-0 rounded border-1 py-2 px-1 border-gray-300">
+              <option value="all">All</option>
+              <option value="3">3</option>
+              <option value="6">6</option>
+              <option value="8">8</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="75">75</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        
+          <div className="text-right mb-4">
+            <select name="" defaultValue="Order" onChange={handleSorting} className="w-[150px] cursor-pointer outline-0 rounded border-1 py-2 px-1 border-gray-300">
+              <option value="Order" disabled>Order</option>
+              <option value="Asc">Sort A-Z</option>
+              <option value="Dsc">Sort Z-A</option>
+            </select>
+          </div>
+        </div>
+        :""}
+
+        <div className="flex items-start flex-wrap justify-between">
+          {courses ? (
+            courses.map((course) => (
+              <div
+                className="lg:w-[32.5%] w-[100%] sm:w-[48%] border-1 rounded border-gray-200 p-5 mb-3 text-center"
+                key={course._id}
+              >
+                <div className="mb-3">
+                  <img
+                    src={course.thumbnail}
+                    className="w-full h-50 mx-auto"
+                    alt=""
+                  />
+                </div>
+          
+                <h2 className="text-xl font-semibold mb-1">
+                  {course.title.split(" ").slice(0,2).join(" ")}
+                </h2>
+          
+                {/* <span className="block mt-[-10px]">
+                  {stars
+                    ? stars.map((star, index) => (
+                        <FontAwesomeIcon
+                          key={index}
+                          className={`${user?.courses.length > 0 ? 'text-yellow-300' : "text-gray-400"}  me-[2px]`}
+                          icon={faStar}
+                        />
+                      ))
+                    : ""}
+                </span> */}
+          
+                <div className="flex mt-3 justify-between">
+                  <section className="text-[#d2a752] bg-[#fbf8ec] text-sm rounded font-semibold p-1">
+                    {/* {user?.category?.split(" ").slice(0,1).join(" ") || "Data Scientist"} */}
+                  </section>
+                  <section>
+                    {/* <strong>{course?.courses.length}</strong> Courses */}
+                  </section>
+                </div>
+                <Link to="/">
+                  <button className="bg-[#2A0B2C] cursor-pointer text-white block w-full py-2 rounded mt-3">Details</button>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <img src={noValueImg} className="w-[50%] mx-auto" alt="not found"/>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

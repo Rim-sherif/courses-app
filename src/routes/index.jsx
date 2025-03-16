@@ -9,6 +9,7 @@ import ForgetPassword from '../components/auth/ForgetPassword/ForgetPassword';
 import ResetPassword from '../components/auth/ResetPassword/ResetPassword';
 import Instructors from "../pages/Instructors"
 import Search from '../pages/Search';
+import Profile from '../pages/Profile';
 
 
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <Search/>
+      },
+      {
+        path: 'profile',
+        element: <Profile/>
       },
       {
         path:'*',

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import img1 from '../../assets/images/react-basics.webp'
 import img2 from '../../assets/images/nodejs-mastery.webp'
 import img3 from '../../assets/images/fullstack.webp'
@@ -8,6 +8,7 @@ import img6 from '../../assets/images/ui-ux.webp'
 import img7 from '../../assets/images/camera-basics.webp'
 import img8 from '../../assets/images/portrait.png'
 import img9 from '../../assets/images/video-editing.png'
+import axios from "axios";
 
 const coursesData = {
   "Web Development": [
@@ -127,6 +128,20 @@ const CategoriesSidebar = ({ categories, selectedCategory, onSelectCategory }) =
 export default function CoursesPage() {
   const [selectedCategory, setSelectedCategory] = useState("Web Development");
   const categories = Object.keys(coursesData);
+
+  const getCourses = async ()=>{
+    try {
+      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/all`);
+      console.log(data);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    getCourses();
+  },[])
 
   return (
     <div className="min-h-screen text-white flex flex-col md:flex-row">

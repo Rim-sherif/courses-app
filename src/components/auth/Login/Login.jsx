@@ -51,18 +51,24 @@ export default function Login() {
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`,
         values
       );
-      console.log(data);
       
-      toast.success(data.message);
       if(data?.user.role == "user"){
-        navigate("/");
+        if(data?.user.isConfirmed){
+          toast.success(data.message);
+          navigate("/");
+        }else{
+          toast.error(data.message);
+        }
       }else{
-        navigate("/dashboard");
+        if(data?.user.isConfirmed){
+          toast.success(data.message);
+          navigate("/dashboard");
+        }else{
+          toast.error(data.message);
+        }
       }
 
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
       if(error?.response.data.message){
         toast.error(error?.response?.data?.message);
       }else{

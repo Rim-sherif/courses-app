@@ -15,11 +15,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getData } from "../redux/reducers/searchSlice";
+import { getToken } from "../redux/reducers/tokenSlice";
+import profile from "/profile.png";
 
 const Navbar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -30,7 +32,9 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchSelect , setSearchSelect] = useState("courses");
   const [searchValue , setSearchValue] = useState("");
+  const token = useSelector(store=>store.token);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const searchBasedSelect = (e)=>{
     setSearchSelect(e.target.value);
@@ -48,9 +52,15 @@ const Navbar = () => {
     }
   }
 
+  useEffect(()=>{
+    dispatch(getToken());
+  } , []);
+
 
   return (
     <nav style={{zIndex: 1111}} className="bg-white py-3 shadow-md sticky top-0 z-50">
+      {console.log(token)
+      }
       <div className="mx-auto w-[95%]">
         <div className="flex justify-between items-center h-16">
           <div className="flex gap-1">
@@ -252,17 +262,23 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-3 text-sm">
-                <NavLink
-                  to="/login"
-                  className="text-white border-2 bg-[#410445] rounded-xl py-2 px-5 hover:bg-[#A5158C] transition-colors flex items-center"
-                >
-                  <span className="hidden md:inline ">Log In</span>
-                </NavLink>
-                <NavLink
-                  to="/signup"
-                  className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center">
-                  <span className="hidden md:inline">Sign Up</span>
-                </NavLink>
+                {!token ?
+                  <>
+                    <NavLink
+                      to="/login"
+                      className="text-white border-2 bg-[#410445] rounded-xl py-2 px-5 hover:bg-[#A5158C] transition-colors flex items-center">
+                      <span className="hidden md:inline ">Log In</span>
+                    </NavLink>
+                    <NavLink
+                      to="/signup"
+                      className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center">
+                      <span className="hidden md:inline">Sign Up</span>
+                    </NavLink>
+                  </>
+                : <Link to="/profile">
+                  <img src={profile} className="w-[25px] cursor-pointer" alt="profile image"/>
+                </Link>
+                }
               </div>
             )}
           </div>

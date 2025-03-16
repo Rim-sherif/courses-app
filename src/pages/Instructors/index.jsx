@@ -25,7 +25,7 @@ export default function Instructors() {
   ]);
   const [filter , setFilter] = useState([]);
   const [close , setClose] = useState(false);
-
+  const [selectedStar , setSelectedStar] = useState(0);
   const stars = [1, 2, 3, 4, 5];
 
   const getAllInstructors = async () => {
@@ -91,7 +91,6 @@ export default function Instructors() {
   }
 
   function handleSorting(e){
-    console.log(e.target.value);
     if(e.target.value == "Asc"){
       const data = [...users].sort((a,b)=>a.firstName.localeCompare(b.firstName))
       setUsers(data)
@@ -100,7 +99,6 @@ export default function Instructors() {
       setUsers(data)
     }
   }
-
 
   const handleLimitSorting = (e)=>{
     if(e.target.value == "all"){
@@ -112,6 +110,12 @@ export default function Instructors() {
     }
   }
 
+  const getStars = (star)=>{
+    console.log(star);
+    setSelectedStar(star);
+
+  }
+
   return (
     <div className="flex w-[90%] mx-auto justify-between">
       <div style={{transition: "1s" , zIndex: 222}} className={`w-[50%] z-30 md:w-[23%] px-10 py-10 md:px-3 fixed mt-1 h-[100vh] md:left-0 md:static md:bg-[transparent] bg-white ${close ? 'left-[0%]' : 'left-[-50%]'}`}>
@@ -120,16 +124,16 @@ export default function Instructors() {
           {close ? <FontAwesomeIcon icon={faClose} /> : <FontAwesomeIcon icon={faBars} />}
         </div>
        
-        {/* <div style={{zIndex: 1}} className=" fixed inset-0 bg-[rgba(0,0,0,0.5)]"></div> */}
-
-
+       {loading ?
+        <div style={{zIndex: 1}} className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.5)]">Loading...</div>
+        :""}
         {/* filter by instructor Name */}
         <div className="mb-4 relative">
           <label htmlFor="" className="absolute bg-white text-[13px] left-4 top-[-13px] text-gray-400 font-semibold p-1">Search Instructor</label>
           <input type="text" onChange={handleSearchValue} className="border-2 w-full outline-0 px-3 py-3 text-[13px] rounded border-gray-300" />   
         </div>
 
-        <h2 className="text-xl mb-5">Filter By Catgeories</h2>
+        <h2 className="text-xl">Filter By Catgeories</h2>
         
         {categories
           ? categories.map((item) => (
@@ -166,8 +170,10 @@ export default function Instructors() {
           : ""}
 
           <div className="mt-5">
-            <h2>Filter By Stars</h2>
-            {stars ? stars.map(star=><FontAwesomeIcon className="mr-1" key={star} icon={faStar} />):""}
+            <h2>Filter By Rating</h2>
+            <div>
+              {stars ? stars.map(star=><FontAwesomeIcon onClick={()=>getStars(star)} className={`mr-1 cursor-pointer ${star <= selectedStar ? 'text-yellow-500' : 'text-gray-400'} text-xl`} key={star} icon={faStar} />):""}
+            </div>
           </div>
 
       </div>
@@ -222,12 +228,12 @@ export default function Instructors() {
                   {user.firstName} {user.lastName}
                 </h2>
           
-                <span>
+                <span className="block mt-[-10px]">
                   {stars
                     ? stars.map((star, index) => (
                         <FontAwesomeIcon
                           key={index}
-                          className="text-yellow-300 me-[2px]"
+                          className={`${user?.courses.length > 0 ? 'text-yellow-300' : "text-gray-400"}  me-[2px]`}
                           icon={faStar}
                         />
                       ))
@@ -239,7 +245,7 @@ export default function Instructors() {
                     {user?.category?.split(" ").slice(0,1).join(" ") || "Data Scientist"}
                   </section>
                   <section>
-                    <strong>2</strong> Courses
+                    <strong>{user?.courses.length}</strong> Courses
                   </section>
                 </div>
                 <Link to="/">

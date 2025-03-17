@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getToken } from "../../redux/reducers/tokenSlice";
+import { toast } from "react-toastify";
 
 export default function Profile() {
   const [activeSection, setActiveSection] = useState("courses");
@@ -137,6 +138,8 @@ export default function Profile() {
 
   const handleLogout = async () => {
     try {
+      const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/logout`, {} , {withCredentials: true});
+      toast.success(data.message)
       dispatch(getToken(false))
       localStorage.removeItem("genToken");
       navigate("/");

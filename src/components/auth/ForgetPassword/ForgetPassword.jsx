@@ -32,15 +32,13 @@ export default function ForgetPassword() {
   const forgetPassword = async (values) => {
     try {      
       const { data } = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/auth/send/forget/password`,
+        `${import.meta.env.VITE_BASE_URL}/api/v1/auth/sendCode`,
         values
       );
       console.log(data);
       
       toast.success(data.message);
       
-      
-
     } catch (error) {
       console.log(error);
       if(error?.response.data.message){
@@ -51,6 +49,7 @@ export default function ForgetPassword() {
       
     }
   };
+
 
   return (
     <div className="md:h-[100vh] my-10 sm:my-0 lg:flex lg:items-center lg:justify-around w-[90%] mx-auto">
@@ -87,7 +86,7 @@ export default function ForgetPassword() {
             )}
           </div>
 
-          <button className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+          <button type="submit" className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
             Request a reset link
           </button>
         </form>

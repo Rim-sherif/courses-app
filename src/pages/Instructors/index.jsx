@@ -13,18 +13,7 @@ export default function Instructors() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [originalUsers, setOriginalUsers] = useState([]);
   const [customError, setCustomError] = useState("");
-  const [categories, setCategories] = useState([
-    { id: "1", category: "Business and Entrepreneurship" },
-    { id: "2", category: "Health and Nutrition" },
-    { id: "3", category: "Science & Environment" },
-    { id: "4", category: "Education and Teaching" },
-    { id: "5", category: "Personal Development" },
-    { id: "6", category: "Technology" },
-    { id: "7", category: "Humanities" },
-    { id: "8", category: "Art, Design & Media" },
-    { id: "9", category: "Career Readiness" },
-    { id: "10", category: "Languages" },
-  ]);
+  const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState([]);
   const [close, setClose] = useState(false);
   const [selectedStar, setSelectedStar] = useState(0);
@@ -48,9 +37,9 @@ export default function Instructors() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["instructors"], // Unique key for caching
-    queryFn: getAllInstructors, // Fetch function
-    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+    queryKey: ["instructors"], 
+    queryFn: getAllInstructors,
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {
@@ -60,7 +49,8 @@ export default function Instructors() {
 
   const handleCategory = (item, e) => {
     let updatedCategories = [...selectedCategories];
-
+    console.log(item);
+    
     if (e.target.checked) {
       updatedCategories.push(item);
     } else {
@@ -70,9 +60,12 @@ export default function Instructors() {
     setSelectedCategories(updatedCategories);
 
     if (updatedCategories.length > 0) {
+      console.log(updatedCategories);
+      console.log(originalUsers);
+      
       setUsers(
         originalUsers.filter((user) =>
-          updatedCategories.includes(user.category)
+          updatedCategories.includes(user.jobTitle)
         )
       );
     } else {
@@ -84,24 +77,36 @@ export default function Instructors() {
     setClose(!close);
   };
 
-  // const {
-  //   data: QCategories,
-  //   isLoading: categoriesLoading,
-  //   error: errorCategories,
-  // } = useQuery({
-  //   queryKey: ["categories"], // Unique key for caching
-  //   queryFn: getAllCategories, // Fetch function
-  //   staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
-  // });
-  // if (categoriesLoading)
-  //   return (
-  //     <div
-  //       style={{ zIndex: 1 }}
-  //       className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.1)]">
-  //       <Loader />
-  //     </div>
-  //   );
-  // if (errorCategories) return <p>Error: {errorCategories.message}</p>;
+  const getAllCategories = async()=>{
+    try {
+      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/job/all`);
+      setCategories(data?.courses);
+      console.log(data);
+      
+      return data?.courses;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const {
+    data: QCategories,
+    isLoading: categoriesLoading,
+    error: errorCategories,
+  } = useQuery({
+    queryKey: ["categories"], // Unique key for caching
+    queryFn: getAllCategories, // Fetch function
+    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+  });
+  if (categoriesLoading)
+    return (
+      <div
+        style={{ zIndex: 1 }}
+        className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.1)]">
+        <Loader />
+      </div>
+    );
+  if (errorCategories) return <p>Error: {errorCategories.message}</p>;
 
   const handleSearchValue = (e) => {
     if (e.target.value.length > 0) {
@@ -195,19 +200,19 @@ export default function Instructors() {
           />
         </div>
 
-        <h2 className="text-xl">Filter By Catgeories</h2>
+        <h2 className="text-xl">Filter By job Title</h2>
 
         {categories
           ? categories.map((item) => (
-              <div key={item.id} className="flex items-center gap-3 mb-3">
+              <div key={item._id} className="flex items-center gap-3 mb-3">
                 <label
-                  htmlFor={`checkbox-${item.id}`}
+                  htmlFor={`checkbox-${item._id}`}
                   className="flex items-center gap-3 cursor-pointer"
                 >
                   <input
                     type="checkbox"
-                    onChange={(e) => handleCategory(item.category, e)}
-                    id={`checkbox-${item.id}`}
+                    onChange={(e) => handleCategory(item.title, e)}
+                    id={`checkbox-${item._id}`}
                     className="hidden peer"
                   />
                   <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center transition-all duration-300 peer-checked:bg-[#2A0B2C] peer-checked:border-[#2A0B2C]">
@@ -225,7 +230,7 @@ export default function Instructors() {
                     </svg>
                   </div>
                   <span className="text-gray-700 font-medium peer-checked:text-blue-600 transition-all duration-300">
-                    {item.category}
+                    {item.title}
                   </span>
                 </label>
               </div>

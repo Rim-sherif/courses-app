@@ -51,11 +51,16 @@ const Navbar = () => {
     }
   }
 
-  useEffect(()=>{
-    console.log(loggedIn);
-    
-    // dispatch(getToken());
-  } , []);
+  const handleEnterKey = (e)=>{
+    if(e.key == "Enter"){
+      if(searchValue.length > 0){
+        navigate(`/search?key=${searchSelect}&q=${searchValue}`);
+        setSearchValue("");
+      }else{
+        toast.error("please Enter a valid search value")
+      }
+    }
+  }
 
 
   return (
@@ -82,6 +87,7 @@ const Navbar = () => {
                 className="w-full px-4 ps-33 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                 placeholder="Search for courses..."
                 value={searchValue}
+                onKeyUp={handleEnterKey}
                 onChange={handleSearchValue}
               />
               <button onClick={sendData} className="absolute right-0 p-2 px-4 text-white rounded-br-lg rounded-tr-lg top-[1px] cursor-pointer bg-[#410445] top-0 text-gray-400 hover:bg-[#A5158C]">

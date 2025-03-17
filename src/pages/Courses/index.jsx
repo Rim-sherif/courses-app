@@ -4,13 +4,16 @@ import noValueImg from "/no-value.png";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loader from "../../components/Loader";
+import { useQuery } from "@tanstack/react-query";
+import CourseCard from "../../components/courseCard/CourseCard";
 
 export default function Instructors() {
   const [courses, setCourses] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [originalUsers, setOriginalUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(false);
+  const [customError, setCustomError] = useState("");
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState([]);
   const [close, setClose] = useState(false);
@@ -21,34 +24,43 @@ export default function Instructors() {
   const getAllCategories = async()=>{
     try {
       const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/category/all`);
-      console.log(data);
-      setCategories(data?.courses)
+      setCategories(data?.courses);
+      return data?.courses;
     } catch (error) {
       console.log(error);
     }
   }
+
+  const { data: QCategories, isLoading:categoriesLoading, error:errorCategories } = useQuery({
+    queryKey: ["categories"],  // Unique key for caching
+    queryFn: getAllCategories,   // Fetch function
+    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+  });
   
   useEffect(()=>{
     getAllCategories();
   } , []);
 
-
+  
   const getAllCourses = async () => {
-    setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/course/all`
-      );
-      console.log(data);
-      
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/all`);
       setCourses(data?.courses);
       setOriginalUsers(data?.courses);
-      setLoading(false);
-      setError("");
+      return data?.courses
     } catch (error) {
-      setError(error.message);
+      setCustomError(error.message);
     }
   };
+
+  const { data: Qcourses, isLoading, error } = useQuery({
+    queryKey: ["courses"],  // Unique key for caching
+    queryFn: getAllCourses,   // Fetch function
+    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+  });
+
+  console.log(Qcourses);
+
 
   useEffect(() => {
     getAllCourses();
@@ -73,7 +85,7 @@ export default function Instructors() {
       
       setCourses(
         originalUsers.filter((course) =>
-          updatedCategories.includes(course.categoryId.title)
+          updatedCategories.includes(course.categoryId?.title)
         )
       );
     } else {
@@ -91,15 +103,15 @@ export default function Instructors() {
         item.title.toLowerCase().startsWith(e.target.value.toLowerCase())
       );
       if (searchFilteration.length > 0) {
-        setError("");
+        setCustomError("");
         setCourses(searchFilteration);
       } else {
-        setError("There are no instructors with this Name");
+        setCustomError("There are no instructors with this Name");
         setCourses([]);
       }
     } else {
       setCourses(originalUsers);
-      setError("");
+      setCustomError("");
     }
   };
 
@@ -128,6 +140,18 @@ export default function Instructors() {
     setSelectedStar(star);
   };
 
+  if (isLoading) return <div style={{ zIndex: 1 }} className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(255,255,255,1)]">
+  <Loader />
+  </div>;
+
+  if (error) return <p>Error: {error.message}</p>;
+
+  if (categoriesLoading) return <div style={{ zIndex: 1 }} className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(255,255,255,1)]">
+  <Loader />
+  </div>;
+
+  if (errorCategories) return <p>Error: {errorCategories.message}</p>;
+
   return (
     <div className="flex w-[90%] mx-auto justify-between">
       <div
@@ -147,16 +171,6 @@ export default function Instructors() {
           )}
         </div>
 
-        {loading ? (
-          <div
-            style={{ zIndex: 1 }}
-            className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.5)]"
-          >
-            Loading...
-          </div>
-        ) : (
-          ""
-        )}
         {/* filter by instructor Name */}
         <div className="mb-4 relative">
           <label
@@ -229,7 +243,7 @@ export default function Instructors() {
       </div>
 
       <div className="w-[100%] lg:w-[75%] my-10 ">
-        {error ? (
+        {customError ? (
           <img className="w-[50%] mx-auto" src={noValueImg} alt="not found" />
         ) : (
           ""
@@ -274,52 +288,12 @@ export default function Instructors() {
           ""
         )}
 
-        <div className="flex items-start flex-wrap justify-between">
+        <div className="flex items-start flex-wrap gap-[1.2%]">
           {courses ? (
             courses.map((course) => (
-              <div
-                className="lg:w-[32.5%] w-[100%] sm:w-[48%] border-1 rounded border-gray-200 p-5 mb-3 text-center"
-                key={course._id}
-              >
-                <div className="mb-3">
-                  <img
-                    src={course.thumbnail}
-                    className="w-full h-50 mx-auto"
-                    alt=""
-                  />
-                </div>
-
-                <h2 className="text-xl font-semibold mb-1">
-                  {course.title.split(" ").slice(0, 2).join(" ")}
-                </h2>
-
-                {/* <span className="block mt-[-10px]">
-                  {stars
-                    ? stars.map((star, index) => (
-                        <FontAwesomeIcon
-                          key={index}
-                          className={`${user?.courses.length > 0 ? 'text-yellow-300' : "text-gray-400"}  me-[2px]`}
-                          icon={faStar}
-                        />
-                      ))
-                    : ""}
-                </span> */}
-
-                <div className="flex mt-3 justify-between">
-                  <section className="text-[#d2a752] bg-[#fbf8ec] text-sm rounded font-semibold p-1">
-                    {/* {user?.category?.split(" ").slice(0,1).join(" ") || "Data Scientist"} */}
-                  </section>
-                  <section>
-                    {/* <strong>{course?.courses.length}</strong> Courses */}
-                  </section>
-                </div>
-                <Link to="/">
-                  <button className="bg-[#2A0B2C] cursor-pointer text-white block w-full py-2 rounded mt-3">
-                    Details
-                  </button>
-                </Link>
-              </div>
+              <CourseCard course={course} customWidth={3} key={course._id} stars={stars} />
             ))
+
           ) : (
             <img src={noValueImg} className="w-[50%] mx-auto" alt="not found" />
           )}

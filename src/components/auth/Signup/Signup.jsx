@@ -216,7 +216,7 @@ export default function Signup() {
               onBlur={formik.handleBlur}
               value={formik.values.role}
             >
-              <option value="user" className="p-2">User</option>
+              <option value="user" className="p-2">Student</option>
               <option value="instructor" className="p-2">Instructor</option>
             </select>
 

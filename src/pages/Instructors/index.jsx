@@ -4,13 +4,15 @@ import noValueImg from "/no-value.png";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loader from "../../components/Loader";
+import { useQuery } from "@tanstack/react-query";
+import InstructorCard from "../../components/instructorCard/InstructorCard";
 
 export default function Instructors() {
   const [users, setUsers] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [originalUsers, setOriginalUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [customError, setCustomError] = useState("");
   const [categories, setCategories] = useState([
     { id: "1", category: "Business and Entrepreneurship" },
     { id: "2", category: "Health and Nutrition" },
@@ -29,19 +31,27 @@ export default function Instructors() {
   const stars = [1, 2, 3, 4, 5];
 
   const getAllInstructors = async () => {
-    setLoading(true);
     try {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/api/v1/user/instructors`
       );
       setUsers(data?.data);
       setOriginalUsers(data?.data);
-      setLoading(false);
-      setError("");
+      return data?.data
     } catch (error) {
-      setError(error.message);
+      console.log(error);
     }
   };
+
+  const {
+    data: Qcourses,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["instructors"], // Unique key for caching
+    queryFn: getAllInstructors, // Fetch function
+    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+  });
 
   useEffect(() => {
     getAllInstructors();
@@ -74,21 +84,40 @@ export default function Instructors() {
     setClose(!close);
   };
 
+  // const {
+  //   data: QCategories,
+  //   isLoading: categoriesLoading,
+  //   error: errorCategories,
+  // } = useQuery({
+  //   queryKey: ["categories"], // Unique key for caching
+  //   queryFn: getAllCategories, // Fetch function
+  //   staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+  // });
+  // if (categoriesLoading)
+  //   return (
+  //     <div
+  //       style={{ zIndex: 1 }}
+  //       className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.1)]">
+  //       <Loader />
+  //     </div>
+  //   );
+  // if (errorCategories) return <p>Error: {errorCategories.message}</p>;
+
   const handleSearchValue = (e) => {
     if (e.target.value.length > 0) {
       const searchFilteration = users.filter((item) =>
         item.firstName.toLowerCase().startsWith(e.target.value.toLowerCase())
       );
       if (searchFilteration.length > 0) {
-        setError("");
+        setCustomError("");
         setUsers(searchFilteration);
       } else {
-        setError("There are no instructors with this Name");
+        setCustomError("There are no instructors with this Name");
         setUsers([]);
       }
     } else {
       setUsers(originalUsers);
-      setError("");
+      setCustomError("");
     }
   };
 
@@ -121,6 +150,17 @@ export default function Instructors() {
     setSelectedStar(star);
   };
 
+  if (isLoading)
+    return (
+      <div
+        style={{ zIndex: 1 }}
+        className="flex justify-center items-center text-white font-bold fixed inset-0 bg-[rgba(255,255,255,1)]">
+        <Loader />
+      </div>
+    );
+
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div className="flex w-[90%] mx-auto justify-between">
       <div
@@ -140,16 +180,6 @@ export default function Instructors() {
           )}
         </div>
 
-        {loading ? (
-          <div
-            style={{ zIndex: 1 }}
-            className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.5)]"
-          >
-            Loading...
-          </div>
-        ) : (
-          ""
-        )}
         {/* filter by instructor Name */}
         <div className="mb-4 relative">
           <label
@@ -203,7 +233,7 @@ export default function Instructors() {
           : ""}
 
         <div className="mt-5">
-          <h2>Filter By Rating</h2>
+          <h2 className="text-xl mb-[0]">Filter By Rating</h2>
           <div>
             {stars
               ? stars.map((star) => (
@@ -222,7 +252,7 @@ export default function Instructors() {
       </div>
 
       <div className="w-[100%] lg:w-[75%] my-10 ">
-        {error ? (
+        {customError ? (
           <img className="w-[50%] mx-auto" src={noValueImg} alt="not found" />
         ) : (
           ""
@@ -267,59 +297,17 @@ export default function Instructors() {
           ""
         )}
 
-        <div className="flex items-start flex-wrap justify-between">
+        <div className="flex items-start flex-wrap gap-[1.2%] gap-y-[10px]">
           {users ? (
             users.map((user) => (
-              <div
-                className="lg:w-[32.5%] w-[100%] sm:w-[48%] border-1 rounded border-gray-200 p-5 mb-3 text-center"
+              <InstructorCard
+                user={user}
                 key={user._id}
-              >
-                <div className="mb-3">
-                  <img
-                    src={user.avatar}
-                    className="w-50 h-50 mx-auto object-cover rounded-full"
-                    alt=""
-                  />
-                </div>
-
-                <h2 className="text-xl font-semibold mb-1">
-                  {user.firstName} {user.lastName}
-                </h2>
-
-                <span className="block mt-[-10px]">
-                  {stars
-                    ? stars.map((star, index) => (
-                        <FontAwesomeIcon
-                          key={index}
-                          className={`${
-                            user?.courses.length > 0
-                              ? "text-yellow-300"
-                              : "text-gray-400"
-                          }  me-[2px]`}
-                          icon={faStar}
-                        />
-                      ))
-                    : ""}
-                </span>
-
-                <div className="flex mt-3 justify-between">
-                  <section className="text-[#d2a752] bg-[#fbf8ec] text-sm rounded font-semibold p-1">
-                    {user?.category?.split(" ").slice(0, 1).join(" ") ||
-                      "Data Scientist"}
-                  </section>
-                  <section>
-                    <strong>{user?.courses.length}</strong> Courses
-                  </section>
-                </div>
-                <Link to="/">
-                  <button className="bg-[#2A0B2C] cursor-pointer text-white block w-full py-2 rounded mt-3">
-                    Profile
-                  </button>
-                </Link>
-              </div>
+                stars={stars}
+              />
             ))
           ) : (
-            <img src={noValueImg} alt="not found" />
+            <img src={noValueImg} className="w-[40%] mx-auto" alt="not found" />
           )}
         </div>
       </div>

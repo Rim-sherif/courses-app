@@ -11,6 +11,7 @@ export default function ProfileSettings({ user, setUser }) {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
+    phone: user.phone
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -35,9 +36,12 @@ export default function ProfileSettings({ user, setUser }) {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      phone: user.phone 
     });
     setavatarPreview(user.avatar);
   }, [user]);
+
+
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setPasswordData((prevData) => ({
@@ -53,35 +57,46 @@ export default function ProfileSettings({ user, setUser }) {
       [name]: value,
     }));
   };
-  const handleProfileSubmit = async (e) => {
-    e.preventDefault();
 
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
     try {
-    
       const avatarFile = document.getElementById("avatar-upload").files[0];
       if (avatarFile) {
         const avatar = new FormData();
         avatar.append("avatar", avatarFile);
+  
 
-        await axios.post(
-          "http://localhost:5000/api/v1/user/avatar",
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/user/image",
           avatar,
           {
             withCredentials: true,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
           }
         );
+  
+      
+        if (response.data.success) {
+          setUser(response.data.user);
+          setIsEditing(false);
+          toast.success("Profile updated successfully");
+        }
       }
-
-      // Handle profile data update
+    } catch (error) {
+      console.error("Update error:", error);
+      toast.error(error.response?.data?.message || "Error updating profile");
+    }
+  };
+  
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    try {
       const response = await axios.put(
         "http://localhost:5000/api/v1/user/updateProfile",
         {
           firstName: formData.firstName,
           lastName: formData.lastName,
-          email: formData.email,
+          phone: formData.phone,
         },
         {
           withCredentials: true,
@@ -90,7 +105,7 @@ export default function ProfileSettings({ user, setUser }) {
           },
         }
       );
-
+  
       if (response.data.success) {
         setUser(response.data.user);
         setIsEditing(false);
@@ -258,6 +273,7 @@ export default function ProfileSettings({ user, setUser }) {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
+                  
                 />
               ) : (
                 <p className="px-4 py-3 text-gray-700 bg-gray-50 rounded-lg">
@@ -265,7 +281,24 @@ export default function ProfileSettings({ user, setUser }) {
                 </p>
               )}
             </div>
-  
+            <div className="col-span-full">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Mobile
+              </label>
+              {isEditing ? (
+                <input
+                  type="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
+                />
+              ) : (
+                <p className="px-4 py-3 text-gray-700 bg-gray-50 rounded-lg">
+                  {user.phone}
+                </p>
+              )}
+            </div>
             <div className="col-span-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
@@ -277,6 +310,7 @@ export default function ProfileSettings({ user, setUser }) {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
+                  readOnly
                 />
               ) : (
                 <p className="px-4 py-3 text-gray-700 bg-gray-50 rounded-lg">
@@ -284,6 +318,7 @@ export default function ProfileSettings({ user, setUser }) {
                 </p>
               )}
             </div>
+            
           </div>
           
     

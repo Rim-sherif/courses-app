@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ProfileSettings from "./ProfileSetting";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getToken } from "../../redux/reducers/tokenSlice";
 
 export default function Profile() {
   const [activeSection, setActiveSection] = useState("courses");
@@ -108,7 +110,8 @@ export default function Profile() {
         "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     },
   ]);
-
+  const dispatch = useDispatch();
+  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -128,12 +131,13 @@ export default function Profile() {
         setLoading(false);
       }
     };
-
+    
     fetchData();
   }, []);
 
   const handleLogout = async () => {
     try {
+      dispatch(getToken(false))
       localStorage.removeItem("genToken");
       navigate("/");
     } catch (error) {

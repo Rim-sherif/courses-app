@@ -6,7 +6,6 @@ const tokenSlice = createSlice({
     initialState: {loggedIn: localStorage.getItem("genToken")},
     reducers:{
         getToken: (state, action)=>{
-            console.log(JSON.stringify(state));
             state.loggedIn = action.payload;
             return state;
         }

@@ -311,7 +311,7 @@ export default function Instructors() {
                     <strong>{user?.courses.length}</strong> Courses
                   </section>
                 </div>
-                <Link to="/">
+                <Link to={`/instructors/${user._id}`}>
                   <button className="bg-[#2A0B2C] cursor-pointer text-white block w-full py-2 rounded mt-3">
                     Profile
                   </button>

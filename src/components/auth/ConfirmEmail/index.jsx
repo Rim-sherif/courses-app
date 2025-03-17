@@ -12,7 +12,7 @@ const ConfirmEmail = () => {
             
             const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/confirm/email/${token}`)
             setStatus(true);
-            toast.success(data?.message);
+            toast.success(data?.message , { autoClose: 500 });
         } catch (error) {
           setStatus(false);
           console.log(error);
@@ -29,7 +29,7 @@ const ConfirmEmail = () => {
         setStatus(true);
         console.log(data);
         
-        toast.success(data?.message);
+        toast.success(data?.message , { autoClose: 500 });
       } catch (error) {
         setStatus(false);
         console.log(error);

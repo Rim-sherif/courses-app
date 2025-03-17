@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import LoaderBtn from "../../LoaderBtn";
 
 export default function Signup() {
   const navigate = useNavigate();
-
+  const [loading , setLoading] = useState(false);
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -47,6 +48,7 @@ export default function Signup() {
   });
 
   const signupSendData = async (values) => {
+    setLoading(true);
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`,
@@ -54,19 +56,22 @@ export default function Signup() {
       );
       console.log(data);
       
-      toast.success(data.message);
+      toast.success(data.message , { autoClose: 500 });
       if(data?.user.role == "user"){
+        setLoading(false);
         navigate("/login");
       }else{
+        setLoading(false);
         navigate("/dashboard");
       }
 
     } catch (error) {
       console.log(error);
+      setLoading(false);
       if(error?.response.data.message){
-        toast.error(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message , { autoClose: 600 });
       }else{
-        toast.error(error.message);
+        toast.error(error.message , { autoClose: 600 });
       }
       
     }
@@ -223,7 +228,7 @@ export default function Signup() {
           </div>
 
           <button className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
-            Create Account
+            {loading ? <LoaderBtn /> : "Create Account"}
           </button>
           <section className="mt-3 text-gray-500 text-sm font-semibold">
             Already have an account? <Link className="text-[#410445] font-semibold" to={"/login"}>Login</Link>

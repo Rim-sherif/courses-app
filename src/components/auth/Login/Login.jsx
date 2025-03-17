@@ -55,19 +55,19 @@ export default function Login() {
       
       if(data?.user.role == "user"){
         if(data?.user.isConfirmed){
-          toast.success(data.message);
+          toast.success(data.message , { autoClose: 500 });
           dispatch(getToken(true))
           window.localStorage.setItem("genToken" , true);
           navigate("/");
         }else{
-          toast.error(data.message);
+          toast.error(data.message,{ autoClose: 700 });
         }
       }else{
         if(data?.user.isConfirmed){
-          toast.success(data.message);
+          toast.success(data.message , { autoClose: 500 });
           navigate("/dashboard");
         }else{
-          toast.error(data.message);
+          toast.error(data.message , { autoClose: 600 });
         }
       }
       setLoading(false);
@@ -75,9 +75,9 @@ export default function Login() {
       console.log(error);
       setLoading(false);
       if(error?.response?.data?.message){
-        toast.error(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message , { autoClose: 600 });
       }else{
-        toast.error(error.message);
+        toast.error(error.message , { autoClose: 600 });
       }
       
     }

@@ -139,7 +139,7 @@ export default function Profile() {
   const handleLogout = async () => {
     try {
       const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/logout`, {} , {withCredentials: true});
-      toast.success(data.message)
+      toast.success(data.message , { autoClose: 500 })
       dispatch(getToken(false))
       localStorage.removeItem("genToken");
       navigate("/");

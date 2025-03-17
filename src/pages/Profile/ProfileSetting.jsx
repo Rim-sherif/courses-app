@@ -94,11 +94,11 @@ export default function ProfileSettings({ user, setUser }) {
       if (response.data.success) {
         setUser(response.data.user);
         setIsEditing(false);
-        toast.success("Profile updated successfully");
+        toast.success("Profile updated successfully" , { autoClose: 500 });
       }
     } catch (error) {
       console.error("Update error:", error);
-      toast.error(error.response?.data?.message || "Error updating profile");
+      toast.error(error.response?.data?.message || "Error updating profile" , { autoClose: 600 });
     }
   };
 
@@ -106,7 +106,7 @@ export default function ProfileSettings({ user, setUser }) {
     e.preventDefault();
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error("New passwords don't match");
+      toast.error("New passwords don't match" , { autoClose: 600 });
       return;
     }
 
@@ -132,16 +132,16 @@ export default function ProfileSettings({ user, setUser }) {
           confirmPassword: "",
         });
         setShowPasswordFields(false);
-        toast.success("Password updated successfully");
+        toast.success("Password updated successfully" , { autoClose: 500 });
       }
     } catch (error) {
       if (error.response?.data?.error_Message) {
     
         error.response.data.error_Message.forEach(err => {
-          toast.error(err.msg || "Validation error");
+          toast.error(err.msg || "Validation error" , { autoClose: 600 });
         });
       } else {
-        toast.error(error.response?.data?.message || "Failed to update password");
+        toast.error(error.response?.data?.message || "Failed to update password" , { autoClose: 600 });
       }
     }
   };

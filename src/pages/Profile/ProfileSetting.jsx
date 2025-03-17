@@ -286,12 +286,12 @@ export default function ProfileSettings({ user, setUser }) {
             </div>
           </div>
           
-          {/* Add save/cancel buttons inside the form */}
+    
           {isEditing && (
             <div className="flex justify-end gap-4 mt-6">
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#410445] hover:bg-[#563458] text-white rounded-lg transition-colors duration-200"
+                className="px-4 py-2 text-sm bg-[#410445] hover:bg-[#563458] text-white rounded-lg transition-colors duration-200"
               >
                 Save Changes
               </button>
@@ -306,7 +306,7 @@ export default function ProfileSettings({ user, setUser }) {
                   });
                   setavatarPreview(user.avatar);
                 }}
-                className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
+                className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
               >
                 Cancel
               </button>
@@ -399,17 +399,17 @@ export default function ProfileSettings({ user, setUser }) {
               </div>
             </div>
   
-            <div className="flex  w-1/2 gap-4">
+            <div className="flex justify-end   gap-4">
               <button
                 type="submit"
-                className="flex-1 px-6 py-3 bg-[#410445] hover:bg-[#563458] text-white rounded-xl shadow-md transition-all duration-300"
+                className=" px-4 py-2 text-sm bg-[#410445] hover:bg-[#563458] text-white rounded-xl shadow-md transition-all duration-300"
               >
                 Update Password
               </button>
               <button
                 type="button"
                 onClick={() => setShowPasswordFields(false)}
-                className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors duration-300"
+                className=" px-4 py-3 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors duration-300"
               >
                 Cancel
               </button>

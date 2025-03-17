@@ -12,7 +12,6 @@ export default function Instructors() {
   const [courses, setCourses] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [originalUsers, setOriginalUsers] = useState([]);
-  // const [loading, setLoading] = useState(false);
   const [customError, setCustomError] = useState("");
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState([]);

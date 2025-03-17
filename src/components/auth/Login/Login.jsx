@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../../../redux/reducers/tokenSlice";
+import Loader from "../../Loader";
+import LoaderBtn from "../../LoaderBtn";
 
 
 
@@ -15,10 +17,8 @@ export default function Login() {
   const {loggedIn} = useSelector(store=>store.token);
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
-  
-  // useEffect(()=>{
-  //   dispatch(getToken(loggedIn));
-  // },[loggedIn])
+  const [loading , setLoading] = useState(false);  
+
 
   const initialValues = {
     email: "",
@@ -47,6 +47,7 @@ export default function Login() {
 
   const loginSendData = async (values) => {
     try {
+      setLoading(true);
       const {data}  = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`,
         values,{ withCredentials: true }
@@ -69,10 +70,10 @@ export default function Login() {
           toast.error(data.message);
         }
       }
-
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      
+      setLoading(false);
       if(error?.response?.data?.message){
         toast.error(error?.response?.data?.message);
       }else{
@@ -150,7 +151,9 @@ export default function Login() {
           </section>
 
           <button className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
-            Login
+            {loading ? <div className="flex items-center py-2 gap-3 justify-center">
+              <LoaderBtn/>
+            </div> : "Login"}
           </button>
           <section className="mt-3 text-gray-500 text-sm font-semibold">
             Don't have an account?{" "}
@@ -158,6 +161,7 @@ export default function Login() {
               Signup
             </Link>
           </section>
+          
         </form>
       </div>
     </div>

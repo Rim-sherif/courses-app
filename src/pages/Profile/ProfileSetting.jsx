@@ -6,7 +6,7 @@ export default function ProfileSettings({ user, setUser }) {
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
  
-  const [imagePreview, setimagePreview] = useState(user.image);
+  const [avatarPreview, setavatarPreview] = useState(user.avatar);
   const [formData, setFormData] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
@@ -19,12 +19,12 @@ export default function ProfileSettings({ user, setUser }) {
     confirmPassword: "",
   });
 
-  const handleimageChange = (e) => {
+  const handleavatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setimagePreview(reader.result);
+        setavatarPreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -36,7 +36,7 @@ export default function ProfileSettings({ user, setUser }) {
       lastName: user.lastName,
       email: user.email,
     });
-    setimagePreview(user.image);
+    setavatarPreview(user.avatar);
   }, [user]);
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -58,14 +58,14 @@ export default function ProfileSettings({ user, setUser }) {
 
     try {
     
-      const imageFile = document.getElementById("image-upload").files[0];
-      if (imageFile) {
-        const image = new FormData();
-        image.append("image", imageFile);
+      const avatarFile = document.getElementById("avatar-upload").files[0];
+      if (avatarFile) {
+        const avatar = new FormData();
+        avatar.append("avatar", avatarFile);
 
         await axios.post(
-          "http://localhost:5000/api/v1/user/image",
-          image,
+          "http://localhost:5000/api/v1/user/avatar",
+          avatar,
           {
             withCredentials: true,
             headers: {
@@ -177,16 +177,16 @@ export default function ProfileSettings({ user, setUser }) {
         )}
       </div>
       <div className="flex flex-col md:flex-row justify-between gap-4">
-        {/* image Section */}
+        {/* avatar Section */}
         <div className="flex flex-col items-start space-y-4 w-full md:w-50">
           <div className="relative group">
             <label
-              htmlFor="image-upload"
+              htmlFor="avatar-upload"
               className={`cursor-pointer ${isEditing ? 'hover:ring-4 hover:ring-blue-100' : ''} rounded-full transition-all duration-300`}
             >
               <img
-                src={imagePreview}
-                alt="image"
+                src={avatarPreview}
+                alt="avatar"
                 className="w-40 h-40 rounded-full border-4 border-white shadow-xl object-cover transition-transform duration-300 hover:scale-105"
               />
               {isEditing && (
@@ -215,10 +215,10 @@ export default function ProfileSettings({ user, setUser }) {
             </label>
             {isEditing && (
               <input
-                id="image-upload"
+                id="avatar-upload"
                 type="file"
-                accept="image/*"
-                onChange={handleimageChange}
+                accept="avatar/*"
+                onChange={handleavatarChange}
                 className="hidden"
               />
             )}
@@ -304,7 +304,7 @@ export default function ProfileSettings({ user, setUser }) {
                     lastName: user.lastName,
                     email: user.email
                   });
-                  setimagePreview(user.image);
+                  setavatarPreview(user.avatar);
                 }}
                 className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
               >

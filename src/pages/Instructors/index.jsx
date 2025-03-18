@@ -44,6 +44,7 @@ export default function Instructors() {
 
   useEffect(() => {
     getAllInstructors();
+    getAllCategories();
     setOriginalUsers(users);
   }, []);
 

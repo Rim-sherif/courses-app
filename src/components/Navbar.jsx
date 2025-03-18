@@ -47,7 +47,7 @@ const Navbar = () => {
       navigate(`/search?key=${searchSelect}&q=${searchValue}`);
       setSearchValue("");
     }else{
-      toast.error("please Enter a valid search value")
+      toast.error("please Enter a valid search value",{ autoClose: 600 })
     }
   }
 
@@ -57,7 +57,7 @@ const Navbar = () => {
         navigate(`/search?key=${searchSelect}&q=${searchValue}`);
         setSearchValue("");
       }else{
-        toast.error("please Enter a valid search value")
+        toast.error("please Enter a valid search value" , { autoClose: 600 })
       }
     }
   }

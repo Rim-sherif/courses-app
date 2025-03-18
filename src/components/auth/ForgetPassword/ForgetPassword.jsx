@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import signupImg from "/My password-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import LoaderBtn from "../../LoaderBtn";
 
 
 
 export default function ForgetPassword() {
   const navigate = useNavigate();
+  const [loading ,setLoading] = useState(false);
   
   const initialValues = {
     email: "",
@@ -30,21 +32,27 @@ export default function ForgetPassword() {
   });
 
   const forgetPassword = async (values) => {
+    setLoading(true);
     try {      
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/sendCode`,
         values
       );
-      console.log(data);
+      const {email} = values;
+      window.localStorage.setItem("userEmail" , email);
+      if(data.success){
+        toast.success(data.message , { autoClose: 500 });
+        navigate("/resetPassword")
+      }
       
-      toast.success(data.message);
-      
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      if(error?.response.data.message){
-        toast.error(error?.response?.data?.message);
+      setLoading(false);
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , {autoClose: 1000});
       }else{
-        toast.error(error.message);
+        toast.error(error.message , {autoClose: 600});
       }
       
     }
@@ -87,7 +95,7 @@ export default function ForgetPassword() {
           </div>
 
           <button type="submit" className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
-            Request a reset link
+            {loading ? <LoaderBtn /> : "Request a reset link"}
           </button>
         </form>
       </div>

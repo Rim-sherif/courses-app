@@ -754,7 +754,7 @@ const Home = () => {
                 />
                 <button
                   onClick={sendMessage}
-                  className="px-5 py-2.5 bg-gradient-to-br from-[#410445] to-[#9e4ba3] text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 shadow-md transform transition-all duration-200 active:scale-95"
+                  className="px-5 py-2.5 bg-gradient-to-br from-[#410445] to-[#9e4ba3] text-white rounded-xl hover:from-[#5e0b64] hover:to-[#77207e] shadow-md transform transition-all duration-200 active:scale-95"
                 >
                   <FontAwesomeIcon
                     icon={faPaperPlane}

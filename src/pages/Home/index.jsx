@@ -699,9 +699,9 @@ const Home = () => {
                       Beta
                     </span>
                   </h3>
-                  <span className="text-xs text-gray-500/90">
+                  <p className="text-xs text-gray-500/90">
                     How can I help you today?
-                  </span>
+                  </p>
                 </div>
               </div>
               <button

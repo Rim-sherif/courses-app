@@ -125,6 +125,7 @@ export default function Profile() {
 
         if (response.data.success) {
           setUser(response.data.user);
+          console.log(response.data.user)
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -160,101 +161,101 @@ export default function Profile() {
     <div className=" bg-gray-50">
       <div className="flex flex-col md:flex-row">
         {/* Side Menu */}
-        <div className="w-full md:w-80 bg-white border-r border-gray-200 max-h-[calc(100vh-80px)] h-[calc(100vh-80px)] flex flex-col ">
-          <div className="p-4 flex-1">
-            <div className="flex items-center space-x-3 md:space-x-4 mb-6 md:mb-8 group">
-              <div className="relative flex-shrink-0">
-                <img
-                  src={user.avatar}
-                  alt={`${user.firstName} ${user.lastName}'s avatar`}
-                  className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "/default-avatar.png";
-                  }}
-                />
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
-              </div>
-              <div className="leading-tight">
-                <h3 className="font-semibold text-gray-900 transition-colors group-hover:text-gray-800">
-                  {user.firstName} {user.lastName}
-                </h3>
-              </div>
-            </div>
+        <div className="w-full md:w-80 bg-white border-r border-gray-200 max-h-[calc(100vh-80px)] h-[calc(100vh-80px)] flex flex-col overflow-y-auto">
+  <div className="p-3 md:p-4 flex-1">
+    <div className="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-8 group">
+      <div className="relative flex-shrink-0">
+        <img
+          src={user.avatar}
+          alt={`${user.firstName} ${user.lastName}'s avatar`}
+          className="w-8 h-8 md:w-14 md:h-14 rounded-full object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+          loading="lazy"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/default-avatar.png";
+          }}
+        />
+        <span className="absolute bottom-0 right-0 w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full border-2 border-white"></span>
+      </div>
+      <div className="leading-tight">
+        <h3 className="font-semibold text-gray-900 text-sm md:text-base transition-colors group-hover:text-gray-800">
+          {user.firstName} {user.lastName}
+        </h3>
+      </div>
+    </div>
 
-            <nav className="space-y-2">
-              <button
-                onClick={() => setActiveSection("courses")}
-                className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg ${
-                  activeSection === "courses"
-                    ? "text-[#c591c8] bg-[#410445]"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`}
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
-                <span>My Courses</span>
-              </button>
+    <nav className="space-y-1 md:space-y-2">
+      <button
+        onClick={() => setActiveSection("courses")}
+        className={`w-full flex items-center space-x-2 md:space-x-3 px-2 py-1.5 md:px-3 md:py-2 rounded-lg ${
+          activeSection === "courses"
+            ? "text-[#c591c8] bg-[#410445]"
+            : "text-gray-600 hover:bg-gray-50"
+        }`}
+      >
+        <svg
+          className="w-4 h-4 md:w-5 md:h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          />
+        </svg>
+        <span className="text-sm md:text-base">My Courses</span>
+      </button>
 
-              <button
-                onClick={() => setActiveSection("profile")}
-                className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg ${
-                  activeSection === "profile"
-                    ? "text-[#c591c8] bg-[#410445]"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`}
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-                <span>Profile Settings</span>
-              </button>
-            </nav>
-          </div>
-          <div className="p-4 border-t border-gray-100">
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-              <span>Log Out</span>
-            </button>
-          </div>
-        </div>
+      <button
+        onClick={() => setActiveSection("profile")}
+        className={`w-full flex items-center space-x-2 md:space-x-3 px-2 py-1.5 md:px-3 md:py-2 rounded-lg ${
+          activeSection === "profile"
+            ? "text-[#c591c8] bg-[#410445]"
+            : "text-gray-600 hover:bg-gray-50"
+        }`}
+      >
+        <svg
+          className="w-4 h-4 md:w-5 md:h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+        <span className="text-sm md:text-base">Profile Settings</span>
+      </button>
+    </nav>
+  </div>
+  <div className="p-3 md:p-4 border-t border-gray-100">
+    <button
+      onClick={handleLogout}
+      className="w-full flex items-center space-x-2 md:space-x-3 px-2 py-1.5 md:px-3 md:py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+    >
+      <svg
+        className="w-4 h-4 md:w-5 md:h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+        />
+      </svg>
+      <span className="text-sm md:text-base">Log Out</span>
+    </button>
+  </div>
+</div>
 
         {/* Main Content */}
         <div className="flex-1 ">
@@ -265,7 +266,7 @@ export default function Profile() {
               {courses.map((course) => (
                 <div
                   key={course.id}
-                  className="bg-white rounded-xl shadow-md overflow-hidden"
+                  className="bg-white rounded-xl shadow-md "
                 >
                   <img
                     src={course.thumbnail}

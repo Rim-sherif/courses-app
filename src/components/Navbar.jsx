@@ -15,7 +15,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -62,6 +63,7 @@ const Navbar = () => {
     }
   }
 
+  
 
   return (
     <nav style={{zIndex: 1111}} className="bg-white py-3 shadow-md sticky top-0 z-50">
@@ -234,9 +236,10 @@ const Navbar = () => {
                   </div>
                   <span className="hidden md:inline">My Account</span>
                 </button>
+     
 
                 {isUserMenuOpen && (
-                  <div className="absolute top-full right-0 w-48 bg-white shadow-lg rounded-lg py-2 mt-2">
+                  <div className="absolute top-full right-0 w-48 bg-white shadow-lg rounded-lg py-2 mt-2 z-30">
                     <NavLink
                       to="/profile"
                       className="block px-4 py-2 hover:bg-gray-100"

@@ -1,11 +1,15 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
 export default function ProfileSettings({ user, setUser }) {
   const [isEditing, setIsEditing] = useState(false);
+  const fileInputRef = useRef(null);
+  const navigate = useNavigate();
   const [showPasswordFields, setShowPasswordFields] = useState(false);
- 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
   const [avatarPreview, setavatarPreview] = useState(user.avatar);
   const [formData, setFormData] = useState({
     firstName: user.firstName,
@@ -20,16 +24,37 @@ export default function ProfileSettings({ user, setUser }) {
     confirmPassword: "",
   });
 
-  const handleavatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setavatarPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Preview image
+    const reader = new FileReader();
+    reader.onloadend = () => setavatarPreview(reader.result);
+    reader.readAsDataURL(file);
+
+    // Upload image
+    try {
+      const image = new FormData();
+      image.append("avatar", file);
+
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/user/image",
+        image,
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        setUser(response.data.user);
+        toast.success("Profile picture updated successfully", { autoClose: 500 });
+        
+        if (fileInputRef.current) fileInputRef.current.value = null;
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error updating avatar");
     }
   };
+
 
   useEffect(() => {
     setFormData({
@@ -58,41 +83,12 @@ export default function ProfileSettings({ user, setUser }) {
     }));
   };
 
-  const handleImageUpload = async (e) => {
-    e.preventDefault();
-    try {
-      const avatarFile = document.getElementById("avatar-upload").files[0];
-      if (avatarFile) {
-        const avatar = new FormData();
-        avatar.append("avatar", avatarFile);
-  
-
-        const response = await axios.post(
-          "http://localhost:5000/api/v1/user/image",
-          avatar,
-          {
-            withCredentials: true,
-          }
-        );
-  
-      
-        if (response.data.success) {
-          setUser(response.data.user);
-          setIsEditing(false);
-          toast.success("Profile updated successfully");
-        }
-      }
-    } catch (error) {
-      console.error("Update error:", error);
-      toast.error(error.response?.data?.message || "Error updating profile");
-    }
-  };
   
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        "http://localhost:5000/api/v1/user/updateProfile",
+        "http://localhost:5000/api/v1/user/userProfile",
         {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -100,22 +96,21 @@ export default function ProfileSettings({ user, setUser }) {
         },
         {
           withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
         }
       );
-  
+
       if (response.data.success) {
         setUser(response.data.user);
         setIsEditing(false);
-        toast.success("Profile updated successfully" , { autoClose: 500 });
+        toast.success("Profile updated successfully", { autoClose: 500 });
       }
     } catch (error) {
       console.error("Update error:", error);
-      toast.error(error.response?.data?.message || "Error updating profile" , { autoClose: 600 });
+      toast.error(error.response?.data?.message || "Error updating profile");
     }
   };
+
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -161,6 +156,31 @@ export default function ProfileSettings({ user, setUser }) {
     }
   };
 
+  const handleDeleteAccount = async (e) => {
+    e.preventDefault();
+    try {
+   
+      await axios.post(
+        "http://localhost:5000/api/v1/user/checkPass",
+        { password: deletePassword },
+        { withCredentials: true }
+      );
+
+      await axios.delete("http://localhost:5000/api/v1/user/delete", {
+        withCredentials: true,
+      });
+
+      toast.success("Account deleted successfully");
+      setUser(null);
+      navigate("/login");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to delete account. Please check your password."
+      );
+      setDeletePassword("");
+    }
+  };
+
   return (
     <div className=" w-full bg-white overflow-hidden  ">
     <div className="p-8 space-y-8">
@@ -194,6 +214,30 @@ export default function ProfileSettings({ user, setUser }) {
       <div className="flex flex-col md:flex-row justify-between gap-4">
         {/* avatar Section */}
         <div className="flex flex-col items-start space-y-4 w-full md:w-50">
+    <div className="relative group">
+      <label
+        htmlFor="avatar-upload"
+        className={`cursor-pointer ${isEditing ? 'hover:ring-4 hover:ring-blue-100' : ''} rounded-full transition-all duration-300`}
+      >
+         <img
+                src={avatarPreview}
+                alt="avatar"
+                className="w-40 h-40 rounded-full border-4 border-white shadow-xl object-cover transition-transform duration-300 hover:scale-105"
+              />
+      </label>
+      {isEditing && (
+        <input
+          ref={fileInputRef}
+          id="avatar-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleAvatarChange}
+          className="hidden"
+        />
+      )}
+    </div>
+  </div>
+        {/* <div className="flex flex-col items-start space-y-4 w-full md:w-50">
           <div className="relative group">
             <label
               htmlFor="avatar-upload"
@@ -238,7 +282,7 @@ export default function ProfileSettings({ user, setUser }) {
               />
             )}
           </div>
-        </div>
+        </div> */}
   
         {/* Profile Form */}
         <form onSubmit={handleProfileSubmit} className="space-y-6 w-full">
@@ -287,7 +331,7 @@ export default function ProfileSettings({ user, setUser }) {
               </label>
               {isEditing ? (
                 <input
-                  type="phone"
+                  type="text"
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
@@ -453,6 +497,78 @@ export default function ProfileSettings({ user, setUser }) {
         )}
       </div>
     </div>
+    <div className="py-8 px-6 border-t border-gray-100">
+        <button
+          onClick={() => setShowDeleteModal(true)}
+          className="w-full  flex justify-between items-center p-4 bg-red-50 hover:bg-red-100 rounded-xl transition-colors duration-200"
+        >
+          <div className="flex items-center space-x-3">
+            <svg
+              className="w-6 h-6 text-red-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+            <span className="text-lg font-medium text-gray-900">
+              Delete Account
+            </span>
+          </div>
+         
+        </button>
+      </div>
+
+      {/* Delete Account Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/80  flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-6 space-y-4 w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Delete Account
+            </h3>
+            <p className="text-gray-600">
+              This action cannot be undone. Please enter your password to confirm.
+            </p>
+            <form onSubmit={handleDeleteAccount} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Current Password
+                </label>
+                <input
+                  type="password"
+                  value={deletePassword}
+                  onChange={(e) => setDeletePassword(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all duration-300 outline-none"
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setDeletePassword("");
+                  }}
+                  className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm bg-red-700 hover:bg-red-700 text-white rounded-lg transition-colors duration-200"
+                >
+                  Delete Account
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
   </div>
   );
 }

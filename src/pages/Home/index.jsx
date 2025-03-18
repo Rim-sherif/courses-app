@@ -1,11 +1,15 @@
 import {
   faBook,
   faCertificate,
+  faComment,
+  faCommentDots,
   faGraduationCap,
+  faPaperPlane,
+  faTimes,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useRef, useState } from "react";
 import img from "/learning-concept-illustration.png";
 import Featuredinstructors from "../../components/Featuredinstractors";
 import img1 from "../../assets/images/html-css-collage-concept.jpg";
@@ -19,8 +23,73 @@ import img8 from "../../assets/images/man-jumping-impossible-possible-cliff-suns
 import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg";
 import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 import instr8 from "../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg";
+import { useEffect } from "react";
 
 const Home = () => {
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const sendMessage = async () => {
+    if (message.trim()) {
+      const userMessage = { text: message, isUser: true };
+      setMessages((prev) => [...prev, userMessage]);
+      setMessage("");
+
+      try {
+        const response = await fetch(
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA278io0SVH4c6-Pk-k5en1nh41Q0JON6Q",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [{ text: message.trim() }],
+                },
+              ],
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        
+        const botText =
+          data.candidates?.[0]?.content?.parts?.[0]?.text ||
+          "Could not understand the response";
+
+  
+        setMessages((prev) => [...prev, { text: botText, isUser: false }]);
+      } catch (error) {
+        console.error("Error:", error);
+    
+        setMessages((prev) => [
+          ...prev,
+          {
+            text: "Sorry, I encountered an error. Please try again.",
+            isUser: false,
+          },
+        ]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div className="space-y-20">
       <section className="relative bg-gradient-to-br from-[#2A0B2C] to-[#410445] text-white py-28 overflow-hidden">
@@ -62,31 +131,49 @@ const Home = () => {
               </div>
             </div>
             <div className="relative z-10 space-y-8 md:pl-12">
-                <h1 className="text-5xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] bg-clip-text text-transparent">
-                    Transform Your Future Through Learning
-                </h1>
-                <p className="text-xl text-blue-100 opacity-90 max-w-xl leading-relaxed">
-                    Dive into immersive learning experiences with 10,000+ expert-led courses. Gain practical skills, earn certifications, and advance your career on your schedule.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="relative group bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] text-[#410445] px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-[#FF2DF1]/30 transition-all duration-300 transform hover:-translate-y-1">
-                        <span className="relative z-10">Start Free Trial</span>
-                        <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-xl"></div>
-                    </button>
-                    <button className="relative group border-2 border-[#F6DC43]/50 text-[#F6DC43] px-8 py-4 rounded-xl font-semibold hover:bg-[#F6DC43]/10 hover:border-[#F6DC43] transition-all duration-300 transform hover:-translate-y-1">
-                        <span className="relative z-10">Explore Programs</span>
-                        <div className="absolute inset-0 bg-[#F6DC43] opacity-0 group-hover:opacity-5 transition-opacity rounded-xl"></div>
-                    </button>
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] bg-clip-text text-transparent">
+                Transform Your Future Through Learning
+              </h1>
+              <p className="text-xl text-blue-100 opacity-90 max-w-xl leading-relaxed">
+                Dive into immersive learning experiences with 10,000+ expert-led
+                courses. Gain practical skills, earn certifications, and advance
+                your career on your schedule.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="relative group bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] text-[#410445] px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-[#FF2DF1]/30 transition-all duration-300 transform hover:-translate-y-1">
+                  <span className="relative z-10">Start Free Trial</span>
+                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-xl"></div>
+                </button>
+                <button className="relative group border-2 border-[#F6DC43]/50 text-[#F6DC43] px-8 py-4 rounded-xl font-semibold hover:bg-[#F6DC43]/10 hover:border-[#F6DC43] transition-all duration-300 transform hover:-translate-y-1">
+                  <span className="relative z-10">Explore Programs</span>
+                  <div className="absolute inset-0 bg-[#F6DC43] opacity-0 group-hover:opacity-5 transition-opacity rounded-xl"></div>
+                </button>
+              </div>
+              <div className="flex items-center space-x-6 pt-4">
+                <div className="flex -space-x-4">
+                  <img
+                    src={instr6}
+                    alt="Student"
+                    className="w-12 h-12 rounded-full border-2 border-white"
+                  />
+                  <img
+                    src={instr7}
+                    alt="Student"
+                    className="w-12 h-12 rounded-full border-2 border-white"
+                  />
+                  <img
+                    src={instr8}
+                    alt="Student"
+                    className="w-12 h-12 rounded-full border-2 border-white"
+                  />
+                  <div className="w-12 h-12 rounded-full border-2 border-white bg-[#F6DC43] flex items-center justify-center text-[#410445] font-bold">
+                    5K+
+                  </div>
                 </div>
-                <div className="flex items-center space-x-6 pt-4">
-                    <div className="flex -space-x-4">
-                        <img src={instr6} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
-                        <img src={instr7} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
-                        <img src={instr8} alt="Student" className="w-12 h-12 rounded-full border-2 border-white"/>
-                        <div className="w-12 h-12 rounded-full border-2 border-white bg-[#F6DC43] flex items-center justify-center text-[#410445] font-bold">5K+</div>
-                    </div>
-                    <span className="text-blue-100 opacity-80">Join our community of successful learners</span>
-                </div>
+                <span className="text-blue-100 opacity-80">
+                  Join our community of successful learners
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -583,6 +670,102 @@ const Home = () => {
           </div>
         </div>
       </section>
+      <button
+        onClick={() => setShowChatModal(true)}
+        className="fixed bottom-8 right-8 p-4 bg-[#A5158C] text-white rounded-full shadow-lg hover:bg-[#A5158C] transition-colors duration-200 z-50"
+        aria-label="Open chat"
+      >
+        <FontAwesomeIcon
+          icon={faCommentDots}
+          className="text-4xl text-[#ffffff]"
+        />
+      </button>
+      {showChatModal && (
+        <div className="fixed inset-0 bg-black/50  z-50 animate-fade-in">
+          <div className="fixed bottom-4 right-4 md:bottom-20 md:right-8 w-full md:w-[450px] max-h-[calc(100vh-30rem)] min-h-[400px] bg-white rounded-xl shadow-2xl flex flex-col border border-gray-100 transform transition-transform duration-300 ease-out">
+            {/* Modal Header */}
+            <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100 rounded-xl bg-gradient-to-r from-blue-50/70 to-indigo-50/70 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-gradient-to-br from-[#410445] to-[#5a0c60] rounded-xl shadow-sm">
+                  <FontAwesomeIcon
+                    icon={faComment}
+                    className="text-white text-xl transform -rotate-3"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    Course Assistant
+                    <span className="px-2.5 py-1 text-xs font-medium bg-blue-100/80 text-[#410445] rounded-full backdrop-blur-sm">
+                      Beta
+                    </span>
+                  </h3>
+                  <span className="text-xs text-gray-500/90">
+                    How can I help you today?
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowChatModal(false)}
+                className="p-2 hover:bg-gray-50/50 rounded-lg transition-all duration-200 group"
+                aria-label="Close chat"
+              >
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  className="text-lg text-gray-400 group-hover:text-gray-600 transition-colors"
+                />
+              </button>
+            </div>
+
+            {/* Chat Messages */}
+            <div className="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`flex ${
+                    msg.isUser ? "justify-end" : "justify-start"
+                  } mb-4 last:mb-0`}
+                >
+                  <div
+                    className={`flex max-w-[75%] lg:max-w-[60%] py-2 px-4  rounded-xl min-h-12 ${
+                      msg.isUser
+                        ? "bg-gradient-to-br from-[#410445] to-[#520a57] text-white ml-12 shadow-lg"
+                        : "border-gray-200 bg-gray-100 text-gray-800 mr-12 shadow"
+                    } transition-all duration-200 hover:shadow-xl inline-block`}
+                  >
+                    <span className="text-sm leading-6 whitespace-pre-wrap break-words">
+                      {msg.text}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input Area */}
+            <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+              <div className="flex gap-2.5">
+                <input
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                  placeholder="Type your message..."
+                  className="flex-1 p-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400 placeholder-gray-400 text-gray-700 bg-white shadow-sm transition-all duration-200"
+                />
+                <button
+                  onClick={sendMessage}
+                  className="px-5 py-2.5 bg-gradient-to-br from-[#410445] to-[#9e4ba3] text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 shadow-md transform transition-all duration-200 active:scale-95"
+                >
+                  <FontAwesomeIcon
+                    icon={faPaperPlane}
+                    className="text-sm transform rotate-12"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -47,41 +47,37 @@ export default function Login() {
   const loginSendData = async (values) => {
     try {
       setLoading(true);
-      const {data}  = await axios.post(
+      const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`,
-        values,{ withCredentials: true }
+        values, { withCredentials: true }
       );
-      
-      if(data?.user.role == "user"){
-        if(data?.user.isConfirmed){
-          toast.success(data.message , { autoClose: 500 });
-          dispatch(getToken(true))
-          window.localStorage.setItem("genToken" , true);
-          navigate("/");
-        }else{
-          toast.error(data.message,{ autoClose: 700 });
-        }
-      }else{
-        if(data?.user.isConfirmed){
-          toast.success(data.message , { autoClose: 500 });
-          navigate("/dashboard");
-        }else{
-          toast.error(data.message , { autoClose: 600 });
-        }
+  
+      if (data?.user?.isConfirmed) {
+        toast.success(data.message, { autoClose: 500 });
+        dispatch(getToken({ loggedIn: true, role: data.user.role }));
+  
+        window.localStorage.setItem("genToken", true);
+  
+        if (data.user.role === "user") navigate("/");
+        if (data.user.role === "instructor") navigate("/dashboard");
+        if (data.user.role === "admin") navigate("/admin");
+        
+      } else {
+        toast.error(data.message, { autoClose: 700 });
       }
+      
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
-      if(error?.response?.data?.message){
-        toast.error(error?.response?.data?.message , { autoClose: 600 });
-      }else{
-        toast.error(error.message , { autoClose: 600 });
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message, { autoClose: 600 });
+      } else {
+        toast.error(error.message, { autoClose: 600 });
       }
-      
     }
   };
-
+  
   return (
     <div className="md:h-[100vh] my-10 sm:my-0 lg:flex lg:items-center lg:justify-around w-[90%] mx-auto">
       <div className="lg:w-[40%] sm:w-[50%] sm:mx-auto">

@@ -12,6 +12,11 @@ import Search from "../pages/Search";
 import Profile from "../pages/Profile";
 import ConfirmEmail from "../components/auth/ConfirmEmail";
 import InstructorDetails from "../pages/InstructorDetails";
+import AdminRoute from "../components/AdminRoute/AdminRoute";
+import InstructorRoute from "../components/InstructorRoute/InstructorRoute";
+import UserRoute from "../components/UserRoute/UserRoute";
+// import Dashboard from "../pages/Dashboard";
+// import InstructorDashboard from "../pages/InstructorDashboard";
 
 const router = createBrowserRouter([
   {

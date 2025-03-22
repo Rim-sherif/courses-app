@@ -12,10 +12,12 @@ import Search from "../pages/Search";
 import Profile from "../pages/Profile";
 import ConfirmEmail from "../components/auth/ConfirmEmail";
 import InstructorDetails from "../pages/InstructorDetails";
-import Dashboard from "../pages/Dashboard/Layout";
-import AdminRoute from "../components/AdminRoute/AdminRoute";
-import InstructorRoute from "../components/InstructorRoute/InstructorRoute";
-import UserRoute from "../components/UserRoute/UserRoute";
+import DashboardLayout from "../pages/Dashboard";
+import CoursesController from "../pages/Dashboard/CourseController";
+import Main from "../pages/Dashboard/Main";
+import Certificates from "../pages/Dashboard/Certificates";
+// import ProtectedRoute from "../components/protectedRoute/protectedRoute";
+// import AdminRoute from "../components/AdminRoute/AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +43,7 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: <Profile /> ,
       },
       {
         path: "*",
@@ -71,7 +73,25 @@ const router = createBrowserRouter([
   },
   {
     path: "dashboard",
-    element: <Dashboard />,
+    element: <DashboardLayout/>,
+      children: [
+      {
+        index: true,
+        element: <Main />,
+      },
+      {
+        path:"main",
+        element: <Main />,
+      },
+      {
+        path: "certificates",
+        element: <Certificates />,
+      },
+      {
+        path: "course",
+        element: <CoursesController />,
+      },
+    ],
   },
 ]);
 

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import signupImg from "/Innovation-pana.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getToken } from "../../../redux/reducers/tokenSlice";
 import Loader from "../../Loader";
 import LoaderBtn from "../../LoaderBtn";
@@ -14,7 +14,6 @@ import LoaderBtn from "../../LoaderBtn";
 
 export default function Login() {
 
-  const {loggedIn} = useSelector(store=>store.token);
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
   const [loading , setLoading] = useState(false);  
@@ -31,7 +30,7 @@ export default function Login() {
       .required("Email is required"),
     password: Yup.string()
       .matches(
-        new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
+        new RegExp(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/),
         "Password must have at least one Number, one special Character , one uppercase letter and count of characters 8 or more"
       )
       .required("Password is required"),

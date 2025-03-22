@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import 'boxicons/css/boxicons.min.css';
+import "boxicons/css/boxicons.min.css";
 
 const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,8 +11,12 @@ const SideMenu = () => {
 
   const navLinks = [
     { path: "/dashboard", label: "Dashboard", icon: "fa-solid fa-home" },
-    { path: "/dashboard/certificates", label: "Certificates", icon: "fa-solid fa-certificate" },
-    { path: "/dashboard/course", label: "Courses", icon: "fa-solid fa-book" }
+    {
+      path: "/dashboard/certificates",
+      label: "Certificates",
+      icon: "fa-solid fa-certificate",
+    },
+    { path: "/dashboard/course", label: "Courses", icon: "fa-solid fa-book" },
   ];
 
   return (
@@ -21,26 +25,52 @@ const SideMenu = () => {
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-black text-white rounded-md"
         onClick={toggleMenu}
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
         </svg>
       </button>
 
       <div
         className={`fixed md:static top-0 left-0 h-screen w-64 bg-black p-6 flex flex-col gap-6 text-white transform transition-transform duration-300 ease-in-out z-40
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         <button className="md:hidden self-end text-white" onClick={toggleMenu}>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
         <div className="flex items-center gap-2 border-b border-white pb-6">
-          <svg className="w-8 h-8 text-[#A5158C]" fill="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-8 h-8 text-[#A5158C]"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
-          <NavLink to="/" className="text-2xl font-bold text-[#ffffff]">Mentora</NavLink>
+          <NavLink to="/" className="text-2xl font-bold text-[#ffffff]">
+            Mentora
+          </NavLink>
         </div>
 
         <div className="flex items-center gap-3 border-b border-white pb-6">
@@ -49,42 +79,48 @@ const SideMenu = () => {
           </div>
           <div>
             <div className="text-sm font-semibold">Mohamed Abdelrahim</div>
-            <div className="text-sm text-gray-400 font-poppins">01018603095</div>
+            <div className="text-sm text-gray-400 font-poppins">
+              01018603095
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">{navLinks.map((link) => (
-  <NavLink
-    key={link.path}
-    to={link.path}
-    end
-    className={({ isActive }) =>
-      `flex items-center justify-between px-4 py-2 rounded-full transition-all duration-300 w-full ${
-        isActive
-          ? "bg-white text-[#380356]"
-          : "text-white hover:bg-gray-100 hover:text-[#380356]"
-      }`
-    }
-    onClick={() => setIsOpen(false)}
-  >
-    {({ isActive }) => (
-      <>
-        <div className="flex items-center gap-2">
-          <i className={`${link.icon} ${isActive ? "text-[#380356]" : "text-white"}`}></i>
-          <span className="text-base font-poppins">{link.label}</span>
-        </div>
-        <div className="flex items-center w-4 h-4">
-          {isActive ? (
-            <i className="fa-solid fa-chevron-right text-[#380356]"></i>
-          ) : (
-            <div className="w-4 h-4" />
-          )}
-        </div>
-      </>
-    )}
-  </NavLink>
-))}
-
+        <div className="flex flex-col gap-2 space-y-2">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              end
+              className={({ isActive }) =>
+                `flex items-center justify-between px-2 py-2 rounded-lg transition-all duration-300 w-full ${
+                  isActive
+                    ? "bg-white text-[#380356]"
+                    : "text-white hover:bg-gray-100 hover:text-[#380356]"
+                }`
+              }
+              onClick={() => setIsOpen(false)}
+            >
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center gap-2">
+                    <i
+                      className={`${link.icon} ${
+                        isActive ? "text-[#380356]" : "text-white"
+                      }`}
+                    ></i>
+                    <span className="text-base font-poppins">{link.label}</span>
+                  </div>
+                  <div className="flex items-center w-4 h-4">
+                    {isActive ? (
+                      <i className="fa-solid fa-chevron-right text-[#380356]"></i>
+                    ) : (
+                      <div className="w-4 h-4" />
+                    )}
+                  </div>
+                </>
+              )}
+            </NavLink>
+          ))}
         </div>
       </div>
 

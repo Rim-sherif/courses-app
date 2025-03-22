@@ -1,7 +1,7 @@
 import ProtectedRoute from "../protectedRoute/protectedRoute";
 
-const InstructorRoute = ({ children }) => (
-  <ProtectedRoute allowedRoles={["instructor"]}>{children}</ProtectedRoute>
+const AdminRoute = ({ children }) => (
+  <ProtectedRoute allowedRoles={["admin"]}>{children}</ProtectedRoute>
 );
 
-export default InstructorRoute;
+export default AdminRoute;

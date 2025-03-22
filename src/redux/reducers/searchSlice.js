@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
 export const getData = createAsyncThunk("search/getData" , async (values , thunkApi)=>{
     try {
 

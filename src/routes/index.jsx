@@ -13,10 +13,6 @@ import Profile from "../pages/Profile";
 import ConfirmEmail from "../components/auth/ConfirmEmail";
 import InstructorDetails from "../pages/InstructorDetails";
 
-import ProtectedRoute from "../components/protectedRoute/protectedRoute";
-import InstructorRoute from "../components/InstructorRoute/InstructorRoute";
-import AdminRoute from "../components/AdminRoute/AdminRoute";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,21 +30,14 @@ const router = createBrowserRouter([
         path: "instructors",
         element: <Instructors />,
       },
-      { 
-        path: "instructors/:id", 
-        element: <InstructorDetails /> 
-      },
+      { path: "instructors/:id", element: <InstructorDetails /> },
       {
         path: "search",
         element: <Search />,
       },
       {
         path: "profile",
-        element: (
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        ),
+        element: <Profile />,
       },
       {
         path: "*",
@@ -75,22 +64,6 @@ const router = createBrowserRouter([
   {
     path: "resetPassword",
     element: <ResetPassword />,
-  },
-  {
-    path: "dashboard",
-    element: (
-      <InstructorRoute>
-        <div>Instructor Dashboard</div>
-      </InstructorRoute>
-    ),
-  },
-  {
-    path: "admin",
-    element: (
-      <AdminRoute>
-        <div>Admin Dashboard</div>
-      </AdminRoute>
-    ),
   },
 ]);
 

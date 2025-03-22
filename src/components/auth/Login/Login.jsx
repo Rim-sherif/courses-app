@@ -30,7 +30,7 @@ export default function Login() {
       .required("Email is required"),
     password: Yup.string()
       .matches(
-        new RegExp(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/),
+        new RegExp("^(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()]).{8,}$"),
         "Password must have at least one Number, one special Character , one uppercase letter and count of characters 8 or more"
       )
       .required("Password is required"),

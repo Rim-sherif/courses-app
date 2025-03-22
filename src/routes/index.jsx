@@ -84,12 +84,12 @@ const router = createBrowserRouter([
         element: <Main />,
       },
       {
-        path: "certificates",
-        element: <Certificates />,
-      },
-      {
         path: "course",
         element: <CoursesController />,
+      },
+      {
+        path: "certificates",
+        element: <Certificates />,
       },
     ],
   },

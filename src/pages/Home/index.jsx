@@ -24,6 +24,7 @@ import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg
 import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 import instr8 from "../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [showChatModal, setShowChatModal] = useState(false);
@@ -141,7 +142,10 @@ const Home = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="relative group bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] text-[#410445] px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-[#FF2DF1]/30 transition-all duration-300 transform hover:-translate-y-1">
-                  <span className="relative z-10">Start Free Trial</span>
+                  <Link to="/login">
+                  <span className="relative z-10">Start Now</span>
+                  </Link>
+                  
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-xl"></div>
                 </button>
                 <button className="relative group border-2 border-[#F6DC43]/50 text-[#F6DC43] px-8 py-4 rounded-xl font-semibold hover:bg-[#F6DC43]/10 hover:border-[#F6DC43] transition-all duration-300 transform hover:-translate-y-1">

@@ -33,11 +33,11 @@ export default function CourseCard({course , stars , customWidth}) {
 
       <div className="flex mt-[5px] justify-between">
         <section className="text-[#d2a752] bg-[#fbf8ec] text-sm rounded font-semibold p-1">
-          <strong>Ins.{course?.instructorId?.firstName}</strong>
+          <strong>Ins.{course?.instructor?.firstName}</strong>
         </section>
 
         <section className="text-[#d2a752] bg-[#fbf8ec] text-sm rounded font-semibold p-1">
-          {course?.categoryId?.title?.split(" ").slice(0, 1).join(" ") ||
+          {course?.category?.title?.split(" ").slice(0, 1).join(" ") ||
             "Data Scientist"}
         </section>
       </div>

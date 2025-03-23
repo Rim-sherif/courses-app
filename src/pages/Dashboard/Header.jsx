@@ -1,5 +1,7 @@
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
+import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg";
+import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 
 
 function Header() {
@@ -101,8 +103,8 @@ function Header() {
         >
           <div className="flex-shrink-0">
             <img
-              className="h-8 w-8 rounded-full"
-              src="/user1.jpg"
+              className="h-10 w-10 rounded-full"
+              src={instr6}
               alt="Sarah"
             />
           </div>
@@ -123,8 +125,8 @@ function Header() {
         >
           <div className="flex-shrink-0">
             <img
-              className="h-8 w-8 rounded-full"
-              src="/user2.jpg"
+              className="h-10 w-10 rounded-full"
+              src={instr7}
               alt="Mike"
             />
           </div>

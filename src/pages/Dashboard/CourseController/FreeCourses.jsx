@@ -57,8 +57,10 @@ const FreeCourses = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-3">
       <div className="min-h-screen mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+        <div className="flex justify-between">
+        <div>
         <h2 className="text-2xl font-semibold mb-4">Free Courses</h2>
-        
+        </div>
         <div className="mb-6 flex flex-col md:flex-row gap-4">
           <input
             type="text"
@@ -77,6 +79,7 @@ const FreeCourses = () => {
             <option value="Intermediate">Intermediate</option>
             <option value="Advanced">Advanced</option>
           </select>
+        </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

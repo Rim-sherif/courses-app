@@ -9,12 +9,12 @@ const SingleCourse = () => {
   const [editedCourse, setEditedCourse] = useState(course);
 
   const handleUpdate = () => {
-    // Here you would typically make an API call to update the course
+    
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    // Here you would typically make an API call to delete the course
+ 
     if (window.confirm('Are you sure you want to delete this course?')) {
       navigate(-1);
     }

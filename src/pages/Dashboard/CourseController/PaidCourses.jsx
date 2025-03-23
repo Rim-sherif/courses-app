@@ -71,47 +71,31 @@ const PaidCourses = () => {
     <div className="min-h-screen bg-gray-50 py-8 px-3">
       <div className="min-h-screen mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
        
-        
-      <div className="mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
-  <h2 className="text-2xl font-bold text-[#410445] md:mb-0">Paid Courses</h2>
-  
-  <div className="w-full md:w-auto flex flex-col md:flex-row gap-4 flex-wrap">
-    <div className="flex-1 relative">
-      <input
-        type="text"
-        placeholder="Search courses..."
-        className="w-full p-2 border-2 border-[#410445]/20 rounded-xl focus:border-[#410445] focus:ring-2 focus:ring-[#410445]/30 placeholder-[#410445]/60 transition-all duration-200 hover:shadow-md"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <svg
-        className="h-5 w-5 absolute right-3 top-3.5 text-[#410445]/60"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-        />
-      </svg>
-    </div>
+      <div className="flex justify-between">
+        <div>
+        <h2 className="text-2xl font-bold text-[#410445] md:mb-0">Paid Courses</h2>
+        </div>
+        <div className="mb-6 flex flex-col md:flex-row gap-4">
+        <input
+            type="text"
+            placeholder="Search courses..."
+            className="p-2 border rounded-lg flex-1"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <select
+            className="p-2 border rounded-lg w-full md:w-28"
+            value={levelFilter}
+            onChange={(e) => setLevelFilter(e.target.value)}
+          >
+            <option value="All">All Levels</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
 
     <select
-      className="p-2 border-2 border-[#410445]/20 rounded-xl focus:border-[#410445] focus:ring-2 focus:ring-[#410445]/30 appearance-none  hover:shadow-md transition-all duration-200 "
-      value={levelFilter}
-      onChange={(e) => setLevelFilter(e.target.value)}
-    >
-      <option value="All" className="text-[#410445]">All Levels</option>
-      <option value="Beginner" className="text-[#410445]">Beginner</option>
-      <option value="Intermediate" className="text-[#410445]">Intermediate</option>
-      <option value="Advanced" className="text-[#410445]">Advanced</option>
-    </select>
-
-    <select
-      className="p-3 border-2 border-[#410445]/20 rounded-xl focus:border-[#410445] focus:ring-2 focus:ring-[#410445]/30 hover:shadow-md transition-all duration-200 "
+      className="p-2 border rounded-lg w-full md:w-28 "
       value={priceFilter}
       onChange={(e) => setPriceFilter(e.target.value)}
     >
@@ -121,7 +105,13 @@ const PaidCourses = () => {
       <option value="50+" className="text-[#410445]">$50+</option>
     </select>
   </div>
-</div>
+      </div>
+        
+
+
+  
+ 
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCourses.map((course) => (

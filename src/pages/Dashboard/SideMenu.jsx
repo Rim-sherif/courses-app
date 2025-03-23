@@ -31,6 +31,7 @@ const SideMenu = () => {
 
   return (
     <>
+      {/* Toggle Button for Mobile */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-black text-white rounded-md"
         onClick={toggleMenu}
@@ -50,10 +51,12 @@ const SideMenu = () => {
         </svg>
       </button>
 
+      {/* SideMenu */}
       <div
         className={`fixed md:static top-0 left-0 h-screen w-64 bg-black p-6 flex flex-col gap-6 text-white transform transition-transform duration-300 ease-in-out z-40
           ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
+        {/* Close Button for Mobile */}
         <button className="md:hidden self-end text-white" onClick={toggleMenu}>
           <svg
             className="w-6 h-6"
@@ -70,6 +73,7 @@ const SideMenu = () => {
           </svg>
         </button>
 
+        {/* Logo */}
         <div className="flex items-center gap-2 border-b border-white pb-6">
           <svg
             className="w-8 h-8 text-[#A5158C]"
@@ -83,6 +87,7 @@ const SideMenu = () => {
           </NavLink>
         </div>
 
+        {/* User Info */}
         <div className="flex items-center gap-3 border-b border-white pb-6">
           <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
             <span className="text-lg">M</span>
@@ -164,6 +169,7 @@ const SideMenu = () => {
         </div>
       </div>
 
+      {/* Overlay for Mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"

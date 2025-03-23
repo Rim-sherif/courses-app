@@ -1,11 +1,12 @@
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 
-export default function Header() {
+// Define the Header component as a function
+function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-30 backdrop-blur-sm bg-white/80 shadow-md border-b border-gray-100">
       <div className="flex items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
-     
+        {/* ... rest of your existing code ... */}
         <div className="flex items-center gap-x-4">
           <button 
             className="p-2 hover:bg-gray-100 rounded-lg lg:hidden"
@@ -26,7 +27,7 @@ export default function Header() {
           </a>
         </div>
 
-   
+        {/* Search bar */}
         <div className="flex-1 max-w-2xl mx-4 hidden md:block">
           <form role="search">
             <div className="relative">
@@ -51,8 +52,9 @@ export default function Header() {
           </form>
         </div>
 
+        {/* Right section */}
         <div className="flex items-center gap-x-4">
-       
+          {/* Notifications */}
           <button 
             className="p-2 hover:bg-gray-100 rounded-lg relative transition-colors"
             aria-label="Notifications"
@@ -63,7 +65,7 @@ export default function Header() {
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
           </button>
 
-        
+          {/* Messages Menu */}
           <Menu as="div" className="relative">
             <Menu.Button 
               className="p-2 hover:bg-gray-100 rounded-lg relative transition-colors"
@@ -217,5 +219,7 @@ export default function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }
+
+export default Header;

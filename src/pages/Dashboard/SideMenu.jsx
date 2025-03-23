@@ -118,7 +118,7 @@ const SideMenu = () => {
                         className={({ isActive }) =>
                           `flex items-center px-2 py-2 rounded-lg transition-all duration-300 ${
                             isActive
-                              ? "bg-white text-[#380356]"
+                              ? "text-white bg-[#410445]"
                               : "text-white hover:bg-gray-100 hover:text-[#380356]"
                           }`
                         }
@@ -136,7 +136,7 @@ const SideMenu = () => {
                   className={({ isActive }) =>
                     `flex items-center justify-between px-2 py-2 rounded-lg transition-all duration-300 w-full ${
                       isActive
-                        ? "bg-white text-[#380356]"
+                        ? "text-white bg-[#410445]"
                         : "text-white hover:bg-gray-100 hover:text-[#380356]"
                     }`
                   }
@@ -145,7 +145,7 @@ const SideMenu = () => {
                   {({ isActive }) => (
                     <>
                       <div className="flex items-center gap-2">
-                        <i className={`${link.icon} ${isActive ? "text-[#380356]" : "text-white"}`}></i>
+                        <i className={`${link.icon} ${isActive ? "ttext-white" : "text-white"}`}></i>
                         <span className="text-base font-poppins">{link.label}</span>
                       </div>
                       <div className="flex items-center w-4 h-4">

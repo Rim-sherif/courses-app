@@ -22,7 +22,7 @@ export default function Header() {
               className="w-8 h-8 text-blue-600"
               aria-hidden="true"
             />
-            <span className="hidden sm:inline text-xl font-semibold text-gray-900">Dashboard</span>
+         
           </a>
         </div>
 
@@ -34,7 +34,7 @@ export default function Header() {
                 type="text"
                 placeholder="Search..."
                 aria-label="Search dashboard"
-                className="w-full px-4 py-2 bg-gray-50 rounded-lg transition-all
+                className="w-full px-4 py-2 bg-gray-100 rounded-lg transition-all
                          focus:outline-none focus:ring-2 focus:ring-blue-500
                          focus:bg-white focus:shadow-sm"
               />
@@ -138,7 +138,7 @@ export default function Header() {
           {/* User Menu */}
           <Menu as="div" className="relative">
             <Menu.Button className="flex items-center gap-x-2 hover:bg-gray-100 px-2 py-1.5 rounded-lg transition-colors">
-              <div className="w-9 h-9 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
+              <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
                 M
               </div>
               <span className="hidden sm:inline-block text-gray-700 font-medium">John Doe</span>

@@ -1,14 +1,18 @@
 import { Outlet } from 'react-router-dom';
-import SideMenu from './SideMenu';
 import Header from './Header';
+import SideMenu from './SideMenu';
 
 const DashboardLayout = () => {
   return (
-    <div className="grid lg:grid-cols-[250px_1fr] min-h-screen">
-      <SideMenu />
-      <div className="flex flex-col">
-        <Header />
-        <main className="py-10 bg-gray-50 h-full">
+    <div className="relative">
+      <div className="fixed top-0 left-0 h-screen w-[300px] z-50">
+        <SideMenu />
+      </div>
+      <div className="pl-[250px]">
+        <div className="sticky top-0 z-40">
+          <Header />
+        </div>
+        <main className="py-6 bg-gray-50 min-h-screen overflow-auto">
           <Outlet />
         </main>
       </div>

@@ -1,12 +1,88 @@
-import React from 'react'
+import React from "react";
+import img3 from "../../../assets/images/business-people-blue-background.jpg";
+import img1 from "../../../assets/images/html-css-collage-concept.jpg";
+import img2 from "../../../assets/images/uiux.jpg";
+import img4 from "../../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 
 const FreeCourses = () => {
-  return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Free Courses</h2>
-      {/* Add your free courses list/grid here */}
-    </div>
-  )
-}
+  const freeCourses = [
+    {
+      id: 1,
+      title: "HTML & CSS Basics",
+      image: img1,
+      duration: "6h",
+      level: "Beginner",
+      students: 1234,
+    },
+    {
+      id: 2,
+      title: "UI/UX Design",
+      image: img2,
+      duration: "8h",
+      level: "Intermediate",
+      students: 890,
+    },
+    {
+      id: 3,
+      title: "Business Management",
+      image: img3,
+      duration: "10h",
+      level: "Advanced",
+      students: 756,
+    },
+    {
+      id: 4,
+      title: "Medical Sciences",
+      image: img4,
+      duration: "12h",
+      level: "Intermediate",
+      students: 543,
+    },
+  ];
 
-export default FreeCourses
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-3 ">
+      <div className="min-h-screen mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">
+        <h2 className="text-2xl font-semibold mb-4">Free Courses</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {freeCourses.map((course) => (
+            <div
+              key={course.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+            >
+              <img
+                src={course.image}
+                alt={course.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {course.title}
+                </h3>
+                <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+                  <span className="flex items-center">
+                    <i className="fas fa-clock mr-2"></i>
+                    {course.duration}
+                  </span>
+                  <span className="flex items-center">
+                    <i className="fas fa-signal mr-2"></i>
+                    {course.level}
+                  </span>
+                </div>
+                <div className="flex items-center text-sm text-gray-600">
+                  <i className="fas fa-users mr-2"></i>
+                  {course.students.toLocaleString()} students
+                </div>
+                <button className="mt-4 w-full bg-[#410445] hover:bg-[#402841] text-white py-2 px-4 rounded-lg transition-colors">
+                  Enroll Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default FreeCourses;

@@ -1,6 +1,6 @@
 const Main = () => {
   return (
-    <div className="flex h-screen bg-purple-50">
+    <div className="flex h-screen bg-purple-50 mt-4">
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Dashboard Content */}

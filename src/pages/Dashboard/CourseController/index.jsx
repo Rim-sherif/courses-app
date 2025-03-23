@@ -1,12 +1,12 @@
 import React from 'react'
-import CoursesForm from './form'
-import FetchCourses from './courses'
+import { Outlet } from 'react-router-dom'
 
-export default function CoursesController() {
+const CoursesController = () => {
   return (
-    <div>
-      <CoursesForm/>
-      <FetchCourses/>
+    <div className="p-4">
+      <Outlet />
     </div>
   )
 }
+
+export default CoursesController

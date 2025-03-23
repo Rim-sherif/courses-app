@@ -8,7 +8,7 @@ const DashboardLayout = () => {
       <SideMenu />
       <div className="flex flex-col">
         <Header />
-        <main className="bg-gray-50 flex-1">
+        <main className="py-10 bg-gray-50 h-full">
           <Outlet />
         </main>
       </div>

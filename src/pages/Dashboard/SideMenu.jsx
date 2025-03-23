@@ -1,9 +1,10 @@
+import "boxicons/css/boxicons.min.css";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "boxicons/css/boxicons.min.css";
 
 const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -16,7 +17,16 @@ const SideMenu = () => {
       label: "Certificates",
       icon: "fa-solid fa-certificate",
     },
-    { path: "/dashboard/course", label: "Courses", icon: "fa-solid fa-book" },
+    {
+      path: "/dashboard/course",
+      label: "Courses",
+      icon: "fa-solid fa-book",
+      subItems: [
+        { path: "/dashboard/course/add", label: "Add Course" },
+        { path: "/dashboard/course/free", label: "Free Courses" },
+        { path: "/dashboard/course/paid", label: "Paid Courses" },
+      ],
+    },
   ];
 
   return (
@@ -87,39 +97,69 @@ const SideMenu = () => {
 
         <div className="flex flex-col gap-2 space-y-2">
           {navLinks.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              end
-              className={({ isActive }) =>
-                `flex items-center justify-between px-2 py-2 rounded-lg transition-all duration-300 w-full ${
-                  isActive
-                    ? "bg-white text-[#380356]"
-                    : "text-white hover:bg-gray-100 hover:text-[#380356]"
-                }`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              {({ isActive }) => (
-                <>
-                  <div className="flex items-center gap-2">
-                    <i
-                      className={`${link.icon} ${
-                        isActive ? "text-[#380356]" : "text-white"
-                      }`}
-                    ></i>
-                    <span className="text-base font-poppins">{link.label}</span>
+            <div key={link.path}>
+              {link.subItems ? (
+                <div>
+                  <button
+                    onClick={() => setIsCoursesOpen(!isCoursesOpen)}
+                    className={`flex items-center justify-between px-2 py-2 rounded-lg transition-all duration-300 w-full text-white hover:bg-gray-100 hover:text-[#380356]`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <i className={`${link.icon} text-white`}></i>
+                      <span className="text-base font-poppins">{link.label}</span>
+                    </div>
+                    <i className={`fa-solid fa-chevron-${isCoursesOpen ? 'down' : 'right'} text-white`}></i>
+                  </button>
+                  <div className={`ml-4 mt-2 space-y-2 transition-all duration-300 ${isCoursesOpen ? 'block' : 'hidden'}`}>
+                    {link.subItems.map((subItem) => (
+                      <NavLink
+                        key={subItem.path}
+                        to={subItem.path}
+                        className={({ isActive }) =>
+                          `flex items-center px-2 py-2 rounded-lg transition-all duration-300 ${
+                            isActive
+                              ? "bg-white text-[#380356]"
+                              : "text-white hover:bg-gray-100 hover:text-[#380356]"
+                          }`
+                        }
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <span className="text-sm font-poppins">{subItem.label}</span>
+                      </NavLink>
+                    ))}
                   </div>
-                  <div className="flex items-center w-4 h-4">
-                    {isActive ? (
-                      <i className="fa-solid fa-chevron-right text-[#380356]"></i>
-                    ) : (
-                      <div className="w-4 h-4" />
-                    )}
-                  </div>
-                </>
+                </div>
+              ) : (
+                <NavLink
+                  to={link.path}
+                  end
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-2 py-2 rounded-lg transition-all duration-300 w-full ${
+                      isActive
+                        ? "bg-white text-[#380356]"
+                        : "text-white hover:bg-gray-100 hover:text-[#380356]"
+                    }`
+                  }
+                  onClick={() => setIsOpen(false)}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <i className={`${link.icon} ${isActive ? "text-[#380356]" : "text-white"}`}></i>
+                        <span className="text-base font-poppins">{link.label}</span>
+                      </div>
+                      <div className="flex items-center w-4 h-4">
+                        {isActive ? (
+                          <i className="fa-solid fa-chevron-right text-[#380356]"></i>
+                        ) : (
+                          <div className="w-4 h-4" />
+                        )}
+                      </div>
+                    </>
+                  )}
+                </NavLink>
               )}
-            </NavLink>
+            </div>
           ))}
         </div>
       </div>

@@ -20,6 +20,7 @@ import Instructors from "../pages/Instructors";
 import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
 import Search from "../pages/Search";
+import CourseDetails from "../pages/CourseDetails";
 // import ProtectedRoute from "../components/protectedRoute/protectedRoute";
 // import AdminRoute from "../components/AdminRoute/AdminRoute";
 
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
         element: <Instructors />,
       },
       { path: "instructors/:id", element: <InstructorDetails /> },
+      { path: "course/:id", element: <CourseDetails /> },
       {
         path: "search",
         element: <Search />,

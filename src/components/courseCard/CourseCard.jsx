@@ -41,7 +41,7 @@ export default function CourseCard({course , stars , customWidth}) {
             "Data Scientist"}
         </section>
       </div>
-      <Link to="/">
+      <Link to={`/course/${course._id}`}>
         <button className="bg-[#2A0B2C] cursor-pointer text-white block w-full py-2 rounded mt-3">
           Details
         </button>

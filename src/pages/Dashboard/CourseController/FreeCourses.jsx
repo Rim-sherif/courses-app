@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import img3 from "../../../assets/images/business-people-blue-background.jpg";
 import img1 from "../../../assets/images/html-css-collage-concept.jpg";
 import img2 from "../../../assets/images/uiux.jpg";
 import img4 from "../../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 
 const FreeCourses = () => {
+  const navigate = useNavigate();
   const freeCourses = [
     {
       id: 1,
@@ -40,12 +42,45 @@ const FreeCourses = () => {
     },
   ];
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [levelFilter, setLevelFilter] = useState("All");
+
+  const filteredCourses = freeCourses.filter((course) => {
+    const matchesSearch = course.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesLevel =
+      levelFilter === "All" || course.level === levelFilter;
+    return matchesSearch && matchesLevel;
+  });
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-3 ">
-      <div className="min-h-screen mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-3">
+      <div className="min-h-screen mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
         <h2 className="text-2xl font-semibold mb-4">Free Courses</h2>
+        
+        <div className="mb-6 flex flex-col md:flex-row gap-4">
+          <input
+            type="text"
+            placeholder="Search courses..."
+            className="p-2 border rounded-lg flex-1"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <select
+            className="p-2 border rounded-lg w-full md:w-48"
+            value={levelFilter}
+            onChange={(e) => setLevelFilter(e.target.value)}
+          >
+            <option value="All">All Levels</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {freeCourses.map((course) => (
+          {filteredCourses.map((course) => (
             <div
               key={course.id}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
@@ -73,8 +108,11 @@ const FreeCourses = () => {
                   <i className="fas fa-users mr-2"></i>
                   {course.students.toLocaleString()} students
                 </div>
-                <button className="mt-4 w-full bg-[#410445] hover:bg-[#402841] text-white py-2 px-4 rounded-lg transition-colors">
-                  Enroll Now
+                <button 
+                  onClick={() => navigate(`/dashboard/courses/${course.id}`, { state: { course, type: 'free' } })}
+                  className="mt-4 w-full bg-[#410445] hover:bg-[#402841] text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  View
                 </button>
               </div>
             </div>

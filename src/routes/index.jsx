@@ -12,6 +12,7 @@ import CoursesController from "../pages/Dashboard/CourseController";
 import AddCourse from "../pages/Dashboard/CourseController/AddCourse";
 import FreeCourses from "../pages/Dashboard/CourseController/FreeCourses";
 import PaidCourses from "../pages/Dashboard/CourseController/PaidCourses";
+import SingleCourse from "../pages/Dashboard/CourseController/SingleCourse";
 import Main from "../pages/Dashboard/Main";
 import Home from "../pages/Home";
 import InstructorDetails from "../pages/InstructorDetails";
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
             path: "paid",
             element: <PaidCourses />,
           },
+          {
+            path: ":id",
+            element: <SingleCourse />,
+          }
         ],
       },
       {

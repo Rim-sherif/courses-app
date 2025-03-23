@@ -2,7 +2,7 @@ import "boxicons/css/boxicons.min.css";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const SideMenu = () => {
+const SideMenu = ({ userData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
 
@@ -90,12 +90,22 @@ const SideMenu = () => {
         {/* User Info */}
         <div className="flex items-center gap-3 border-b border-white pb-6">
           <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
-            <span className="text-lg">M</span>
+            <img 
+              src={userData?.avatar} 
+              alt="profile"
+              className="w-full h-full rounded-full object-cover"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/default-avatar.png";
+              }}
+            />
           </div>
           <div>
-            <div className="text-sm font-semibold">Mohamed Abdelrahim</div>
+            <div className="text-sm font-semibold">
+              {userData?.firstName} {userData?.lastName}
+            </div>
             <div className="text-sm text-gray-400 font-poppins">
-              01018603095
+              {userData?.phone}
             </div>
           </div>
         </div>

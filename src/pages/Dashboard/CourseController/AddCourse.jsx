@@ -1,14 +1,22 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const AddCourse = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const [courseData, setCourseData] = useState({
     title: "",
     description: "",
     price: "",
     duration: "",
-    level: "Beginner",
-    category: "",
+    level: "beginner",
+    categoryId: "",
+    subTitle: "",
+    requirements: [],
+    learningPoints: [],
+    access_type: "paid",
     image: null,
   });
 
@@ -20,6 +28,15 @@ const AddCourse = () => {
     }));
   };
 
+  const handleArrayInput = (e, field) => {
+    const { value } = e.target;
+    const array = value.split('\n').filter(item => item.trim() !== '');
+    setCourseData(prev => ({
+      ...prev,
+      [field]: array
+    }));
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setCourseData((prev) => ({
@@ -28,17 +45,67 @@ const AddCourse = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(courseData);
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    const formData = new FormData();
+    Object.keys(courseData).forEach(key => {
+      if (key === 'requirements' || key === 'learningPoints') {
+        formData.append(key, JSON.stringify(courseData[key]));
+      } else if (key === 'image') {
+        if (courseData.image) {
+          formData.append('thumbnail', courseData.image);
+        }
+      } else {
+        formData.append(key, courseData[key]);
+      }
+    });
+
+    try {
+      const response = await axios.post(`http://localhost:5000/api/v1/course/add`, formData, { withCredentials: true });
+
+      if (response.data.success) {
+        setSuccess(true);
+        setCourseData({
+          title: "",
+          description: "",
+          price: "",
+          duration: "",
+          level: "beginner",
+          categoryId: "",
+          subTitle: "",
+          requirements: [],
+          learningPoints: [],
+          access_type: "paid",
+          image: null,
+        });
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-3 ">
+    <div className="min-h-screen bg-gray-50 py-8 px-3">
       <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">
-        <h3 className="text-2xl font-bold text-gray-900 mb-8 ">
+        <h3 className="text-2xl font-bold text-gray-900 mb-8">
           Create New Course
         </h3>
+        {error && (
+          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
+            Course created successfully!
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -67,6 +134,49 @@ const AddCourse = () => {
               rows="4"
               placeholder="Describe the course content"
               required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Subtitle
+            </label>
+            <input
+              type="text"
+              name="subTitle"
+              value={courseData.subTitle}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              placeholder="Enter course subtitle"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Requirements (one per line)
+            </label>
+            <textarea
+              name="requirements"
+              value={courseData.requirements.join('\n')}
+              onChange={(e) => handleArrayInput(e, 'requirements')}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              rows="4"
+              placeholder="Enter course requirements (one per line)"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Learning Points (one per line)
+            </label>
+            <textarea
+              name="learningPoints"
+              value={courseData.learningPoints.join('\n')}
+              onChange={(e) => handleArrayInput(e, 'learningPoints')}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              rows="4"
+              placeholder="Enter learning points (one per line)"
             />
           </div>
 
@@ -123,8 +233,8 @@ const AddCourse = () => {
               </label>
               <input
                 type="text"
-                name="category"
-                value={courseData.category}
+                name="categoryId"
+                value={courseData.categoryId}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 placeholder="e.g., Web Development"
@@ -181,9 +291,10 @@ const AddCourse = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#410445]  hover:bg-[#402841] text-white py-3 px-4 rounded-lg shadow-md "
+            className="w-full bg-[#410445] hover:bg-[#402841] text-white py-3 px-4 rounded-lg shadow-md disabled:opacity-50"
+            disabled={loading}
           >
-            Publish Course
+            {loading ? 'Creating Course...' : 'Publish Course'}
           </button>
         </form>
       </div>

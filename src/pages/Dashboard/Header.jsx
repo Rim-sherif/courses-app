@@ -4,7 +4,7 @@ import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg
 import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 
 
-function Header() {
+function Header({ userData }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-30 backdrop-blur-sm bg-white/80 shadow-md border-b border-gray-100">
       <div className="flex items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
@@ -164,7 +164,9 @@ function Header() {
               <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white font-medium">
                 M
               </div>
-              <span className="hidden sm:inline-block text-gray-700 font-medium">John Doe</span>
+              <span className="hidden sm:inline-block text-gray-700 font-medium"> <div className="text-sm font-semibold">
+              {userData?.firstName} {userData?.lastName}
+            </div> </span>
               <svg 
                 className="w-4 h-4 text-gray-600" 
                 fill="currentColor" 

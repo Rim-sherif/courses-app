@@ -53,7 +53,7 @@ const SideMenu = () => {
 
       {/* SideMenu */}
       <div
-        className={`fixed md:static top-0 left-0 h-screen w-64 bg-black p-6 flex flex-col gap-6 text-white transform transition-transform duration-300 ease-in-out z-40
+        className={`fixed md:static top-0 left-0 w-64 bg-black p-6 flex flex-col gap-6 text-white transform transition-transform duration-300 ease-in-out z-40
           ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         {/* Close Button for Mobile */}

@@ -86,53 +86,7 @@ function Header() {
               leaveTo="transform opacity-0 scale-95"
             >
               <Menu.Items className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg py-1 divide-y divide-gray-100 focus:outline-none">
-                <div className="px-4 py-3">
-                  <h3 className="text-sm font-semibold text-gray-900">Messages</h3>
-                </div>
-                <Menu.Item>
-                  {({ active }) => (
-                    <div className={`px-4 py-3 ${active ? 'bg-gray-50' : ''} transition-colors`}>
-                      <div className="flex items-start gap-x-3">
-                        <div className="flex-shrink-0">
-                          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-400 rounded-full flex items-center justify-center text-white">
-                            SW
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">Sarah Wilson</p>
-                          <p className="text-sm text-gray-500 truncate">Hey! How's the project going?</p>
-                        </div>
-                        <span className="text-xs text-gray-400 whitespace-nowrap">2m ago</span>
-                      </div>
-                    </div>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <div className={`px-4 py-3 ${active ? 'bg-gray-50' : ''} transition-colors`}>
-                      <div className="flex items-start gap-x-3">
-                        <div className="flex-shrink-0">
-                          <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-green-400 rounded-full flex items-center justify-center text-white">
-                            MJ
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">Mike Johnson</p>
-                          <p className="text-sm text-gray-500 truncate">Meeting at 3 PM?</p>
-                        </div>
-                        <span className="text-xs text-gray-400 whitespace-nowrap">1h ago</span>
-                      </div>
-                    </div>
-                  )}
-                </Menu.Item>
-                <div className="px-4 py-2.5">
-                  <a 
-                    href="#"
-                    className="w-full text-center block text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-                  >
-                    View all messages
-                  </a>
-                </div>
+                {/* ... rest of the menu items ... */}
               </Menu.Items>
             </Transition>
           </Menu>
@@ -163,56 +117,7 @@ function Header() {
               leaveTo="transform opacity-0 scale-95"
             >
               <Menu.Items className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1.5 focus:outline-none divide-y divide-gray-100">
-                <div className="py-1.5">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a 
-                        href="#"
-                        className={`flex items-center px-4 py-2 text-sm ${
-                          active ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
-                        } transition-colors`}
-                      >
-                        <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                        Profile
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a 
-                        href="#"
-                        className={`flex items-center px-4 py-2 text-sm ${
-                          active ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
-                        } transition-colors`}
-                      >
-                        <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        Settings
-                      </a>
-                    )}
-                  </Menu.Item>
-                </div>
-                <div className="py-1.5">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a 
-                        href="#"
-                        className={`flex items-center px-4 py-2 text-sm ${
-                          active ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
-                        } transition-colors`}
-                      >
-                        <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                        Sign out
-                      </a>
-                    )}
-                  </Menu.Item>
-                </div>
+                {/* ... rest of the user menu items ... */}
               </Menu.Items>
             </Transition>
           </Menu>

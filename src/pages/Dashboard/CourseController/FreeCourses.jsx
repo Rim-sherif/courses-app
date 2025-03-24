@@ -7,6 +7,7 @@ import img4 from "../../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 import { toast } from "react-toastify";
 import axios from "axios";
 import CourseCard from "../../../components/courseCard/CourseCard";
+import CourseItem from "../../../components/CourseItem";
 
 const FreeCourses = () => {
   const navigate = useNavigate();

@@ -59,7 +59,8 @@ export default function Login() {
         dispatch(getToken({ loggedIn: true, role: data.user.role }));
   
         window.localStorage.setItem("genToken", true);
-  
+        window.localStorage.setItem("instructor_id", data?.user?._id);
+        
         if (data.user.role === "user") navigate("/");
         if (data.user.role === "instructor") navigate("/dashboard");
         if (data.user.role === "admin") navigate("/admin");

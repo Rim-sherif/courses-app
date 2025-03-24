@@ -10,7 +10,8 @@ const DashboardLayout = () => {
   const dispatch = useDispatch();
   const { userData, loading } = useSelector((state) => state.user);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(true);
-
+  console.log(userData);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,7 +22,6 @@ const DashboardLayout = () => {
 
         if (response.data.success) {
           dispatch(setUser(response.data.user));
-          
         }
 
       } catch (error) {
@@ -43,17 +43,23 @@ const DashboardLayout = () => {
 
   return (
     <div className="relative">
-      <div className={`fixed top-0 left-0 h-screen w-[300px] z-50 transform transition-transform duration-300 ${!isSideMenuOpen ? '-translate-x-full' : 'translate-x-0'}`}>
-        <SideMenu userData={userData} />
-      </div>
-      <div className={`transition-all duration-300 ${isSideMenuOpen ? 'ml-[250px]' : 'ml-0'}`}>
-        <div className="sticky top-0 z-40 w-full">
-          <Header userData={userData} toggleSideMenu={() => setIsSideMenuOpen(!isSideMenuOpen)} isSideMenuOpen={isSideMenuOpen} />
-        </div>
-        <main className=" bg-gray-50 min-h-screen overflow-auto">
-          <Outlet />
-        </main>
-      </div>
+  
+      {userData &&
+      <>
+          <div className={`fixed top-0 left-0 h-screen w-[300px] z-50 transform transition-transform duration-300 ${!isSideMenuOpen ? '-translate-x-full' : 'translate-x-0'}`}>
+            <SideMenu userData={userData} />
+          </div>
+          <div className={`transition-all duration-300 ${isSideMenuOpen ? 'ml-[250px]' : 'ml-0'}`}>
+            <div className="sticky top-0 z-40 w-full">
+              <Header userData={userData} toggleSideMenu={() => setIsSideMenuOpen(!isSideMenuOpen)} isSideMenuOpen={isSideMenuOpen} />
+            </div>
+            <main className=" bg-gray-50 min-h-screen overflow-auto">
+              <Outlet />
+            </main>
+        
+          </div>  
+      </>
+      }
     </div>
   );
 };

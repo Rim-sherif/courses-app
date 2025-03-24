@@ -84,7 +84,7 @@ export default function Instructors() {
       
       setCourses(
         originalUsers.filter((course) =>
-          updatedCategories.includes(course.categoryId?.title)
+          updatedCategories.includes(course.category?.title)
         )
       );
     } else {
@@ -200,7 +200,7 @@ export default function Instructors() {
                     id={`checkbox-${item._id}`}
                     className="hidden peer"
                   />
-                  <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center transition-all duration-300 peer-checked:bg-[#2A0B2C] peer-checked:border-[#2A0B2C]">
+                  <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center transition-all duration-300 peer-checked:bg-[#a5158c] peer-checked:border-[#a5158c]">
                     <svg
                       className="w-4 h-4 text-white opacity-0 transition-all duration-200 peer-checked:opacity-100"
                       xmlns="http://www.w3.org/2000/svg"
@@ -214,7 +214,7 @@ export default function Instructors() {
                       <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                   </div>
-                  <span className="text-gray-700 font-medium peer-checked:text-blue-600 transition-all duration-300">
+                  <span className="text-gray-700 font-medium peer-checked:text-[#a5158c] peer-checked:font-bold transition-all duration-300">
                     {item.title}
                   </span>
                 </label>

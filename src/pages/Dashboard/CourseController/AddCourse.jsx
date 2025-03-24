@@ -107,18 +107,20 @@ const AddCourse = () => {
     }
 
     const formData = new FormData();
-    Object.keys(courseData).forEach(key => {
-      if (key === 'requirements' || key === 'learningPoints') {
-        // Ensure arrays are properly stringified
-        formData.append(key, JSON.stringify(courseData[key] || []));
-      } else if (key === 'image') {
-        if (courseData.image) {
-          formData.append('thumbnail', courseData.image);
-        }
-      } else {
-        formData.append(key, courseData[key]);
-      }
+Object.keys(courseData).forEach(key => {
+  if (key === 'requirements' || key === 'learningPoints') {
+    
+    courseData[key].forEach(item => {
+      formData.append(`${key}[]`, item);
     });
+  } else if (key === 'image') {
+    if (courseData.image) {
+      formData.append('thumbnail', courseData.image);
+    }
+  } else {
+    formData.append(key, courseData[key]);
+  }
+});
 
     try {
       const response = await axios.post(`http://localhost:5000/api/v1/course/add`, formData, { 

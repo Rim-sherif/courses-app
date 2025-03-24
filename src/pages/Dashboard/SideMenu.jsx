@@ -2,7 +2,7 @@ import "boxicons/css/boxicons.min.css";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const SideMenu = ({ userData }) => {
+const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
 
@@ -26,6 +26,16 @@ const SideMenu = ({ userData }) => {
         { path: "/dashboard/course/free", label: "Free Courses" },
         { path: "/dashboard/course/paid", label: "Paid Courses" },
       ],
+    },
+    {
+      path: "/dashboard/certificates",
+      label: "Live Stream",
+      icon: "fa-solid fa-video",
+    },
+    {
+      path: "/dashboard/certificates",
+      label: "Account verification",
+      icon: "fa-regular fa-address-card",
     },
   ];
 
@@ -87,28 +97,7 @@ const SideMenu = ({ userData }) => {
           </NavLink>
         </div>
 
-        {/* User Info */}
-        <div className="flex items-center gap-3 border-b border-white pb-6">
-          <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
-            <img 
-              src={userData?.avatar} 
-              alt="profile"
-              className="w-full h-full rounded-full object-cover"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "/default-avatar.png";
-              }}
-            />
-          </div>
-          <div>
-            <div className="text-sm font-semibold">
-              {userData?.firstName} {userData?.lastName}
-            </div>
-            <div className="text-sm text-gray-400 font-poppins">
-              {userData?.phone}
-            </div>
-          </div>
-        </div>
+       
 
         <div className="flex flex-col gap-2 space-y-2">
           {navLinks.map((link) => (
@@ -160,7 +149,7 @@ const SideMenu = ({ userData }) => {
                   {({ isActive }) => (
                     <>
                       <div className="flex items-center gap-2">
-                        <i className={`${link.icon} ${isActive ? "ttext-white" : "text-white"}`}></i>
+                        <i className={`${link.icon} ${isActive ? "text-white" : "text-white"}`}></i>
                         <span className="text-base font-poppins">{link.label}</span>
                       </div>
                       <div className="flex items-center w-4 h-4">

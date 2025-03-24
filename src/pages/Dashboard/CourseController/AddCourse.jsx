@@ -1,16 +1,16 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AddCourse = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const [courseData, setCourseData] = useState({
     title: "",
     description: "",
     price: "",
-    duration: "",
     level: "beginner",
     categoryId: "",
     subTitle: "",
@@ -20,20 +20,25 @@ const AddCourse = () => {
     image: null,
   });
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/v1/category/all');
+        if (response.data.success) {
+          setCategories(response.data.courses);
+        }
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCourseData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
-
-  const handleArrayInput = (e, field) => {
-    const { value } = e.target;
-    const array = value.split('\n').filter(item => item.trim() !== '');
-    setCourseData(prev => ({
-      ...prev,
-      [field]: array
     }));
   };
 
@@ -45,16 +50,67 @@ const AddCourse = () => {
     }));
   };
 
+  const handleRequirementKeyDown = (e) => {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+      e.preventDefault();
+      const newRequirement = e.target.value.trim();
+      setCourseData(prev => ({
+        ...prev,
+        requirements: [...prev.requirements, newRequirement]
+      }));
+      e.target.value = '';
+    }
+  };
+
+  const handleLearningPointKeyDown = (e) => {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+      e.preventDefault();
+      const newPoint = e.target.value.trim();
+      setCourseData(prev => ({
+        ...prev,
+        learningPoints: [...prev.learningPoints, newPoint]
+      }));
+      e.target.value = '';
+    }
+  };
+
+  const handleRemoveRequirement = (index) => {
+    setCourseData(prev => ({
+      ...prev,
+      requirements: prev.requirements.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleRemoveLearningPoint = (index) => {
+    setCourseData(prev => ({
+      ...prev,
+      learningPoints: prev.learningPoints.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(false);
 
+    if (courseData.requirements.length === 0) {
+      setError('Please add at least one requirement');
+      setLoading(false);
+      return;
+    }
+
+    if (courseData.learningPoints.length === 0) {
+      setError('Please add at least one learning point');
+      setLoading(false);
+      return;
+    }
+
     const formData = new FormData();
     Object.keys(courseData).forEach(key => {
       if (key === 'requirements' || key === 'learningPoints') {
-        formData.append(key, JSON.stringify(courseData[key]));
+        // Ensure arrays are properly stringified
+        formData.append(key, JSON.stringify(courseData[key] || []));
       } else if (key === 'image') {
         if (courseData.image) {
           formData.append('thumbnail', courseData.image);
@@ -65,7 +121,14 @@ const AddCourse = () => {
     });
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/v1/course/add`, formData, { withCredentials: true });
+      const response = await axios.post(`http://localhost:5000/api/v1/course/add`, formData, { 
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log(formData)
 
       if (response.data.success) {
         setSuccess(true);
@@ -73,7 +136,6 @@ const AddCourse = () => {
           title: "",
           description: "",
           price: "",
-          duration: "",
           level: "beginner",
           categoryId: "",
           subTitle: "",
@@ -91,7 +153,7 @@ const AddCourse = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-3">
+    <div className="min-h-screen bg-gray-50 py-2 px-3">
       <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">
         <h3 className="text-2xl font-bold text-gray-900 mb-8">
           Create New Course
@@ -154,30 +216,60 @@ const AddCourse = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Requirements (one per line)
+              Requirements
             </label>
-            <textarea
-              name="requirements"
-              value={courseData.requirements.join('\n')}
-              onChange={(e) => handleArrayInput(e, 'requirements')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-              rows="4"
-              placeholder="Enter course requirements (one per line)"
-            />
+            <div className="space-y-2">
+              <textarea
+                name="requirements"
+                onKeyDown={handleRequirementKeyDown}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                placeholder="Type requirement and press Enter"
+                rows="2"
+              />
+              <ul className="list-disc pl-5">
+                {courseData.requirements.map((req, index) => (
+                  <li key={index} className="text-sm text-gray-600 flex justify-between items-center">
+                    <span>{req}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveRequirement(index)}
+                      className="text-red-500 hover:text-red-700 ml-2"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Learning Points (one per line)
+              Learning Points
             </label>
-            <textarea
-              name="learningPoints"
-              value={courseData.learningPoints.join('\n')}
-              onChange={(e) => handleArrayInput(e, 'learningPoints')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-              rows="4"
-              placeholder="Enter learning points (one per line)"
-            />
+            <div className="space-y-2">
+              <textarea
+                name="learningPoints"
+                onKeyDown={handleLearningPointKeyDown}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                placeholder="Type learning point and press Enter"
+                rows="2"
+              />
+              <ul className="list-disc pl-5">
+                {courseData.learningPoints.map((point, index) => (
+                  <li key={index} className="text-sm text-gray-600 flex justify-between items-center">
+                    <span>{point}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveLearningPoint(index)}
+                      className="text-red-500 hover:text-red-700 ml-2"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -197,17 +289,19 @@ const AddCourse = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Duration (hours)
+                Access Type
               </label>
-              <input
-                type="number"
-                name="duration"
-                value={courseData.duration}
+              <select
+                name="access_type"
+                value={courseData.access_type}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                placeholder="Total course hours"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none"
                 required
-              />
+              >
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+                <option value="prime">Prime</option>
+              </select>
             </div>
           </div>
 
@@ -222,24 +316,29 @@ const AddCourse = () => {
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none"
               >
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Category
               </label>
-              <input
-                type="text"
+              <select
                 name="categoryId"
                 value={courseData.categoryId}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                placeholder="e.g., Web Development"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none"
                 required
-              />
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.title}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

@@ -8,7 +8,7 @@ export default function CourseItem({course}) {
         className="w-full h-48 object-cover" />
         <div className="p-4">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {course.title}
+                {course?.title.split(" ").slice(0,2).join(" ")}
             </h3>
             <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
                 <span className="flex items-center">

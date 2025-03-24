@@ -33,7 +33,7 @@ const SideMenu = () => {
       icon: "fa-solid fa-video",
     },
     {
-      path: "/dashboard/certificates",
+      path: "/dashboard/verification",
       label: "Account verification",
       icon: "fa-regular fa-address-card",
     },

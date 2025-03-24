@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import LoaderBtn from "../../LoaderBtn";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -90,10 +92,7 @@ export default function Signup() {
 
           <div className="flex justify-between flex-wrap mb-5">
             <div className="w-full mb-5 sm:mb-0 sm:w-[49%] relative">
-              <label
-                htmlFor=""
-                className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
-              >
+              <label htmlFor="" className="absolute left-3 top-[-10px] px-2  bg-white text-sm">
                 FirstName
               </label>
               <input
@@ -152,6 +151,11 @@ export default function Signup() {
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
             />
+
+            <div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
+              { formik.values.email.length > 0 && !formik.errors.email ? <FontAwesomeIcon icon={faCheck} /> : ""}
+            </div>
+
             {formik.errors.email && formik.touched.email ? (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                 {formik.errors.email}
@@ -175,6 +179,11 @@ export default function Signup() {
                 onBlur={formik.handleBlur}
                 value={formik.values.password}
             />
+
+            <div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
+              { formik.values.password.length > 0 && !formik.errors.password ? <FontAwesomeIcon icon={faCheck} /> : ""}
+            </div>
+
             {formik.errors.password && formik.touched.password ? (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                 {formik.errors.password}
@@ -198,6 +207,11 @@ export default function Signup() {
                 onBlur={formik.handleBlur}
                 value={formik.values.confirmPassword}
             />
+
+            <div div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
+              { formik.values.confirmPassword.length > 0 && !formik.errors.confirmPassword ? <FontAwesomeIcon icon={faCheck} /> : ""}
+            </div>
+
             {formik.errors.confirmPassword && formik.touched.confirmPassword ? (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                 {formik.errors.confirmPassword}

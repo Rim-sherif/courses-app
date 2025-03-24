@@ -1,6 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function CourseItem({course}) {
+    console.log(course)
+    const navigate = useNavigate()
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
         <img src={course.thumbnail}
@@ -10,6 +13,9 @@ export default function CourseItem({course}) {
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {course.title}
             </h3>
+            <h5 className="text-lg font-semibold text-gray-800 mb-2">
+                {course.price} $
+            </h5>
             <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
                 <span className="flex items-center">
                 <i className="fas fa-clock mr-2"></i>
@@ -17,7 +23,7 @@ export default function CourseItem({course}) {
                 </span>
                 <span className="flex items-center">
                 <i className="fas fa-signal mr-2"></i>
-                {course.level}
+                {course.level} inter
                 </span>
             </div>
             <div className="flex items-center text-sm text-gray-600">

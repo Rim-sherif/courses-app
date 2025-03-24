@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import CourseItem from "../../../components/CourseItem";
 
 const FreeCourses = () => {
-  const navigate = useNavigate();
+ 
   const [freeCourses , setFreeCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [levelFilter, setLevelFilter] = useState("All");
@@ -37,7 +36,7 @@ const FreeCourses = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-3">
+    <div className="min-h-screen bg-gray-50 py-2 px-3">
       <div className="min-h-screen mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
         <div className="flex justify-between">
         <div>
@@ -70,7 +69,7 @@ const FreeCourses = () => {
             md:grid-cols-3  
             lg:grid-cols-3  
             xl:grid-cols-4">
-          {freeCourses.length > 0 && freeCourses.map(course=><CourseItem key={course._id} course={course} />)}
+          {filteredCourses.length > 0 && filteredCourses.map(course=><CourseItem key={course._id} course={course} />)}
         </div>
       </div>
     </div>

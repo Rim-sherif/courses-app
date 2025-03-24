@@ -105,7 +105,7 @@ const FreeCourses = () => {
         </div>
 
         <div className="flex flex-wrap justify-between">
-          {freeCourses.length > 0 && freeCourses.map(course=><CourseCard key={course._id} course={course} />)}
+          {freeCourses.length > 0 && freeCourses.map(course=><CourseItem key={course._id} course={course} />)}
           {/* {filteredCourses.map((course) => (
             <div
               key={course.id}

@@ -220,7 +220,7 @@ export default function Instructors() {
                 </label>
               </div>
             ))
-          : ""}
+          : ""}  
 
         <div className="mt-5">
           <h2>Filter By Rating</h2>

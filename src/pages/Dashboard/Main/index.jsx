@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import img3 from "../../../assets/images/business-people-blue-background.jpg";
 import img1 from "../../../assets/images/html-css-collage-concept.jpg";
 import img2 from "../../../assets/images/uiux.jpg";
@@ -5,6 +6,8 @@ import img4 from "../../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 
 
 const Main = () => {
+  const navigate = useNavigate();
+
 
   const colors = {
     primary: '#410445',     
@@ -166,7 +169,8 @@ const courses = [
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <button 
               className="px-6 py-4 text-sm font-medium text-white transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg rounded-xl bg-[#410445]"
-            
+              onClick={() => navigate("/dashboard/course/add")}
+
             >
               <div className="flex items-center justify-center space-x-2">
                 {/* <PlusIcon className="w-5 h-5" /> */}

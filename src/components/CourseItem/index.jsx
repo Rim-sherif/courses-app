@@ -11,7 +11,7 @@ export default function CourseItem({course}) {
         className="w-full h-48 object-cover" />
         <div className="p-4">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {course.title}
+                {course?.title.split(" ").slice(0,2).join(" ")}
             </h3>
             <h5 className="text-lg font-semibold text-gray-800 mb-2">
                 {course.price} $

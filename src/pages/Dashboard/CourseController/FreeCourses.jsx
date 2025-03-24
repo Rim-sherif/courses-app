@@ -30,6 +30,7 @@ const FreeCourses = () => {
     const matchesSearch = course.title
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
+      
     const matchesLevel =
       levelFilter === "All" || course.level === levelFilter;
     return matchesSearch && matchesLevel;

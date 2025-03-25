@@ -37,7 +37,7 @@ const LiveStream = () => {
                     {/* Stream Controls */}
                     <div className="bg-white p-4 rounded-lg shadow">
                         <div className="flex gap-4 justify-center">
-                            <button className="p-3 rounded-full bg-red-500 text-white hover:bg-red-600">
+                            <button className="p-3 rounded-full bg-red-700 text-white hover:bg-red-600">
                                 <i className="fas fa-video"></i>
                             </button>
                             <button className="p-3 rounded-full bg-gray-500 text-white hover:bg-gray-600">
@@ -46,7 +46,7 @@ const LiveStream = () => {
                             <button className="p-3 rounded-full bg-gray-500 text-white hover:bg-gray-600">
                                 <i className="fas fa-desktop"></i>
                             </button>
-                            <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                            <button className="px-6 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600">
                                 End Stream
                             </button>
                         </div>
@@ -84,7 +84,7 @@ const LiveStream = () => {
                             />
                             <button
                                 type="submit"
-                                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                                className="px-4 py-2 bg-[#410445] text-white rounded hover:bg-[#372139]"
                             >
                                 <i className="fas fa-paper-plane"></i>
                             </button>

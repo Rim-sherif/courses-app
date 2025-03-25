@@ -49,7 +49,7 @@ const DashboardLayout = () => {
           <div className={`fixed top-0 left-0 h-screen w-[300px] z-50 transform transition-transform duration-300 ${!isSideMenuOpen ? '-translate-x-full' : 'translate-x-0'}`}>
             <SideMenu userData={userData} />
           </div>
-          <div className={`transition-all duration-300 ${isSideMenuOpen ? 'ml-[250px]' : 'ml-0'}`}>
+          <div className={`transition-all duration-300 ${isSideMenuOpen ? 'ml-[270px]' : 'ml-0'}`}>
             <div className="sticky top-0 z-40 w-full">
               <Header userData={userData} toggleSideMenu={() => setIsSideMenuOpen(!isSideMenuOpen)} isSideMenuOpen={isSideMenuOpen} />
             </div>

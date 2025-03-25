@@ -22,6 +22,7 @@ import Instructors from "../pages/Instructors";
 import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
 import Search from "../pages/Search";
+import Settings from "../pages/Dashboard/Settings";
 // import ProtectedRoute from "../components/protectedRoute/protectedRoute";
 // import AdminRoute from "../components/AdminRoute/AdminRoute";
 
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
         path: "verification",
         element: <AccountVerification />,
       },
+      {
+        path : "setting",
+       element : <Settings/>
+      }
     ],
   },
 ]);

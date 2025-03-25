@@ -31,7 +31,7 @@ export default function CourseItem({course}) {
                 {course.students?.toLocaleString()} students
             </div>
             <button 
-                onClick={() => navigate(`/dashboard/courses/${course._id}`, { state: { course, type: 'free' } })}
+                onClick={() => navigate(`/dashboard/course/${course._id}`, { state: { course, type: 'free' } })}
                 className="mt-4 w-full bg-[#410445] hover:bg-[#402841] text-white py-2 px-4 rounded-lg transition-colors">
                 View
             </button>

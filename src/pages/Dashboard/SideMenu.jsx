@@ -37,6 +37,16 @@ const SideMenu = () => {
       label: "Account verification",
       icon: "fa-regular fa-address-card",
     },
+    {
+      path: "/dashboard/support",
+      label: "Customer Support",
+      icon: "fa-solid fa-headset",
+    },
+    {
+      path: "/dashboard/setting",
+      label: "Settings",
+      icon: "fa-solid fa-gear",
+    },
   ];
 
   return (
@@ -63,7 +73,7 @@ const SideMenu = () => {
 
       {/* SideMenu */}
       <div
-        className={`fixed md:static top-0 left-0 h-screen w-64 bg-black p-6 flex flex-col gap-6 text-white transform transition-transform duration-300 ease-in-out z-40
+        className={`fixed md:static top-0 left-0 h-screen w-[270px] bg-black p-6 flex flex-col z-40
           ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         {/* Close Button for Mobile */}
@@ -97,9 +107,8 @@ const SideMenu = () => {
           </NavLink>
         </div>
 
-       
-
-        <div className="flex flex-col gap-2 space-y-2">
+        {/* Navigation Links - Add flex-grow to push footer to bottom */}
+        <div className="flex-grow flex flex-col gap-2 space-y-2 mt-2">
           {navLinks.map((link) => (
             <div key={link.path}>
               {link.subItems ? (
@@ -108,7 +117,7 @@ const SideMenu = () => {
                     onClick={() => setIsCoursesOpen(!isCoursesOpen)}
                     className={`flex items-center justify-between px-2 py-2 rounded-lg transition-all duration-300 w-full text-white hover:bg-gray-100 hover:text-[#380356]`}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                       <i className={`${link.icon} text-white`}></i>
                       <span className="text-base font-poppins">{link.label}</span>
                     </div>
@@ -148,7 +157,7 @@ const SideMenu = () => {
                 >
                   {({ isActive }) => (
                     <>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-4">
                         <i className={`${link.icon} ${isActive ? "text-white" : "text-white"}`}></i>
                         <span className="text-base font-poppins">{link.label}</span>
                       </div>
@@ -165,6 +174,26 @@ const SideMenu = () => {
               )}
             </div>
           ))}
+        </div>
+
+        {/* Profile Section - Add before footer */}
+        <div className="mt-auto ">
+      
+          <button 
+            onClick={() => {/* Add your logout logic here */}}
+            className="w-full mt-2 p-2 text-left text-white rounded-lg transition-all duration-300 flex items-center gap-2"
+          >
+            <i className="fa-solid fa-right-from-bracket"></i>
+            <span>Log Out</span>
+          </button>
+        </div>
+
+        {/* Footer - adjust margin top */}
+        <div className="mt-4 pt-4 border-t border-gray-800">
+          <div className="flex flex-col items-center gap-2 text-sm text-gray-400">
+            <span>&copy; 2025 Mentora</span>
+            <span className="text-xs">Version 1.0.0</span>
+          </div>
         </div>
       </div>
 

@@ -28,7 +28,7 @@ const SideMenu = () => {
       ],
     },
     {
-      path: "/dashboard/certificates",
+      path: "/dashboard/live-stream",
       label: "Live Stream",
       icon: "fa-solid fa-video",
     },

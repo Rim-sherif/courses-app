@@ -16,6 +16,7 @@ import FreeCourses from "../pages/Dashboard/CourseController/FreeCourses";
 import PaidCourses from "../pages/Dashboard/CourseController/PaidCourses";
 import SingleCourse from "../pages/Dashboard/CourseController/SingleCourse";
 import CustomerSupport from "../pages/Dashboard/CustomerSupport";
+import LiveStream from "../pages/Dashboard/LiveStrem";
 import Main from "../pages/Dashboard/Main";
 import Settings from "../pages/Dashboard/Settings";
 import Home from "../pages/Home";
@@ -129,6 +130,10 @@ const router = createBrowserRouter([
       {
         path: "support",
         element: <CustomerSupport />,
+      },
+      {
+        path: "live-stream",
+        element: <LiveStream />,
       }
     ],
   },

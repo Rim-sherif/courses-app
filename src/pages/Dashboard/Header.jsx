@@ -228,7 +228,7 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
 
               <span className="hidden sm:inline-block text-gray-700 font-medium">
                 {" "}
-                <div className="text-sm font-semibold">
+                <div className="text-sm font-semibold ">
                   {userData?.firstName} {userData?.lastName}
                 </div>{" "}
               </span>

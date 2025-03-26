@@ -10,6 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
+import { useQuery } from '@tanstack/react-query';
+import axios from "axios";
 import img from "/learning-concept-illustration.png";
 import Featuredinstructors from "../../components/Featuredinstractors";
 import img1 from "../../assets/images/html-css-collage-concept.jpg";
@@ -26,11 +28,26 @@ import instr8 from "../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+const fetchCategories = async () => {
+  const response = await axios.get(
+    `${import.meta.env.VITE_BASE_URL}/api/v1/category/all`
+  );
+  if (!response.data.success) {
+    throw new Error('Failed to fetch categories');
+  }
+  return response.data.courses;
+};
+
 const Home = () => {
   const [showChatModal, setShowChatModal] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
+
+  const { data: categories, isLoading, error } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -65,17 +82,14 @@ const Home = () => {
         }
 
         const data = await response.json();
-
         
         const botText =
           data.candidates?.[0]?.content?.parts?.[0]?.text ||
           "Could not understand the response";
 
-  
         setMessages((prev) => [...prev, { text: botText, isUser: false }]);
       } catch (error) {
         console.error("Error:", error);
-    
         setMessages((prev) => [
           ...prev,
           {
@@ -93,6 +107,7 @@ const Home = () => {
 
   return (
     <div className="space-y-20">
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#2A0B2C] to-[#410445] text-white py-28 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -104,7 +119,6 @@ const Home = () => {
                 className="relative z-10 w-full max-w-[500px] mx-auto animate-float animate-custom-bounce"
               />
               <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-[#F6DC43]/10 rounded-full blur-xl"></div>
-
               <div className="absolute -right-12 bottom-40 bg-white/5 p-6 rounded-2xl backdrop-blur-lg border border-white/10 shadow-lg">
                 <div className="flex items-center space-x-4">
                   <div className="bg-[#F6DC43] p-3 rounded-xl">
@@ -143,9 +157,8 @@ const Home = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="relative group bg-gradient-to-r from-[#F6DC43] to-[#FF2DF1] text-[#410445] px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-[#FF2DF1]/30 transition-all duration-300 transform hover:-translate-y-1">
                   <Link to="/login">
-                  <span className="relative z-10">Start Now</span>
+                    <span className="relative z-10">Start Now</span>
                   </Link>
-                  
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-xl"></div>
                 </button>
                 <button className="relative group border-2 border-[#F6DC43]/50 text-[#F6DC43] px-8 py-4 rounded-xl font-semibold hover:bg-[#F6DC43]/10 hover:border-[#F6DC43] transition-all duration-300 transform hover:-translate-y-1">
@@ -183,187 +196,47 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-[#A5158C]/10">
+      {/* Categories Section */}
+      <section className="py-20 relative overflow-hidden">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faUsers}
-                className="text-4xl text-[#A5158C]"
-              />
-              <div className="text-3xl font-bold">100K+</div>
-              <div className="text-gray-600">Active Students</div>
-            </div>
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faBook}
-                className="text-4xl text-[#A5158C]"
-              />
-              <div className="text-3xl font-bold">500+</div>
-              <div className="text-gray-600">Online Courses</div>
-            </div>
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faGraduationCap}
-                className="text-4xl text-[#A5158C]"
-              />
-              <div className="text-3xl font-bold">1M+</div>
-              <div className="text-gray-600">Graduates</div>
-            </div>
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faCertificate}
-                className="text-4xl text-[#A5158C]"
-              />
-              <div className="text-3xl font-bold">300+</div>
-              <div className="text-gray-600">Expert Instructors</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20  relative overflow-hidden">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-[#A5158C] relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
+          <h2 className="text-4xl font-bold text-center mb-16 text-[#a225e0] relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
             Explore Popular Categories
-            <span className="block mt-2 text-[#F6DC43] text-lg font-medium">
+            <span className="block mt-2 text-[#000000] text-lg font-medium">
               Master in-demand skills
             </span>
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:px-8 px-2">
-            {[
-              {
-                name: "Web Development",
-                courses: "120+ Courses",
-                bgImage: img1,
-              },
-              {
-                name: "UI/UX Design",
-                courses: "85+ Courses",
-                bgImage: img2,
-              },
-              {
-                name: "Business",
-                courses: "200+ Courses",
-                bgImage: img3,
-              },
-              {
-                name: "Marketing",
-                courses: "75+ Courses",
-                bgImage: img4,
-              },
-              {
-                name: "AI & Data Science",
-                courses: "90+ Courses",
-                bgImage: img5,
-              },
-              {
-                name: "Photography",
-                courses: "45+ Courses",
-                bgImage: img6,
-              },
-              {
-                name: "Music Production",
-                courses: "30+ Courses",
-                bgImage: img7,
-              },
-              {
-                name: "Personal Growth",
-                courses: "60+ Courses",
-                bgImage: img8,
-              },
-            ].map((category) => (
-              <div
-                key={category.name}
-                className="group relative h-48 rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(65, 4, 69, 0.3), rgba(10, 0, 18, 0.9)), url(${category.bgImage})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all"></div>
-
-                <div className="relative z-10 p-6 h-full flex flex-col justify-end">
-                  <h3 className="text-xl font-semibold mb-2 text-white">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-[#F6DC43]">{category.courses}</p>
+          {isLoading ? (
+            <div className="text-center py-20">Loading categories...</div>
+          ) : error ? (
+            <div className="text-center py-20 text-red-500">Failed to fetch categories</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:px-8 px-2">
+              {categories.slice(0,8).map((category) => (
+                <div
+                  key={category._id}
+                  className="group relative h-48 rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
+                  style={{
+                    backgroundImage: `linear-gradient(to bottom, rgba(65, 4, 69, 0.3), rgba(10, 0, 18, 0.9)), url(${category.thumbnail})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all"></div>
+                  <div className="relative z-10 p-6 h-full flex items-center justify-center">
+                    <h3 className="text-xl font-semibold text-white text-center">
+                      {category.title}
+                    </h3>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Featured Instructors */}
       <Featuredinstructors />
-
-      {/* CTA Section */}
-      <section className="relative bg-gradient-to-r from-[#410445] to-[#A5158C] text-white py-20 md:py-24 overflow-hidden">
-        <div className="container mx-auto px-4 text-center">
-          {/* Animated background elements */}
-          <div className="absolute top-0 left-0 w-full h-full opacity-10 animate-pulse-slow">
-            <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-300 rounded-full mix-blend-screen blur-xl"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-pink-300 rounded-full mix-blend-screen blur-xl"></div>
-          </div>
-
-          <div className="relative space-y-6">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in-up">
-              Ready to Start Learning?
-            </h2>
-
-            <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up animate-delay-100">
-              Join{" "}
-              <span className="font-semibold text-[#F6DC43]">
-                over 50,000 students
-              </span>{" "}
-              transforming their skills on our platform
-            </p>
-
-            <div className="animate-fade-in-up animate-delay-200">
-              <button
-                className="group relative inline-flex items-center justify-center bg-[#F6DC43] text-[#410445] px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-lg md:text-xl
-                           transform transition-all duration-300 hover:scale-105 hover:bg-[#FF2DF1] hover:text-white
-                           focus:outline-none focus:ring-4 focus:ring-[#F6DC43] focus:ring-opacity-50
-                           shadow-lg hover:shadow-xl"
-                aria-label="Get started with learning on our platform"
-              >
-                <span className="relative z-10">Get Started Now</span>
-                <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
-                  🚀
-                </span>
-
-                {/* Button hover effect background */}
-                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 bg-gradient-to-r from-[#FF2DF1] to-[#F6DC43] transition-opacity duration-300"></div>
-              </button>
-            </div>
-
-            {/* Trust badges */}
-            <div className="mt-8 flex flex-wrap justify-center items-center gap-6 opacity-90 animate-fade-in-up animate-delay-300">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-[#410445] font-bold">4.9</span>
-                </div>
-                <span>Star Rating</span>
-              </div>
-              <div className="h-6 w-px bg-white/30"></div>
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-8 h-8 text-[#F6DC43]"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                </svg>
-                <span>Top Rated Courses</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* About Us Section */}
       <section className="py-20 bg-gradient-to-b from-white to-[#410445]/5 ">
@@ -410,7 +283,7 @@ const Home = () => {
               </button>
             </div>
             <div className="space-y-8 relative">
-              <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <div className="bg-white p-4 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
                 <div className="grid grid-cols-1 gap-6">
                   <div className="p-6 bg-[#410445]/5 rounded-xl">
                     <div className="flex items-center space-x-4">
@@ -477,7 +350,6 @@ const Home = () => {
       <section className="py-20 bg-[#410445] relative overflow-hidden">
         <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
         <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
-
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-16 text-white relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
             Contact Us
@@ -553,7 +425,6 @@ const Home = () => {
                       <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                     </svg>
                   </a>
-
                   <a
                     href="https://facebook.com"
                     target="_blank"
@@ -569,7 +440,6 @@ const Home = () => {
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
                   </a>
-
                   <a
                     href="https://instagram.com"
                     target="_blank"
@@ -585,7 +455,6 @@ const Home = () => {
                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
                     </svg>
                   </a>
-
                   <a
                     href="https://tiktok.com"
                     target="_blank"
@@ -674,6 +543,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Chat Button and Modal */}
       <button
         onClick={() => setShowChatModal(true)}
         className="fixed bottom-8 right-8 p-4 bg-[#A5158C] text-white rounded-full shadow-lg hover:bg-[#A5158C] transition-colors duration-200 z-50"
@@ -685,9 +556,8 @@ const Home = () => {
         />
       </button>
       {showChatModal && (
-        <div className="fixed inset-0 bg-black/50  z-50 animate-fade-in">
+        <div className="fixed inset-0 bg-black/50 z-50 animate-fade-in">
           <div className="fixed bottom-4 right-4 md:bottom-20 md:right-8 w-full md:w-[450px] max-h-[calc(100vh-30rem)] min-h-[400px] bg-white rounded-xl shadow-2xl flex flex-col border border-gray-100 transform transition-transform duration-300 ease-out">
-            {/* Modal Header */}
             <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100 rounded-xl bg-gradient-to-r from-blue-50/70 to-indigo-50/70 backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 bg-gradient-to-br from-[#410445] to-[#5a0c60] rounded-xl shadow-sm">
@@ -719,8 +589,6 @@ const Home = () => {
                 />
               </button>
             </div>
-
-            {/* Chat Messages */}
             <div className="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
               {messages.map((msg, index) => (
                 <div
@@ -730,7 +598,7 @@ const Home = () => {
                   } mb-4 last:mb-0`}
                 >
                   <div
-                    className={`flex max-w-[75%] lg:max-w-[60%] py-2 px-4  rounded-xl min-h-12 ${
+                    className={`flex max-w-[75%] lg:max-w-[60%] py-2 px-4 rounded-xl min-h-12 ${
                       msg.isUser
                         ? "bg-gradient-to-br from-[#410445] to-[#520a57] text-white ml-12 shadow-lg"
                         : "border-gray-200 bg-gray-100 text-gray-800 mr-12 shadow"
@@ -744,8 +612,6 @@ const Home = () => {
               ))}
               <div ref={messagesEndRef} />
             </div>
-
-            {/* Input Area */}
             <div className="p-4 border-t border-gray-100 bg-gray-50/50">
               <div className="flex gap-2.5">
                 <input

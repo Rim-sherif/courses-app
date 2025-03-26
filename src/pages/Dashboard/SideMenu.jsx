@@ -12,11 +12,11 @@ const SideMenu = () => {
 
   const navLinks = [
     { path: "/dashboard", label: "Dashboard", icon: "fa-solid fa-home" },
-    {
-      path: "/dashboard/certificates",
-      label: "Certificates",
-      icon: "fa-solid fa-certificate",
-    },
+    // {
+    //   path: "/dashboard/certificates",
+    //   label: "Certificates",
+    //   icon: "fa-solid fa-certificate",
+    // },
     {
       path: "/dashboard/course",
       label: "Courses",

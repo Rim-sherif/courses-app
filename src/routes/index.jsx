@@ -25,6 +25,8 @@ import Instructors from "../pages/Instructors";
 import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
 import Search from "../pages/Search";
+import Categories from "../pages/Categories";
+import CategoryCourses from "../pages/CategoryCourse";
 // import ProtectedRoute from "../components/protectedRoute/protectedRoute";
 // import AdminRoute from "../components/AdminRoute/AdminRoute";
 
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
         path: "*",
         element: <NotFound />,
       },
+      {
+        path: "categories",
+        element: <Categories />,
+      },
+      {
+        path: "category/:categoryId",
+        element: <CategoryCourses />,
+      }
     ],
   },
   {

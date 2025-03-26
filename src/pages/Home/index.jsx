@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import img from "/learning-concept-illustration.png";
 import Featuredinstructors from "../../components/Featuredinstractors";
@@ -20,13 +20,12 @@ import instr8 from "../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-
 const fetchCategories = async () => {
   const response = await axios.get(
     `${import.meta.env.VITE_BASE_URL}/api/v1/category/all`
   );
   if (!response.data.success) {
-    throw new Error('Failed to fetch categories');
+    throw new Error("Failed to fetch categories");
   }
   return response.data.courses;
 };
@@ -37,8 +36,12 @@ const Home = () => {
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
 
-  const { data: categories, isLoading, error } = useQuery({
-    queryKey: ['categories'],
+  const {
+    data: categories,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["categories"],
     queryFn: fetchCategories,
   });
 
@@ -75,7 +78,7 @@ const Home = () => {
         }
 
         const data = await response.json();
-        
+
         const botText =
           data.candidates?.[0]?.content?.parts?.[0]?.text ||
           "Could not understand the response";
@@ -202,26 +205,36 @@ const Home = () => {
           {isLoading ? (
             <div className="text-center py-20">Loading categories...</div>
           ) : error ? (
-            <div className="text-center py-20 text-red-500">Failed to fetch categories</div>
+            <div className="text-center py-20 text-red-500">
+              Failed to fetch categories
+            </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:px-8 px-2">
-              {categories.slice(0,8).map((category) => (
-                <div
+              {categories.slice(0, 8).map((category) => (
+                <Link
+                  to={`/category/${category._id}`}
                   key={category._id}
-                  className="group relative h-48 rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
-                  style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(65, 4, 69, 0.3), rgba(10, 0, 18, 0.9)), url(${category.thumbnail})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
+                  className="relative rounded-lg p-6 h-40 flex items-center justify-center text-center transition-transform transform hover:scale-105 overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all"></div>
-                  <div className="relative z-10 p-6 h-full flex items-center justify-center">
-                    <h3 className="text-xl font-semibold text-white text-center">
-                      {category.title}
-                    </h3>
-                  </div>
-                </div>
+                  {/* Use an img tag for better error handling */}
+                  <img
+                    src={category.thumbnail}
+                    alt={`${category.title} thumbnail`}
+                    className="absolute inset-0 w-full h-full object-cover z-0"
+                    onError={(e) => {
+                      // Fallback to a placeholder image if the thumbnail fails to load
+                      e.target.src =
+                        "https://via.placeholder.com/150?text=Image+Not+Found";
+                    }}
+                    loading="lazy" // Lazy load images for better performance
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/70 to-black/40 z-10" />
+                  {/* Category title */}
+                  <h3 className="relative text-white text-lg font-semibold capitalize z-20">
+                    {category.title }
+                  </h3>
+                </Link>
               ))}
             </div>
           )}

@@ -14,11 +14,23 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 import profile from "/profile.png";
+
+const fetchCategories = async () => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BASE_URL}/api/v1/category/all`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+  const data = await response.json();
+  return data.courses; // Fetch all, slice in component
+};
 
 const Navbar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -26,44 +38,70 @@ const Navbar = () => {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchSelect , setSearchSelect] = useState("courses");
-  const [searchValue , setSearchValue] = useState("");
-  const {loggedIn} = useSelector(store=>store.token);
+  const [searchSelect, setSearchSelect] = useState("courses");
+  const [searchValue, setSearchValue] = useState("");
+  const { loggedIn } = useSelector((store) => store.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const categoriesRef = useRef(null);
 
-  const searchBasedSelect = (e)=>{
+  // Fetch categories using useQuery
+  const {
+    data: categories = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        categoriesRef.current &&
+        !categoriesRef.current.contains(event.target)
+      ) {
+        setIsCategoriesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const searchBasedSelect = (e) => {
     setSearchSelect(e.target.value);
-  }
-  const handleSearchValue = (e)=>{
-    setSearchValue(e.target.value)
-  }
+  };
 
-  const sendData = async ()=>{
-    if(searchValue.length > 0){
+  const handleSearchValue = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const sendData = async () => {
+    if (searchValue.length > 0) {
       navigate(`/search?key=${searchSelect}&q=${searchValue}`);
       setSearchValue("");
-    }else{
-      toast.error("please Enter a valid search value",{ autoClose: 600 })
+    } else {
+      toast.error("Please enter a valid search value", { autoClose: 600 });
     }
-  }
+  };
 
-  const handleEnterKey = (e)=>{
-    if(e.key == "Enter"){
-      if(searchValue.length > 0){
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") {
+      if (searchValue.length > 0) {
         navigate(`/search?key=${searchSelect}&q=${searchValue}`);
         setSearchValue("");
-      }else{
-        toast.error("please Enter a valid search value" , { autoClose: 600 })
+      } else {
+        toast.error("Please enter a valid search value", { autoClose: 600 });
       }
     }
-  }
-
-  
+  };
 
   return (
-    <nav style={{zIndex: 1111}} className="bg-white py-3 shadow-md sticky top-0 z-50">
-      
+    <nav
+      style={{ zIndex: 1111 }}
+      className="bg-white py-3 shadow-md sticky top-0 z-50"
+    >
       <div className="mx-auto w-[95%]">
         <div className="flex justify-between items-center h-16">
           <div className="flex gap-1">
@@ -88,93 +126,67 @@ const Navbar = () => {
                 onKeyUp={handleEnterKey}
                 onChange={handleSearchValue}
               />
-              <button onClick={sendData} className="absolute right-0 p-2 px-4 text-white rounded-br-lg rounded-tr-lg top-[1px] cursor-pointer bg-[#410445] top-0 text-gray-400 hover:bg-[#A5158C]">
+              <button
+                onClick={sendData}
+                className="absolute right-0 p-2 px-4 text-white rounded-br-lg rounded-tr-lg top-[1px] cursor-pointer bg-[#410445] top-0 text-gray-400 hover:bg-[#A5158C]"
+              >
                 <FontAwesomeIcon icon={faSearch} />
               </button>
-
               <div className="absolute left-4 top-[9px]">
-                  <select name="searched" onChange={searchBasedSelect} className="outline-0 text-gray-600">
-                    <option value="courses">Courses</option>
-                    <option value="instructors">Instructors</option>
-                  </select>
+                <select
+                  name="searched"
+                  onChange={searchBasedSelect}
+                  className="outline-0 text-gray-600"
+                >
+                  <option value="courses">Courses</option>
+                  <option value="instructors">Instructors</option>
+                </select>
               </div>
-
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-6">
-            <div className="relative">
+            <div className="relative" ref={categoriesRef}>
               <button
                 onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
                 className="text-gray-700 cursor-pointer hover:text-[#A5158C] flex items-center"
               >
                 Categories
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className="ml-2 text-xs"
-                />
+                <FontAwesomeIcon icon={faChevronDown} className="ml-2 text-xs" />
               </button>
               {isCategoriesOpen && (
                 <div
-                  className="absolute top-full right-0 w-56 bg-white shadow-xl rounded-xl py-3 mt-2 z-30
-               border border-gray-100 animate-fade-in-up"
+                  className="absolute top-full right-0 w-56 bg-white shadow-xl rounded-xl py-3 mt-2 z-30 border border-gray-100 animate-fade-in-up"
                   role="menu"
                 >
-                  <NavLink
-                    to="/category/programming"
-                    className="flex items-center px-5 py-3 hover:bg-[#410445]/5 group transition-colors"
-                    role="menuitem"
-                  >
-                    <FontAwesomeIcon
-                      icon={faCode}
-                      className="w-5 h-5 mr-3 text-[#410445] group-hover:text-[#A5158C] transition-colors"
-                    />
-                    <span className="text-gray-700 group-hover:text-[#410445] font-medium transition-colors">
-                      Programming
-                      <span className="block text-sm text-gray-400 group-hover:text-[#A5158C]">
-                        120+ Courses
-                      </span>
-                    </span>
-                  </NavLink>
-
-                  <NavLink
-                    to="/category/design"
-                    className="flex items-center px-5 py-3 hover:bg-[#410445]/5 group transition-colors"
-                    role="menuitem"
-                  >
-                    <FontAwesomeIcon
-                      icon={faPalette}
-                      className="w-5 h-5 mr-3 text-[#410445] group-hover:text-[#A5158C] transition-colors"
-                    />
-                    <span className="text-gray-700 group-hover:text-[#410445] font-medium transition-colors">
-                      Design
-                      <span className="block text-sm text-gray-400 group-hover:text-[#A5158C]">
-                        85+ Courses
-                      </span>
-                    </span>
-                  </NavLink>
-
-                  <NavLink
-                    to="/category/business"
-                    className="flex items-center px-5 py-3 hover:bg-[#410445]/5 group transition-colors"
-                    role="menuitem"
-                  >
-                    <FontAwesomeIcon
-                      icon={faChartLine}
-                      className="w-5 h-5 mr-3 text-[#410445] group-hover:text-[#A5158C] transition-colors"
-                    />
-                    <span className="text-gray-700 group-hover:text-[#410445] font-medium transition-colors">
-                      Business
-                      <span className="block text-sm text-gray-400 group-hover:text-[#A5158C]">
-                        200+ Courses
-                      </span>
-                    </span>
-                  </NavLink>
-
+                  {isLoading ? (
+                    <div className="px-5 py-3 text-gray-500">Loading...</div>
+                  ) : error ? (
+                    <div className="px-5 py-3 text-red-500">Error loading categories</div>
+                  ) : (
+                    categories.slice(0, 3).map((category) => ( // Slice here
+                      <NavLink
+                        key={category._id}
+                        to={`/category/${category._id}`}
+                        className="flex items-center px-5 py-3 hover:bg-[#410445]/5 group transition-colors"
+                        role="menuitem"
+                        onClick={() => setIsCategoriesOpen(false)} // Close on click
+                      >
+                        <FontAwesomeIcon
+                          icon={faCode}
+                          className="w-5 h-5 mr-3 text-[#410445] group-hover:text-[#A5158C] transition-colors"
+                        />
+                        <span className="text-gray-700 group-hover:text-[#410445] font-medium transition-colors">
+                          {category.title}
+                        </span>
+                      </NavLink>
+                    ))
+                  )}
                   <div className="border-t border-gray-100 mt-2 pt-2">
                     <NavLink
                       to="/categories"
                       className="flex items-center px-5 py-3 text-[#410445] hover:bg-[#410445]/5 font-semibold transition-colors"
                       role="menuitem"
+                      onClick={() => setIsCategoriesOpen(false)} // Close on click
                     >
                       <FontAwesomeIcon
                         icon={faChevronRight}
@@ -186,7 +198,6 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-
             <NavLink
               to="/courses"
               className="text-gray-700 hover:text-[#A5158C]"
@@ -201,14 +212,12 @@ const Navbar = () => {
               Instructors
             </NavLink>
 
-            {/* Language Switcher */}
             <div className="relative">
               <button
                 onClick={() => setIsLangOpen(!isLangOpen)}
                 className="text-gray-700 hover:text-[#A5158C] flex items-center"
               >
                 <FontAwesomeIcon icon={faGlobe} className="text-xl" />
-            
               </button>
               {isLangOpen && (
                 <div className="absolute top-full right-0 w-24 bg-white shadow-lg rounded-lg py-2 mt-2 z-20">
@@ -221,6 +230,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+
             {isAuthenticated ? (
               <div className="relative">
                 <button
@@ -232,8 +242,6 @@ const Navbar = () => {
                   </div>
                   <span className="hidden md:inline">My Account</span>
                 </button>
-     
-
                 {isUserMenuOpen && (
                   <div className="absolute top-full right-0 w-48 bg-white shadow-lg rounded-lg py-2 mt-2 z-30">
                     <NavLink
@@ -267,23 +275,30 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-3 text-sm">
-                {!loggedIn ?
+                {!loggedIn ? (
                   <>
                     <NavLink
                       to="/login"
-                      className="text-white border-2 bg-[#410445] rounded-xl py-2 px-5 hover:bg-[#A5158C] transition-colors flex items-center">
-                      <span className="hidden md:inline ">Log In</span>
+                      className="text-white border-2 bg-[#410445] rounded-xl py-2 px-5 hover:bg-[#A5158C] transition-colors flex items-center"
+                    >
+                      <span className="hidden md:inline">Log In</span>
                     </NavLink>
                     <NavLink
                       to="/signup"
-                      className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center">
+                      className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
+                    >
                       <span className="hidden md:inline">Sign Up</span>
                     </NavLink>
                   </>
-                : <Link to="/profile">
-                  <img src={profile} className="w-[25px] cursor-pointer" alt="profile image"/>
-                </Link>
-                }
+                ) : (
+                  <Link to="/profile">
+                    <img
+                      src={profile}
+                      className="w-[25px] cursor-pointer"
+                      alt="profile image"
+                    />
+                  </Link>
+                )}
               </div>
             )}
           </div>
@@ -325,27 +340,24 @@ const Navbar = () => {
               </button>
               {isCategoriesOpen && (
                 <div className="flex flex-col space-y-2 pl-4">
-                  <NavLink
-                    to="/category/programming"
-                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Programming
-                  </NavLink>
-                  <NavLink
-                    to="/category/design"
-                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Design
-                  </NavLink>
-                  <NavLink
-                    to="/category/business"
-                    className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Business
-                  </NavLink>
+                  {isLoading ? (
+                    <div className="px-4 py-2 text-gray-500">Loading...</div>
+                  ) : error ? (
+                    <div className="px-4 py-2 text-red-500">
+                      Error loading categories
+                    </div>
+                  ) : (
+                    categories.slice(0, 3).map((category) => (
+                      <NavLink
+                        key={category._id}
+                        to={`/category/${category._id}`}
+                        className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {category.title}
+                      </NavLink>
+                    ))
+                  )}
                   <NavLink
                     to="/categories"
                     className="text-gray-700 hover:text-[#A5158C] px-4 py-2"
@@ -425,8 +437,16 @@ const Navbar = () => {
                       </NavLink>
                     </>
                   ) : (
-                    <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex ml-3 gap-2">
-                      <img src={profile} className="w-[25px] cursor-pointer" alt="profile image"/>
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex ml-3 gap-2"
+                    >
+                      <img
+                        src={profile}
+                        className="w-[25px] cursor-pointer"
+                        alt="profile image"
+                      />
                       <span>My Profile</span>
                     </Link>
                   )}

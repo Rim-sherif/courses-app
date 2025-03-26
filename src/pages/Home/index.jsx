@@ -25,12 +25,21 @@ import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 import instr8 from "../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
 
 const Home = () => {
   const [showChatModal, setShowChatModal] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
+
+  const stats = [
+    { icon: faUsers, value: '100K+', label: 'Active Students' },
+    { icon: faBook, value: '500+', label: 'Online Courses' },
+    { icon: faGraduationCap, value: '1M+', label: 'Graduates' },
+    { icon: faCertificate, value: '300+', label: 'Expert Instructors' },
+  ];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -92,7 +101,7 @@ const Home = () => {
   }, [messages]);
 
   return (
-    <div className="space-y-20">
+    <div className="">
       <section className="relative bg-gradient-to-br from-[#2A0B2C] to-[#410445] text-white py-28 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -184,44 +193,39 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-[#A5158C]/10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faUsers}
-                className="text-4xl text-[#A5158C]"
+      <section className="py-20 bg-gradient-to-b from-[#A5158C]/10 to-white/50">
+  <div className="container mx-auto px-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {stats.map((stat, index) => (
+        <motion.div 
+          key={index}
+          className="group p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 ease-out"
+          whileHover={{ y: -5 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+        >
+          <div className="flex flex-col items-center space-y-4">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#A5158C] to-[#E94087] blur-md group-hover:blur-lg transition-all duration-300 opacity-20 rounded-full" />
+              <FontAwesomeIcon 
+                icon={stat.icon}
+                className="text-5xl bg-gradient-to-r from-[#A5158C] to-[#E94087] bg-clip-text text-transparent relative z-10"
               />
-              <div className="text-3xl font-bold">100K+</div>
-              <div className="text-gray-600">Active Students</div>
             </div>
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faBook}
-                className="text-4xl text-[#A5158C]"
-              />
-              <div className="text-3xl font-bold">500+</div>
-              <div className="text-gray-600">Online Courses</div>
+            <div className="text-4xl font-bold bg-gradient-to-r from-[#A5158C] to-[#E94087] bg-clip-text text-transparent">
+              {stat.value}
             </div>
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faGraduationCap}
-                className="text-4xl text-[#A5158C]"
-              />
-              <div className="text-3xl font-bold">1M+</div>
-              <div className="text-gray-600">Graduates</div>
-            </div>
-            <div className="space-y-2">
-              <FontAwesomeIcon
-                icon={faCertificate}
-                className="text-4xl text-[#A5158C]"
-              />
-              <div className="text-3xl font-bold">300+</div>
-              <div className="text-gray-600">Expert Instructors</div>
+            <div className="text-lg font-medium text-gray-700 uppercase tracking-wide">
+              {stat.label}
             </div>
           </div>
-        </div>
-      </section>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
       <section className="py-20  relative overflow-hidden">
         <div className="container mx-auto px-4">

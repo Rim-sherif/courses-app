@@ -1,27 +1,23 @@
 import {
+  faBars,
   faBook,
   faChartLine,
   faChevronDown,
   faChevronRight,
   faCode,
   faGear,
+  faGlobe,
   faPalette,
   faSearch,
   faSignOutAlt,
-  faUser,
-  faBars,
   faTimes,
-  faGlobe,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import {  useState } from "react";
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getData } from "../redux/reducers/searchSlice";
-import { getToken } from "../redux/reducers/tokenSlice";
 import profile from "/profile.png";
 
 const Navbar = () => {
@@ -411,20 +407,29 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="flex flex-col space-y-2 mt-4">
-                  <NavLink
-                    to="/login"
-                    className="text-white bg-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#A5158C] transition-colors flex items-center"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Log In
-                  </NavLink>
-                  <NavLink
-                    to="/signup"
-                    className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign Up
-                  </NavLink>
+                  {!loggedIn ? (
+                    <>
+                      <NavLink
+                        to="/login"
+                        className="text-white bg-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#A5158C] transition-colors flex items-center"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Log In
+                      </NavLink>
+                      <NavLink
+                        to="/signup"
+                        className="text-[#410445] border-2 border-[#410445] rounded-xl py-1.5 px-4 hover:bg-[#410445] hover:text-white transition-colors flex items-center"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Sign Up
+                      </NavLink>
+                    </>
+                  ) : (
+                    <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex ml-3 gap-2">
+                      <img src={profile} className="w-[25px] cursor-pointer" alt="profile image"/>
+                      <span>My Profile</span>
+                    </Link>
+                  )}
                 </div>
               )}
             </div>

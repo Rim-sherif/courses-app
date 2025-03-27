@@ -8,6 +8,7 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
     <header className="w-full backdrop-blur-sm bg-white/80 shadow-md border-b border-gray-100">
       <div className="flex items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
         <div className="flex items-center gap-x-4">
+          {/* Menu button - shows on all screens */}
           <button
             onClick={toggleSideMenu}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -43,10 +44,14 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
               </svg>
             )}
           </button>
+
+          {/* Logo or other left-aligned content can go here */}
         </div>
 
-        {/* Search bar */}
-        <div className="flex-1 max-w-2xl mx-4 hidden md:block">
+        {/* Search bar - hidden on mobile when sidebar is open */}
+        <div className={`flex-1 max-w-2xl mx-4 ${
+          isSideMenuOpen ? 'hidden md:block' : 'block'
+        }`}>
           <form role="search">
             <div className="relative">
               <input
@@ -128,7 +133,6 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              {/* Messages Menu Items */}
               <Menu.Items className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg py-1 divide-y divide-gray-100 focus:outline-none">
                 <div className="px-4 py-3">
                   <p className="text-sm font-medium text-gray-900">Messages</p>
@@ -222,15 +226,14 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
                 </div>
               ) : (
                 <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white font-medium">
-                  M
+                  {userData?.firstName?.charAt(0) || 'U'}
                 </div>
               )}
 
               <span className="hidden sm:inline-block text-gray-700 font-medium">
-                {" "}
-                <div className="text-sm font-semibold ">
+                <div className="text-sm font-semibold">
                   {userData?.firstName} {userData?.lastName}
-                </div>{" "}
+                </div>
               </span>
               <svg
                 className="w-4 h-4 text-gray-600"
@@ -254,7 +257,6 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              {/* User Menu Items */}
               <Menu.Items className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1.5 focus:outline-none divide-y divide-gray-100">
                 <div className="py-1">
                   <Menu.Item>

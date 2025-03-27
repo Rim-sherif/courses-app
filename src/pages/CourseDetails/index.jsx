@@ -294,8 +294,9 @@ export default function CourseDetails() {
                 </article>
 
                 <section className="mt-10 border border-gray-500 p-5 text-center">
-                  عايزين نحط الكومنتس هنا يحبيب أخوك واللي انت شايفة بردو ♥♥♥
-                </section>
+Reviews 
+               </section>
+
               </div>
             </div>
 

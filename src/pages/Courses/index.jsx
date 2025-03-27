@@ -1,4 +1,9 @@
 /* eslint-disable no-unused-vars */
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -17,58 +22,75 @@ export default function Instructors() {
   const [close, setClose] = useState(false);
   const [selectedStar, setSelectedStar] = useState(0);
   const stars = [1, 2, 3, 4, 5];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(9);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
 
-  
-  const getAllCategories = async()=>{
+  const getAllCategories = async () => {
     try {
-      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/category/all`);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/category/all`
+      );
       setCategories(data?.courses);
       return data?.courses;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const { data: QCategories, isLoading:categoriesLoading, error:errorCategories } = useQuery({
-    queryKey: ["categories"], 
-    queryFn: getAllCategories, 
-    staleTime: 1000 * 60 * 5, 
+  const {
+    data: QCategories,
+    isLoading: categoriesLoading,
+    error: errorCategories,
+  } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategories,
+    staleTime: 1000 * 60 * 5,
   });
-  
-  useEffect(()=>{
-    getAllCategories();
-  } , []);
 
-  
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/all`);
+      const searchParam = searchQuery ? `&search=${searchQuery}` : "";
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/api/v1/course/all?page=${currentPage}&size=${pageSize}${searchParam}`
+      );
       setCourses(data?.courses);
       setOriginalUsers(data?.courses);
-      return data?.courses
+      setTotalPages(Math.ceil(data?.totalPages));
+      return data?.courses;
     } catch (error) {
       setCustomError(error.message);
     }
   };
 
-  const { data: Qcourses, isLoading, error } = useQuery({
-    queryKey: ["courses"],  
-    queryFn: getAllCourses,   
-    staleTime: 1000 * 60 * 5, 
+  const {
+    data: Qcourses,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["courses"],
+    queryFn: getAllCourses,
+    staleTime: 1000 * 60 * 5,
   });
 
   console.log(Qcourses);
 
-
   useEffect(() => {
     getAllCourses();
     setOriginalUsers(courses);
-  }, []);
+  }, [currentPage, pageSize, searchQuery]);
 
   const handleCategory = (item, e) => {
     let updatedCategories = [...selectedCategories];
     console.log(item);
-    
+
     if (e.target.checked) {
       updatedCategories.push(item);
     } else {
@@ -80,7 +102,7 @@ export default function Instructors() {
     if (updatedCategories.length > 0) {
       console.log(updatedCategories);
       console.log(originalUsers);
-      
+
       setCourses(
         originalUsers.filter((course) =>
           updatedCategories.includes(course.category?.title)
@@ -96,21 +118,9 @@ export default function Instructors() {
   };
 
   const handleSearchValue = (e) => {
-    if (e.target.value.length > 0) {
-      const searchFilteration = courses.filter((item) =>
-        item.title.toLowerCase().startsWith(e.target.value.toLowerCase())
-      );
-      if (searchFilteration.length > 0) {
-        setCustomError("");
-        setCourses(searchFilteration);
-      } else {
-        setCustomError("There are no instructors with this Name");
-        setCourses([]);
-      }
-    } else {
-      setCourses(originalUsers);
-      setCustomError("");
-    }
+    const value = e.target.value;
+    setSearchQuery(value);
+    setCurrentPage(1); // Reset to first page on new search
   };
 
   function handleSorting(e) {
@@ -125,12 +135,11 @@ export default function Instructors() {
 
   const handleLimitSorting = (e) => {
     if (e.target.value == "all") {
-      setCourses(originalUsers);
+      setPageSize(100);
     } else {
-      const results = [...originalUsers];
-      const data = results.slice(0, +e.target.value);
-      setCourses(data);
+      setPageSize(+e.target.value);
     }
+    setCurrentPage(1);
   };
 
   const getStars = (star) => {
@@ -138,22 +147,38 @@ export default function Instructors() {
     setSelectedStar(star);
   };
 
-  if (isLoading) return <div style={{ zIndex: 1 }} className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(255,255,255,1)]">
-  <Loader />
-  </div>;
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  if (isLoading)
+    return (
+      <div
+        style={{ zIndex: 1 }}
+        className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(255,255,255,1)]"
+      >
+        <Loader />
+      </div>
+    );
 
   if (error) return <p>Error: {error.message}</p>;
 
-  if (categoriesLoading) return <div style={{ zIndex: 1 }} className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(255,255,255,1)]">
-  <Loader />
-  </div>;
+  if (categoriesLoading)
+    return (
+      <div
+        style={{ zIndex: 1 }}
+        className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(255,255,255,1)]"
+      >
+        <Loader />
+      </div>
+    );
 
   if (errorCategories) return <p>Error: {errorCategories.message}</p>;
 
   return (
     <div className="flex w-[90%] mx-auto justify-between">
-      <Sidemenu 
-        categories={categories} 
+      <Sidemenu
+        categories={categories}
         originalUsers={originalUsers}
         onSearch={handleSearchValue}
         onCategoryChange={handleCategory}
@@ -179,11 +204,9 @@ export default function Instructors() {
                 <option value="all">All</option>
                 <option value="3">3</option>
                 <option value="6">6</option>
-                <option value="8">8</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="75">75</option>
-                <option value="100">100</option>
+                <option value="9">9</option>
+                <option value="12">12</option>
+                <option value="21">21</option>
               </select>
             </div>
 
@@ -209,13 +232,52 @@ export default function Instructors() {
         <div className="flex items-start flex-wrap gap-[1.2%]">
           {courses ? (
             courses.map((course) => (
-              <CourseCard course={course} customWidth={3} key={course._id} stars={stars} />
+              <CourseCard
+                course={course}
+                customWidth={3}
+                key={course._id}
+                stars={stars}
+              />
             ))
-
           ) : (
             <img src={noValueImg} className="w-[50%] mx-auto" alt="not found" />
           )}
         </div>
+
+        {/* Add pagination controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-3 py-1 rounded ${
+                  currentPage === index + 1
+                    ? "bg-[#a5158c] text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+            >
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

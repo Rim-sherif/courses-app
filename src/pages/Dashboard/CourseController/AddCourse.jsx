@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { courseSchema } from "../../../schemas/courseSchema";
 
 const AddCourse = () => {
-
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -84,7 +83,10 @@ const AddCourse = () => {
     if (e.key === "Enter" && e.target.value.trim()) {
       e.preventDefault();
       const newRequirement = e.target.value.trim();
-      form.setFieldValue("requirements", [...form.values.requirements, newRequirement]);
+      form.setFieldValue("requirements", [
+        ...form.values.requirements,
+        newRequirement,
+      ]);
       e.target.value = "";
     }
   };
@@ -93,7 +95,10 @@ const AddCourse = () => {
     if (e.key === "Enter" && e.target.value.trim()) {
       e.preventDefault();
       const newPoint = e.target.value.trim();
-      form.setFieldValue("learningPoints", [...form.values.learningPoints, newPoint]);
+      form.setFieldValue("learningPoints", [
+        ...form.values.learningPoints,
+        newPoint,
+      ]);
       e.target.value = "";
     }
   };
@@ -101,9 +106,13 @@ const AddCourse = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-2">
       <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden p-5">
-        <h3 className="text-2xl font-bold text-gray-900 mb-8">Create New Course</h3>
+        <h3 className="text-2xl font-bold text-gray-900 mb-8">
+          Create New Course
+        </h3>
         {error && (
-          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">{error}</div>
+          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
         )}
         {success && (
           <div className="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
@@ -202,13 +211,17 @@ const AddCourse = () => {
                               id="file-upload"
                               type="file"
                               accept="image/*"
-                              onChange={(e) => setFieldValue("image", e.target.files[0])}
+                              onChange={(e) =>
+                                setFieldValue("image", e.target.files[0])
+                              }
                               className="sr-only"
                             />
                           </label>
                           <p className="pl-1">or drag and drop</p>
                         </div>
-                        <p className="text-xs text-gray-500">PNG, JPG up to 2MB</p>
+                        <p className="text-xs text-gray-500">
+                          PNG, JPG up to 2MB
+                        </p>
                         {values.image && (
                           <p className="text-sm text-gray-900 mt-2">
                             {values.image.name}
@@ -246,7 +259,7 @@ const AddCourse = () => {
                       >
                         <option value="free">Free</option>
                         <option value="paid">Paid</option>
-                        <option value="prime">Prime</option>
+                        {/* <option value="prime">Prime</option> */}
                       </Field>
                       <ErrorMessage
                         name="access_type"
@@ -307,7 +320,9 @@ const AddCourse = () => {
                   Requirements
                 </label>
                 <textarea
-                  onKeyDown={(e) => handleRequirementKeyDown(e, { setFieldValue, values })}
+                  onKeyDown={(e) =>
+                    handleRequirementKeyDown(e, { setFieldValue, values })
+                  }
                   className="w-full px-4 py-2 border border-[#410445] rounded-lg"
                   placeholder="Type requirement and press Enter"
                 />
@@ -318,12 +333,17 @@ const AddCourse = () => {
                 />
                 <ul className="list-disc pl-5 mt-2">
                   {values.requirements.map((req, index) => (
-                    <li key={index} className="text-sm text-gray-600 flex justify-between items-center">
+                    <li
+                      key={index}
+                      className="text-sm text-gray-600 flex justify-between items-center"
+                    >
                       <span>{req}</span>
                       <button
                         type="button"
                         onClick={() => {
-                          const newReqs = values.requirements.filter((_, i) => i !== index);
+                          const newReqs = values.requirements.filter(
+                            (_, i) => i !== index
+                          );
                           setFieldValue("requirements", newReqs);
                         }}
                         className="text-red-500 hover:text-red-700 ml-2"
@@ -340,7 +360,9 @@ const AddCourse = () => {
                   Learning Points
                 </label>
                 <textarea
-                  onKeyDown={(e) => handleLearningPointKeyDown(e, { setFieldValue, values })}
+                  onKeyDown={(e) =>
+                    handleLearningPointKeyDown(e, { setFieldValue, values })
+                  }
                   className="w-full px-4 py-2 border border-[#410445] rounded-lg"
                   placeholder="Type learning point and press Enter"
                 />
@@ -351,13 +373,18 @@ const AddCourse = () => {
                 />
                 <ul className="list-disc pl-5 mt-2">
                   {values.learningPoints.map((point, index) => (
-                    <li key={index} className="text-sm text-gray-600 flex justify-between items-center">
+                    <li
+                      key={index}
+                      className="text-sm text-gray-600 flex justify-between items-center"
+                    >
                       <i className="fa-solid fa-dot"></i>
                       <span>{point}</span>
                       <button
                         type="button"
                         onClick={() => {
-                          const newPoints = values.learningPoints.filter((_, i) => i !== index);
+                          const newPoints = values.learningPoints.filter(
+                            (_, i) => i !== index
+                          );
                           setFieldValue("learningPoints", newPoints);
                         }}
                         className="text-red-500 hover:text-red-700 ml-2"

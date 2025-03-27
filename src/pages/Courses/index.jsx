@@ -26,6 +26,7 @@ export default function Instructors() {
   const [pageSize, setPageSize] = useState(9);
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPages, setTotalPages] = useState(1);
+  const [sortQuery, setSortQuery] = useState("");
 
   const getAllCategories = async () => {
     try {
@@ -56,14 +57,16 @@ export default function Instructors() {
   const getAllCourses = async () => {
     try {
       const searchParam = searchQuery ? `&search=${searchQuery}` : "";
+      const sortParams = sortQuery ? `&sort=${sortQuery}` : "";
+      const selectParams = `&select=title,price,rating,thumbnail,instructor,category`;
       const { data } = await axios.get(
         `${
           import.meta.env.VITE_BASE_URL
-        }/api/v1/course/all?page=${currentPage}&size=${pageSize}${searchParam}`
+        }/api/v1/course/all?page=${currentPage}&size=${pageSize}${searchParam}${sortParams}${selectParams}`
       );
       setCourses(data?.courses);
       setOriginalUsers(data?.courses);
-      setTotalPages(Math.ceil(data?.totalPages));
+      setTotalPages(data?.totalPages || 6);
       return data?.courses;
     } catch (error) {
       setCustomError(error.message);
@@ -80,12 +83,10 @@ export default function Instructors() {
     staleTime: 1000 * 60 * 5,
   });
 
-  console.log(Qcourses);
-
   useEffect(() => {
     getAllCourses();
     setOriginalUsers(courses);
-  }, [currentPage, pageSize, searchQuery]);
+  }, [currentPage, pageSize, searchQuery, sortQuery]);
 
   const handleCategory = (item, e) => {
     let updatedCategories = [...selectedCategories];
@@ -125,11 +126,15 @@ export default function Instructors() {
 
   function handleSorting(e) {
     if (e.target.value == "Asc") {
-      const data = [...courses].sort((a, b) => a.title.localeCompare(b.title));
-      setCourses(data);
+      setSortQuery("title:asc");
+      setCurrentPage(1);
+      // const data = [...courses].sort((a, b) => a.title.localeCompare(b.title));
+      // setCourses(data);
     } else {
-      const data = [...courses].sort((a, b) => b.title.localeCompare(a.title));
-      setCourses(data);
+      setSortQuery("title:desc");
+      setCurrentPage(1);
+      // const data = [...courses].sort((a, b) => b.title.localeCompare(a.title));
+      // setCourses(data);
     }
   }
 

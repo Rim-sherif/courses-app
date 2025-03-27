@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { CartCard } from '../../components/cartCard';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CourseItem from '../../components/CourseItem';
+import CourseCard from '../../components/courseCard/CourseCard';
 
 export default function Cart() {
     const [error , setError] = useState("");
@@ -17,7 +19,9 @@ export default function Cart() {
     const [courses , setCourses] = useState([]);
     const [total , setTotal] = useState(0);
     const dispatch = useDispatch();
-    
+    const [ coursesBasedCategory , setCoursesBasedCategory] = useState([]);
+    const stars = [1, 2, 3, 4, 5];
+
     const getCartCourses = async () => {
         try {
         setIsLoading(true);
@@ -25,7 +29,6 @@ export default function Cart() {
             `${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/allCourses`
           , {withCredentials: true});
           setCourses(data.data);
-          console.log(data);
           setIsLoading(false);
           setError("");
         } catch (error) {
@@ -39,23 +42,39 @@ export default function Cart() {
         }
     };
 
-    useEffect(()=>{
+    useEffect(()=>{      
         getCartCourses();
     },[])
-    let count = 0;
     useEffect(()=>{
-      console.log(courses);
-      
        if(courses.length > 0){
           const totalPrice = courses.map(course =>{
             return course.courseId?.price;
           });
           console.log(totalPrice);
-          
           setTotal(totalPrice.reduce((acc,initVal)=>acc+initVal));
+          getCoursesBasedCategory()
         }
     },[courses])
 
+    const getCoursesBasedCategory = async()=>{
+      try {
+        if(courses.length > 0){
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/getCoursesBasedCategory?category=${courses[0].courseId.categoryId.title}&category=${courses[1].courseId.categoryId.title}`
+          , {withCredentials: true});
+          const shuffledData = data.data.sort(() => Math.random() - 0.5).slice(0, 4);
+          setCoursesBasedCategory(shuffledData);
+        }
+        
+        } catch (error) {
+            if(error?.response?.data?.message){
+                setError(error?.response?.data?.message);
+            }
+            toast.error(error.message);
+        }
+    }
+
+  
     const removeFromWishlist = async(courseId)=>{
         try {
           const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/remove/${courseId}` , {withCredentials: true});
@@ -118,12 +137,21 @@ export default function Cart() {
       
       {courses && courses?.length > 0 &&
         <div>
-            <h2 className='text-2xl font-bold!'>You might also like</h2>
-            
-
+            <h2 className='text-2xl mb-5 font-bold!'>You might also like</h2>
+            <div>
+              {coursesBasedCategory && coursesBasedCategory?.length > 0 ? 
+                  <div className='flex flex-wrap my-10 gap-2'>
+                      {coursesBasedCategory.map((course)=><CourseCard
+                                      course={course}
+                                      customWidth={4}
+                                      key={course._id}
+                                      stars={stars}
+                                    />)}
+                  </div>
+              : <img className='w-[30%] mx-auto' src={noValueImg} alt="no courses founded" />}
+            </div>
         </div>
       }
-      
 
     </div>
   )

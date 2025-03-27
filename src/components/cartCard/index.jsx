@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 export const CartCard = ({ course , removeFromCart }) => {
-    console.log(course);
     
   return (
     <div className="flex items-center mb-3 bg-white rounded-md border border-gray-200 p-4 gap-5">

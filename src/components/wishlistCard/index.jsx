@@ -9,13 +9,14 @@ import { cartIncrement , cartDecrement } from "../../redux/reducers/cartCount";
 export const WishlistCard = ({ course , removeFromWishlist }) => {
   const dispatch = useDispatch();
   const [cart , setCart] = useState(false);
-
+  console.log(course);
+  
   const addToCart = async(courseId)=>{
     try {
       const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/add/${courseId}` , {} , {withCredentials: true});
-      console.log(data);
       setCart(true);
       dispatch(cartIncrement());
+      // getCourseAddedCart(courseId);
       toast.success(data.message , { autoClose: 500 });
     } catch (error) {
       console.log(error);
@@ -39,6 +40,24 @@ export const WishlistCard = ({ course , removeFromWishlist }) => {
       toast.error(error.message , { autoClose: 500 });
     }
   }
+
+  const getCourseAddedCart = async(courseId)=>{
+    try {
+      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/getCourseAddedCart/${courseId}` , {withCredentials: true});
+      console.log(data.data);
+      
+      setCart(data.data.isCartAdded);
+      // dispatch(cartDecrement());
+      // toast.success(data.message , { autoClose: 500 });
+    } catch (error) {
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , { autoClose: 500 });
+      }
+      toast.error(error.message , { autoClose: 500 });
+    }
+  }
+  
+
 
   return (
     <>

@@ -58,7 +58,7 @@ export default function Instructors() {
     try {
       const searchParam = searchQuery ? `&search=${searchQuery}` : "";
       const sortParams = sortQuery ? `&sort=${sortQuery}` : "";
-      const selectParams = `&select=title,price,rating,thumbnail,instructor,category`;
+      const selectParams = `&select=title,price,rating,access_type,thumbnail,instructor,category`;
       const { data } = await axios.get(
         `${
           import.meta.env.VITE_BASE_URL

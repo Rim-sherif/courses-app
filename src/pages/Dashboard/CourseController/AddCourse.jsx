@@ -115,7 +115,7 @@ Object.keys(courseData).forEach(key => {
     });
   } else if (key === 'image') {
     if (courseData.image) {
-      formData.append('thumbnail', courseData.image);
+      formData.append('ur', courseData.image);
     }
   } else {
     formData.append(key, courseData[key]);

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { WishlistCard } from '../../components/wishlistCard';
 import noValueImg from "/no-value.png";
 import Loader from '../../components/Loader';
-import { decrement } from '../../redux/reducers/cartCount';
+import { cartDecrement } from '../../redux/reducers/cartCount';
 import { useDispatch } from 'react-redux';
 import { CartCard } from '../../components/cartCard';
 
@@ -44,7 +44,7 @@ export default function Cart() {
         try {
           const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/remove/${courseId}` , {withCredentials: true});
           toast.success(data.message , { autoClose: 500 });
-          dispatch(decrement());
+          dispatch(cartDecrement());
           setCourses(prev=>{
             const items = prev.filter(item=>item.courseId._id != courseId)
             return items

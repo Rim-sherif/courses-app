@@ -9,16 +9,16 @@ const cartReducer = createSlice({
             state=action.payload;
             return state
         },
-        increment: (state , action)=>{
+        cartIncrement: (state , action)=>{
             state+=1;
             return state
         },
-        decrement: (state , action)=>{
+        cartDecrement: (state , action)=>{
             state-=1;
             return state
         },
     }
 })
 
-export const {increment , decrement , setCountCart} = cartReducer.actions;
+export const {cartIncrement , cartDecrement , setCountCart} = cartReducer.actions;
 export default cartReducer.reducer;

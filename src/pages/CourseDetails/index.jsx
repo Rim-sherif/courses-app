@@ -4,7 +4,6 @@ import {
   faCheck,
   faDesktop,
   faHeart,
-  // faHeart,
   faMobile,
   faNewspaper,
   faPlay,
@@ -21,7 +20,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { decrement, increment } from "../../redux/reducers/cartCount";
+import { cartDecrement, cartIncrement} from "../../redux/reducers/cartCount";
+import { decrement, increment} from "../../redux/reducers/wishlistCount";
 
 export default function CourseDetails() {
   const { id } = useParams();
@@ -91,12 +91,21 @@ export default function CourseDetails() {
     }
   }
 
+  const getCourseByIdCart = async()=>{
+    try {
+      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/getCourse/${id}` , {withCredentials: true});
+      setCart(true)
+    } catch (error) {
+      
+    }
+  }
+
   const addToCart = async(courseId)=>{
     try {
-      const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/add/${courseId}` , {} , {withCredentials: true});
+      const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/add/${courseId}` , {} , {withCredentials: true});
       console.log(data);
       setCart(true);
-      dispatch(increment());
+      dispatch(cartIncrement());
       toast.success(data.message , { autoClose: 500 });
     } catch (error) {
       console.log(error);
@@ -109,9 +118,9 @@ export default function CourseDetails() {
 
   const removeFromCart = async(courseId)=>{
     try {
-      const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/remove/${courseId}` , {withCredentials: true});
+      const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/remove/${courseId}` , {withCredentials: true});
       setCart(false);
-      dispatch(decrement());
+      dispatch(cartDecrement());
       toast.success(data.message , { autoClose: 500 });
     } catch (error) {
       if(error?.response?.data?.message){
@@ -122,6 +131,7 @@ export default function CourseDetails() {
   }
 
   useEffect(() => {
+    getCourseByIdCart();
     getCourseDetails();
     getCourseById();
   }, []);

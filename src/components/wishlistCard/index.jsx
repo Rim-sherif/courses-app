@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { decrement, increment } from "../../redux/reducers/cartCount";
+import { cartIncrement , cartDecrement } from "../../redux/reducers/cartCount";
 
 export const WishlistCard = ({ course , removeFromWishlist }) => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ export const WishlistCard = ({ course , removeFromWishlist }) => {
       const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/add/${courseId}` , {} , {withCredentials: true});
       console.log(data);
       setCart(true);
-      dispatch(increment());
+      dispatch(cartIncrement());
       toast.success(data.message , { autoClose: 500 });
     } catch (error) {
       console.log(error);
@@ -30,7 +30,7 @@ export const WishlistCard = ({ course , removeFromWishlist }) => {
     try {
       const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/remove/${courseId}` , {withCredentials: true});
       setCart(false);
-      dispatch(decrement());
+      dispatch(cartDecrement());
       toast.success(data.message , { autoClose: 500 });
     } catch (error) {
       if(error?.response?.data?.message){
@@ -49,7 +49,7 @@ export const WishlistCard = ({ course , removeFromWishlist }) => {
             className="w-full h-[250px] object-cover"
           />
         
-            <button className="absolute top-[20px] right-[20px] w-[40px] h-[40px] bg-red-400 text-white rounded-full hover:bg-red-600 cursor-pointer transition"
+            <button className="absolute top-[10px] right-[10px] w-[40px] h-[40px] text-gray-100 text-xl rounded-full hover:bg-red-600 cursor-pointer transition"
             onClick={() => removeFromWishlist(course.courseId._id)}>
                 <FontAwesomeIcon icon={faHeart} />
             </button>

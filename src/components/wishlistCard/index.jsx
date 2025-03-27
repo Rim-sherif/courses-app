@@ -74,7 +74,7 @@ export const WishlistCard = ({ course , removeFromWishlist }) => {
             </button>
         
           <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900">{course.courseId.title}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{course.courseId.title.split(" ").slice(0 , 4).join(" ")}</h3>
             <p className="text-sm text-gray-600 mt-2">{course.courseId.description.split(" ").slice(0 , 10).join(" ")}</p>
             <div className="mt-4 flex justify-between items-center">
               <span className="text-primary font-bold">${course.courseId.price}</span>

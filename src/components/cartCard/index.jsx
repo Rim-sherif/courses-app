@@ -8,28 +8,27 @@ export const CartCard = ({ course , removeFromCart }) => {
     console.log(course);
     
   return (
-    <>
-        <div className=" max-w-sm relative bg-white shadow-lg rounded-[5px] overflow-hidden border border-gray-200">
-          <img
-            src={course.courseId.thumbnail}
-            alt={course.courseId.title}
-            className="w-full h-[250px] object-cover"
-          />
-        
-            <button className="absolute bottom-[20px] right-[20px] w-[40px] h-[40px] bg-red-400 text-white rounded-full hover:bg-red-600 cursor-pointer transition"
-            onClick={() => removeFromCart(course.courseId._id)}>
-                <FontAwesomeIcon icon={faTrash} />
-            </button>
-        
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900">{course.courseId.title}</h3>
-            <p className="text-sm text-gray-600 mt-2">{course.courseId.description.split(" ").slice(0 , 15).join(" ")}</p>
-            <div className="mt-4 flex justify-between items-center">
-              <span className="text-primary font-bold">${course.courseId.price}</span>
-            </div>
-          </div>
-        </div>
-    </>
+    <div className="flex items-center mb-3 bg-white rounded-md border border-gray-200 p-4 gap-5">
+      <img
+        src={course.courseId.thumbnail}
+        alt={course.courseId.title}
+        className="w-[120px] h-[80px] object-cover rounded-md"
+      />
+
+      <div className="flex-1">
+        <h3 className="text-xl font-semibold mb-1! text-gray-900">{course.courseId.title}</h3>
+        <p className="text-sm text-gray-600 font-semibold!">By {course.courseId.instructorId.firstName || "Unknown"} {course.courseId.instructorId.lastName}</p>
+      </div>
+
+      <span className="text-lg mr-5 font-bold text-primary">E£{course.courseId.price}</span>
+
+      <button
+        className="text-red-500 cursor-pointer hover:text-red-700 transition"
+        onClick={() => removeFromCart(course.courseId._id)}>
+        <FontAwesomeIcon icon={faTrash} size="lg" />
+      </button>
+  </div>
+
   );
 };
 

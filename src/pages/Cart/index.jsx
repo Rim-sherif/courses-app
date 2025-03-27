@@ -48,9 +48,8 @@ export default function Cart() {
     useEffect(()=>{
        if(courses.length > 0){
           const totalPrice = courses.map(course =>{
-            return course.courseId?.price;
+            return course?.courseId?.price;
           });
-          console.log(totalPrice);
           setTotal(totalPrice.reduce((acc,initVal)=>acc+initVal));
           getCoursesBasedCategory()
         }
@@ -60,7 +59,7 @@ export default function Cart() {
       try {
         if(courses.length > 0){
           const { data } = await axios.get(
-            `${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/getCoursesBasedCategory?category=${courses[0].courseId.categoryId.title}&category=${courses[1].courseId.categoryId.title}`
+            `${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/getCoursesBasedCategory?category=${courses[0]?.courseId.categoryId.title}&category=${courses[1]?.courseId.categoryId.title}`
           , {withCredentials: true});
           const shuffledData = data.data.sort(() => Math.random() - 0.5).slice(0, 4);
           setCoursesBasedCategory(shuffledData);

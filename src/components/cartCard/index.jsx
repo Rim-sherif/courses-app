@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
-import axios from "axios";
 
 export const CartCard = ({ course , removeFromCart }) => {
     

@@ -1,24 +1,21 @@
 import {
-  faBook,
-  faCertificate,
   faComment,
   faCommentDots,
-  faGraduationCap,
   faPaperPlane,
   faTimes,
-  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import img from "/learning-concept-illustration.png";
-import Featuredinstructors from "../../components/Featuredinstractors";
+import { useFormik } from "formik";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import * as Yup from "yup";
 import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg";
 import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 import instr8 from "../../assets/images/vicky-hladynets-C8Ta0gwPbQg-unsplash.jpg";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import Featuredinstructors from "../../components/Featuredinstractors";
+import img from "/learning-concept-illustration.png";
 
 const fetchCategories = async () => {
   const response = await axios.get(
@@ -35,6 +32,7 @@ const Home = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
+  const [formStatus, setFormStatus] = useState({ message: '', type: '' }); // Add this state
 
   const {
     data: categories,
@@ -96,6 +94,52 @@ const Home = () => {
       }
     }
   };
+
+  const contactFormSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(3, "Name must be at least 3 characters")
+      .max(50, "Name must be less than 50 characters")
+      .required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    subject: Yup.string()
+      .min(5, "Subject must be at least 5 characters")
+      .max(100, "Subject must be less than 100 characters")
+      .required("Subject is required"),
+    message: Yup.string()
+      .min(10, "Message must be at least 10 characters")
+      .max(1000, "Message must be less than 1000 characters")
+      .required("Message is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    validationSchema: contactFormSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/v1/custoersupport/tickets-without-auth`,
+          values
+        );
+
+        if (response.data.success) {
+          setFormStatus({ message: "Message sent successfully!", type: "success" });
+          resetForm();
+        } else {
+          setFormStatus({ message: "Failed to send message", type: "error" });
+        }
+      } catch (error) {
+        setFormStatus({ message: "Failed to send message", type: "error" });
+        console.error("Error sending message:", error);
+      }
+    },
+  });
 
   useEffect(() => {
     scrollToBottom();
@@ -232,7 +276,7 @@ const Home = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-black/70 to-black/40 z-10" />
                   {/* Category title */}
                   <h3 className="relative text-white text-lg font-semibold capitalize z-20">
-                    {category.title }
+                    {category.title}
                   </h3>
                 </Link>
               ))}
@@ -353,204 +397,264 @@ const Home = () => {
       </section>
 
       {/* Contact Us Section */}
-      <section className="py-20 bg-[#410445] relative overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
-        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-white relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
-            Contact Us
-          </h2>
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 mt-6 ">
-            <div className="space-y-8 text-white">
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Get in Touch</h3>
-                <p className="text-gray-200 leading-relaxed">
-                  Have questions or need support? Our team is here to help you
-                  succeed. Reach out for course guidance, technical assistance,
-                  or partnership opportunities.
-                </p>
+        <section className="py-20 bg-[#410445] relative overflow-hidden">
+          <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
+          <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold text-center text-white relative after:content-[''] after:absolute after:bottom-[-12px] after:left-1/2 after:-translate-x-1/2 after:w-24 after:h-1 after:bg-white">
+          Contact Us
+            </h2>
+            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 mt-6 py-5 ">
+          <div className="space-y-8 text-white">
+            <div>
+              <h3 className="text-2xl font-bold mb-4">Get in Touch</h3>
+              <p className="text-gray-200 leading-relaxed">
+            Have questions or need support? Our team is here to help you
+            succeed. Reach out for course guidance, technical assistance,
+            or partnership opportunities.
+              </p>
+            </div>
+            <div className="space-y-6">
+              <div className="flex items-center space-x-4">
+            <div className="p-3 bg-white/10 rounded-lg">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p className="font-semibold">+1 (555) 123-4567</p>
+              <p className="text-gray-200 text-sm">
+                Mon-Fri, 9am-5pm EST
+              </p>
+            </div>
               </div>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="p-3 bg-white/10 rounded-lg">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-semibold">+1 (555) 123-4567</p>
-                    <p className="text-gray-200 text-sm">
-                      Mon-Fri, 9am-5pm EST
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="p-3 bg-white/10 rounded-lg">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-semibold">support@eduguide.com</p>
-                    <p className="text-gray-200 text-sm">24/7 Support Center</p>
-                  </div>
-                </div>
-              </div>
-              <div className="pt-8 border-t border-white/20">
-                <h4 className="text-lg font-bold mb-4">Follow Us</h4>
-                <div className="flex space-x-4">
-                  <a
-                    href="#"
-                    className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-                  >
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-[#1877F2] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
-                    aria-label="Visit our Facebook page"
-                  >
-                    <svg
-                      className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-gradient-to-r hover:from-[#405DE6] hover:via-[#C13584] hover:to-[#FFDC80] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
-                    aria-label="Visit our Instagram profile"
-                  >
-                    <svg
-                      className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="https://tiktok.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-[#000000] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
-                    aria-label="Visit our TikTok profile"
-                  >
-                    <svg
-                      className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M19.589 6.686a4.793 4.793 0 01-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 01-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 013.183-4.51v-3.5a6.329 6.329 0 00-5.394 10.692 6.33 6.33 0 0010.857-4.424V8.687a8.182 8.182 0 004.773 1.526V6.79a4.831 4.831 0 01-1.003-.104z" />
-                    </svg>
-                  </a>
-                </div>
+              <div className="flex items-center space-x-4">
+            <div className="p-3 bg-white/10 rounded-lg">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p className="font-semibold">support@eduguide.com</p>
+              <p className="text-gray-200 text-sm">24/7 Support Center</p>
+            </div>
               </div>
             </div>
-            <div className="bg-white rounded-2xl shadow-2xl p-8">
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="name"
-                      className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor="name"
-                      className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
-                    >
-                      Full Name
-                    </label>
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      id="email"
-                      className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor="email"
-                      className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
-                    >
-                      Email Address
-                    </label>
-                  </div>
-                </div>
-                <div className="relative">
-                  <textarea
-                    id="message"
-                    rows="4"
-                    className="peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445]"
-                    placeholder=" "
-                  ></textarea>
-                  <label
-                    htmlFor="message"
-                    className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
-                  >
-                    Your Message
-                  </label>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-[#410445] text-white px-8 py-4 rounded-lg hover:bg-[#A5158C] transition-all transform hover:scale-[1.02]"
-                >
-                  Send Message
-                  <svg
-                    className="w-5 h-5 inline-block ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                    />
-                  </svg>
-                </button>
-              </form>
+            <div className="pt-8 border-t border-white/20">
+              <h4 className="text-lg font-bold mb-4">Follow Us</h4>
+              <div className="flex space-x-4">
+            <a
+              href="#"
+              className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+              </svg>
+            </a>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-[#1877F2] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
+              aria-label="Visit our Facebook page"
+            >
+              <svg
+                className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-gradient-to-r hover:from-[#405DE6] hover:via-[#C13584] hover:to-[#FFDC80] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
+              aria-label="Visit our Instagram profile"
+            >
+              <svg
+                className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+              </svg>
+            </a>
+            <a
+              href="https://tiktok.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-2 md:p-3 bg-white/10 rounded-full hover:bg-[#000000] transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#410445]"
+              aria-label="Visit our TikTok profile"
+            >
+              <svg
+                className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-95 transition-transform"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M19.589 6.686a4.793 4.793 0 01-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 01-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 013.183-4.51v-3.5a6.329 6.329 0 00-5.394 10.692 6.33 6.33 0 0010.857-4.424V8.687a8.182 8.182 0 004.773 1.526V6.79a4.831 4.831 0 01-1.003-.104z" />
+              </svg>
+            </a>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+          <div className="bg-white rounded-2xl shadow-2xl p-8">
+            <form onSubmit={formik.handleSubmit} className="space-y-6">
+            {formStatus.message && (
+              <div className={`text-center p-2 rounded ${
+                formStatus.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              }`}>
+                {formStatus.message}
+              </div>
+            )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             
+            <div className="relative">
+              <input
+                type="text"
+                id="name"
+                {...formik.getFieldProps("name")}
+                className={`peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445] ${
+                  formik.touched.name && formik.errors.name
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                placeholder=" "
+              />
+              <label
+                htmlFor="name"
+                className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
+              >
+                Full Name
+              </label>
+              {formik.touched.name && formik.errors.name && (
+                <div className="text-red-500 text-xs mt-1">{formik.errors.name}</div>
+              )}
+            </div>
+            <div className="relative">
+              <input
+                type="email"
+                id="email"
+                {...formik.getFieldProps("email")}
+                className={`peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445] ${
+                  formik.touched.email && formik.errors.email
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                placeholder=" "
+              />
+              <label
+                htmlFor="email"
+                className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
+              >
+                Email Address
+              </label>
+              {formik.touched.email && formik.errors.email && (
+                <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>
+              )}
+            </div>
+              </div>
+              <div className="relative">
+            <input
+              type="text"
+              id="subject"
+              {...formik.getFieldProps("subject")}
+              className={`peer pt-8 pb-2 px-4 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445] ${
+                formik.touched.subject && formik.errors.subject
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
+              placeholder=" "
+            />
+            <label
+              htmlFor="subject"
+              className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
+            >
+              Subject
+            </label>
+            {formik.touched.subject && formik.errors.subject && (
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.subject}
+              </div>
+            )}
+              </div>
+              <div className="relative">
+            <textarea
+              id="message"
+              {...formik.getFieldProps("message")}
+              rows="4"
+              className={`peer pt-8 pb-2 px-4 min-h-[250px] w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#410445] ${
+                formik.touched.message && formik.errors.message
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
+              placeholder=" "
+            ></textarea>
+            <label
+              htmlFor="message"
+              className="absolute left-4 top-2 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-sm transition-all"
+            >
+              Your Message
+            </label>
+            {formik.touched.message && formik.errors.message && (
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.message}
+              </div>
+            )}
+              </div>
+        
+              <button
+            type="submit"
+            disabled={formik.isSubmitting}
+            className="w-full bg-[#410445] text-white px-8 py-4 rounded-lg hover:bg-[#A5158C] transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+            {formik.isSubmitting ? "Sending..." : "Send Message"}
+            <svg
+              className="w-5 h-5 inline-block ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+              </button>
+            </form>
+          </div>
+            </div>
+          </div>
+        </section>
 
-      {/* Chat Button and Modal */}
+        {/* Chat Button and Modal */}
       <button
         onClick={() => setShowChatModal(true)}
         className="fixed bottom-8 right-8 p-4 bg-[#A5158C] text-white rounded-full shadow-lg hover:bg-[#A5158C] transition-colors duration-200 z-50"

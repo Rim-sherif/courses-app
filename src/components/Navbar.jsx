@@ -1,4 +1,5 @@
 import {
+  faBagShopping,
   faBars,
   faBook,
   faChartLine,
@@ -20,6 +21,10 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import profile from "/profile.png";
+import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons"; // Correct import
+import axios from "axios";
+import { setCount } from "../redux/reducers/wishlistCount";
+import { setCountCart } from "../redux/reducers/cartCount";
 
 const fetchCategories = async () => {
   const response = await fetch(
@@ -44,6 +49,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const categoriesRef = useRef(null);
+  const wishlistCount = useSelector(store => store.wishlistCount);
+  const cartCount = useSelector(store => store.cartCount);
   
   // Fetch categories using useQuery
   const {
@@ -54,6 +61,36 @@ const Navbar = () => {
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });
+
+
+  const getwishlistCourses = async () => {
+    try {
+    // setIsLoading(true);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/allCourses`
+      , {withCredentials: true});
+      dispatch(setCount(data.data.length))
+    } catch (error) {
+        toast.error(error.message);
+    }
+  };
+  const getCartCourses = async () => {
+    try {
+    // setIsLoading(true);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/allCourses`
+      , {withCredentials: true});
+      dispatch(setCountCart(data.data.length))
+    } catch (error) {
+        toast.error(error.message);
+    }
+  };
+
+  useEffect(()=>{
+    getCartCourses();
+    getwishlistCourses()
+  },[])
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -151,7 +188,10 @@ const Navbar = () => {
                 className="text-gray-700 cursor-pointer hover:text-[#A5158C] flex items-center"
               >
                 Categories
-                <FontAwesomeIcon icon={faChevronDown} className="ml-2 text-xs" />
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="ml-2 text-xs"
+                />
               </button>
               {isCategoriesOpen && (
                 <div
@@ -161,25 +201,31 @@ const Navbar = () => {
                   {isLoading ? (
                     <div className="px-5 py-3 text-gray-500">Loading...</div>
                   ) : error ? (
-                    <div className="px-5 py-3 text-red-500">Error loading categories</div>
+                    <div className="px-5 py-3 text-red-500">
+                      Error loading categories
+                    </div>
                   ) : (
-                    categories.slice(0, 3).map((category) => ( // Slice here
-                      <NavLink
-                        key={category._id}
-                        to={`/category/${category._id}`}
-                        className="flex items-center px-5 py-3 hover:bg-[#410445]/5 group transition-colors"
-                        role="menuitem"
-                        onClick={() => setIsCategoriesOpen(false)} // Close on click
-                      >
-                        <FontAwesomeIcon
-                          icon={faCode}
-                          className="w-5 h-5 mr-3 text-[#410445] group-hover:text-[#A5158C] transition-colors"
-                        />
-                        <span className="text-gray-700 group-hover:text-[#410445] font-medium transition-colors">
-                          {category.title}
-                        </span>
-                      </NavLink>
-                    ))
+                    categories.slice(0, 3).map(
+                      (
+                        category // Slice here
+                      ) => (
+                        <NavLink
+                          key={category._id}
+                          to={`/category/${category._id}`}
+                          className="flex items-center px-5 py-3 hover:bg-[#410445]/5 group transition-colors"
+                          role="menuitem"
+                          onClick={() => setIsCategoriesOpen(false)} // Close on click
+                        >
+                          <FontAwesomeIcon
+                            icon={faCode}
+                            className="w-5 h-5 mr-3 text-[#410445] group-hover:text-[#A5158C] transition-colors"
+                          />
+                          <span className="text-gray-700 group-hover:text-[#410445] font-medium transition-colors">
+                            {category.title}
+                          </span>
+                        </NavLink>
+                      )
+                    )
                   )}
                   <div className="border-t border-gray-100 mt-2 pt-2">
                     <NavLink
@@ -207,16 +253,35 @@ const Navbar = () => {
 
             <NavLink
               to="/instructors"
-              className="text-gray-700 hover:text-[#A5158C]"
-            >
+              className="text-gray-700 hover:text-[#A5158C]">
               Instructors
+            </NavLink>
+
+            <NavLink
+              to="/wishlist"
+              className="text-gray-700 text-[20px] relative hover:text-[#A5158C]"
+            >
+              <FontAwesomeIcon icon={farHeart} />
+              <span className="absolute top-[-10px] right-[-10px] bg-[#A5158C] text-[12px] text-white w-[22px] h-[22px] font-bold mx-auto text-center rounded-full">
+                {wishlistCount}
+              </span>
+            </NavLink>
+
+            <NavLink
+              to="/cart"
+              className="text-gray-700 text-[20px] relative hover:text-[#A5158C]"
+            >
+              <FontAwesomeIcon icon="fa-solid fa-bag-shopping" />
+              <FontAwesomeIcon icon={faBagShopping} />
+              <span className="absolute top-[-10px] right-[-10px] bg-[#A5158C] text-[12px] text-white w-[22px] h-[22px] font-bold mx-auto text-center rounded-full">
+                {cartCount}
+              </span>
             </NavLink>
 
             <div className="relative">
               <button
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="text-gray-700 hover:text-[#A5158C] flex items-center"
-              >
+                className="text-gray-700 hover:text-[#A5158C] flex items-center">
                 <FontAwesomeIcon icon={faGlobe} className="text-xl" />
               </button>
               {isLangOpen && (

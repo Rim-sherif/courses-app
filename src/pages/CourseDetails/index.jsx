@@ -4,7 +4,6 @@ import {
   faCheck,
   faDesktop,
   faHeart,
-  // faHeart,
   faMobile,
   faNewspaper,
   faPlay,
@@ -20,11 +19,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { cartDecrement, cartIncrement} from "../../redux/reducers/cartCount";
+import { decrement, increment} from "../../redux/reducers/wishlistCount";
 
 export default function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState({});
   const [wishlist , setWishlist] = useState(false);
+  const [cart , setCart] = useState(false);
+  const dispatch = useDispatch();
   const stars = [1, 2, 3, 4, 5];
   const whatLearn = [
     "Single responsibility principle",
@@ -53,24 +57,24 @@ export default function CourseDetails() {
       const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/add/${courseId}` , {} , {withCredentials: true});
       console.log(data);
       setWishlist(true);
+      dispatch(increment());
       toast.success(data.message , { autoClose: 500 });
     } catch (error) {
       console.log(error);
       if(error?.response?.data?.message){
         toast.error(error?.response?.data?.message , { autoClose: 500 });
       }
-      toast.error(data.message);
+      toast.error(error.message);
     }
   }
 
   const removeFromWishlist = async(courseId)=>{
     try {
       const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/remove/${courseId}` , {withCredentials: true});
-      console.log(data);
       setWishlist(false);
+      dispatch(decrement());
       toast.success(data.message , { autoClose: 500 });
     } catch (error) {
-      console.log(error);
       if(error?.response?.data?.message){
         toast.error(error?.response?.data?.message , { autoClose: 500 });
       }
@@ -87,7 +91,47 @@ export default function CourseDetails() {
     }
   }
 
+  const getCourseByIdCart = async()=>{
+    try {
+      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/getCourse/${id}` , {withCredentials: true});
+      setCart(true)
+    } catch (error) {
+      
+    }
+  }
+
+  const addToCart = async(courseId)=>{
+    try {
+      const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/add/${courseId}` , {} , {withCredentials: true});
+      console.log(data);
+      setCart(true);
+      dispatch(cartIncrement());
+      toast.success(data.message , { autoClose: 500 });
+    } catch (error) {
+      console.log(error);
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , { autoClose: 500 });
+      }
+      toast.error(error.message);
+    }
+  }
+
+  const removeFromCart = async(courseId)=>{
+    try {
+      const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/remove/${courseId}` , {withCredentials: true});
+      setCart(false);
+      dispatch(cartDecrement());
+      toast.success(data.message , { autoClose: 500 });
+    } catch (error) {
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , { autoClose: 500 });
+      }
+      toast.error(error.message , { autoClose: 500 });
+    }
+  }
+
   useEffect(() => {
+    getCourseByIdCart();
     getCourseDetails();
     getCourseById();
   }, []);
@@ -274,10 +318,17 @@ Reviews
               <h2 className="text-2xl font-extrabold mb-3">E£{course.price}</h2>
 
               <div className="flex justify-between">
-                <button className="bg-[#6D28D2] w-[80%] cursor-pointer font-semibold text-white block rounded text-sm py-3">
-                  Add To Cart
-                </button>
                 
+                {!cart ?
+                  <button onClick={()=>addToCart(course._id)} className="bg-[#6D28D2] w-[80%] cursor-pointer font-semibold text-white block rounded text-sm py-3">
+                    Add To Cart
+                  </button>
+                  :
+                  <button onClick={()=>removeFromCart(course._id)} className="bg-[#6D28D2] w-[80%] cursor-pointer font-semibold text-white block rounded text-sm py-3">
+                    Remove From Cart
+                  </button>
+                }
+
                 {!wishlist ?
                   <button onClick={()=>addToWishlist(course._id)} className="cursor-pointer w-[17%] border-[#6D28D2] text-[#6D28D2] border rounded text-xl py-2">
                     <FontAwesomeIcon icon={farHeart} />

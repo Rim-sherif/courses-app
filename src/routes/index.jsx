@@ -27,6 +27,8 @@ import Profile from "../pages/Profile";
 import Search from "../pages/Search";
 import Categories from "../pages/Categories";
 import CategoryCourses from "../pages/CategoryCourse";
+import Wishlist from "../pages/wishlist";
+import Cart from "../pages/Cart";
 // import ProtectedRoute from "../components/protectedRoute/protectedRoute";
 // import AdminRoute from "../components/AdminRoute/AdminRoute";
 
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
       {
         path: "category/:categoryId",
         element: <CategoryCourses />,
+      },
+      {
+        path: "wishlist",
+        element: <Wishlist />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
       }
     ],
   },

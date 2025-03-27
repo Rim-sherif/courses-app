@@ -3,6 +3,8 @@ import {
   faCalendarAlt,
   faCheck,
   faDesktop,
+  faHeart,
+  // faHeart,
   faMobile,
   faNewspaper,
   faPlay,
@@ -11,6 +13,8 @@ import {
   faTv,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons"; // Correct import
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -20,6 +24,7 @@ import { toast } from "react-toastify";
 export default function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState({});
+  const [wishlist , setWishlist] = useState(false);
   const stars = [1, 2, 3, 4, 5];
   const whatLearn = [
     "Single responsibility principle",
@@ -37,15 +42,54 @@ export default function CourseDetails() {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/api/v1/course/${id}`
       );
-      console.log(data);
       setCourse(data.course);
     } catch (error) {
       toast.error(error.message);
     }
   };
 
+  const addToWishlist = async(courseId)=>{
+    try {
+      const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/add/${courseId}` , {} , {withCredentials: true});
+      console.log(data);
+      setWishlist(true);
+      toast.success(data.message , { autoClose: 500 });
+    } catch (error) {
+      console.log(error);
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , { autoClose: 500 });
+      }
+      toast.error(data.message);
+    }
+  }
+
+  const removeFromWishlist = async(courseId)=>{
+    try {
+      const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/remove/${courseId}` , {withCredentials: true});
+      console.log(data);
+      setWishlist(false);
+      toast.success(data.message , { autoClose: 500 });
+    } catch (error) {
+      console.log(error);
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , { autoClose: 500 });
+      }
+      toast.error(data.message , { autoClose: 500 });
+    }
+  }
+
+  const getCourseById = async()=>{
+    try {
+      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/getCourse/${id}` , {withCredentials: true});
+      setWishlist(true);
+    } catch (error) {
+      
+    }
+  }
+
   useEffect(() => {
     getCourseDetails();
+    getCourseById();
   }, []);
 
   return (
@@ -103,7 +147,6 @@ export default function CourseDetails() {
           </section>
 
           <div className="w-[80%] mx-auto items-start flex justify-between mt-10">
-            
             <div className="w-[68%]">
               <div className="border border-gray-300 p-6">
                 <h2 className="font-bold text-2xl mb-4">What you'll learn</h2>
@@ -149,7 +192,8 @@ export default function CourseDetails() {
                 <h2 className="font-bold text-2xl mb-4">Instructor</h2>
                 <Link
                   className="font-extrabold text-medium underline text-[#6D28D2]"
-                  to={`/instructors/${course.instructor._id}`}>
+                  to={`/instructors/${course.instructor._id}`}
+                >
                   {course.instructor.firstName} {course.instructor.lastName}
                 </Link>
 
@@ -199,10 +243,19 @@ export default function CourseDetails() {
 
                 <article className="text-gray-500">
                   <section className="mb-2 mt-5">
-                    I'm a Flutter Developer with a passion for building scalable, high-performance mobile applications. I hold a degree in Communication and Electronics Engineering from Alexandria University (Class of 2023). My expertise spans Flutter, Dart, Firebase, C, C++, MySQL, SQLite, and MS SQL Server.
+                    I'm a Flutter Developer with a passion for building
+                    scalable, high-performance mobile applications. I hold a
+                    degree in Communication and Electronics Engineering from
+                    Alexandria University (Class of 2023). My expertise spans
+                    Flutter, Dart, Firebase, C, C++, MySQL, SQLite, and MS SQL
+                    Server.
                   </section>
                   <section>
-                    I also run a YouTube channel, where I share in-depth tutorials on Flutter development, helping developers enhance their skills and build amazing apps. In addition, I focus on best software engineering practices, such as SOLID principles, to ensure clean and maintainable code.
+                    I also run a YouTube channel, where I share in-depth
+                    tutorials on Flutter development, helping developers enhance
+                    their skills and build amazing apps. In addition, I focus on
+                    best software engineering practices, such as SOLID
+                    principles, to ensure clean and maintainable code.
                   </section>
                 </article>
 
@@ -212,45 +265,60 @@ Reviews
 
               </div>
             </div>
-                
+
             <div className="w-[30%] sticky top-25 bg-white border border-gray-300 p-5">
-                <div className="mb-3">
-                  <img src={course.thumbnail} alt="" />
-                </div>
+              <div className="mb-3">
+                <img src={course.thumbnail} alt="" />
+              </div>
+
+              <h2 className="text-2xl font-extrabold mb-3">E£{course.price}</h2>
+
+              <div className="flex justify-between">
+                <button className="bg-[#6D28D2] w-[80%] cursor-pointer font-semibold text-white block rounded text-sm py-3">
+                  Add To Cart
+                </button>
                 
-                <h2 className="text-2xl font-extrabold mb-3">E£649.99</h2>
+                {!wishlist ?
+                  <button onClick={()=>addToWishlist(course._id)} className="cursor-pointer w-[17%] border-[#6D28D2] text-[#6D28D2] border rounded text-xl py-2">
+                    <FontAwesomeIcon icon={farHeart} />
+                  </button>
+                  :
+                  <button onClick={()=>removeFromWishlist(course._id)} className="cursor-pointer w-[17%] border-[#6D28D2] text-[#6D28D2] border rounded text-xl py-2">
+                    <FontAwesomeIcon icon={faHeart} />
+                  </button>
+              }
+              </div>
+              <section className="text-center text-sm my-3 text-gray-500 font-semibold">
+                30-Day Money-Back Guarantee
+              </section>
 
-                <button className="bg-[#6D28D2] cursor-pointer font-semibold text-white block w-full rounded text-sm py-3">Add To Cart</button>
-                <section className="text-center text-sm my-3 text-gray-500 font-semibold">30-Day Money-Back Guarantee</section>
-                
-                <div className="">
-                    <h2 className="text-lg font-bold">This course includes:</h2>
-                    <li className="list-none mb-2">
-                      <FontAwesomeIcon className="mr-2" icon={faDesktop} /> <span>4.5 hours on-demand video</span>
-                    </li>
-                    <li className="list-none mb-2">
-                      <FontAwesomeIcon className="mr-2" icon={faNewspaper} /> 1 article
-                    </li>
-                    <li className="list-none mb-2">
-                      <FontAwesomeIcon className="mr-2" icon={faMobile} /> Access on mobile and TV
-                    </li>
-                    <li className="list-none mb-2">
-                      <FontAwesomeIcon className="mr-2" icon={faNewspaper} /> Full lifetime access
-                    </li>
-                    <li className="list-none mb-2">
-                      <FontAwesomeIcon className="mr-2" icon={faTrophy} /> Certificate of completion
-                    </li>
-
-                </div>
-
+              <div className="">
+                <h2 className="text-lg font-bold">This course includes:</h2>
+                <li className="list-none mb-2">
+                  <FontAwesomeIcon className="mr-2" icon={faDesktop} />{" "}
+                  <span>4.5 hours on-demand video</span>
+                </li>
+                <li className="list-none mb-2">
+                  <FontAwesomeIcon className="mr-2" icon={faNewspaper} /> 1
+                  article
+                </li>
+                <li className="list-none mb-2">
+                  <FontAwesomeIcon className="mr-2" icon={faMobile} /> Access on
+                  mobile and TV
+                </li>
+                <li className="list-none mb-2">
+                  <FontAwesomeIcon className="mr-2" icon={faNewspaper} /> Full
+                  lifetime access
+                </li>
+                <li className="list-none mb-2">
+                  <FontAwesomeIcon className="mr-2" icon={faTrophy} />{" "}
+                  Certificate of completion
+                </li>
+              </div>
             </div>
-
           </div>
         </>
       )}
     </div>
   );
 }
-
-
-

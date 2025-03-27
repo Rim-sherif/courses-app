@@ -44,7 +44,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const categoriesRef = useRef(null);
-
+  
   // Fetch categories using useQuery
   const {
     data: categories = [],

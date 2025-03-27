@@ -7,11 +7,11 @@ import axios from "axios";
 export const CartCard = ({ course , removeFromCart }) => {
     
   return (
-    <div className="flex items-center mb-3 bg-white rounded-md border border-gray-200 p-4 gap-5">
+    <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 flex-wrap items-center mb-3 bg-white rounded-md border border-gray-200 p-4">
       <img
         src={course.courseId.thumbnail}
         alt={course.courseId.title}
-        className="w-[120px] h-[80px] object-cover rounded-md"
+        className="w-full sm:w-[130px] sm:h-[80px] h-full object-cover rounded-md"
       />
 
       <div className="flex-1">

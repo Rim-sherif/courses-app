@@ -141,12 +141,8 @@ export default function Cart() {
             <div>
               {coursesBasedCategory && coursesBasedCategory?.length > 0 ? 
                   <div className='flex flex-wrap my-10 gap-2'>
-                      {coursesBasedCategory.map((course)=><CourseCard
-                                      course={course}
-                                      customWidth={4}
-                                      key={course._id}
-                                      stars={stars}
-                                    />)}
+                      {coursesBasedCategory.map((course)=> 
+                      <CourseCard course={course} customWidth={4} key={course._id} stars={stars}/>)}
                   </div>
               : <img className='w-[30%] mx-auto' src={noValueImg} alt="no courses founded" />}
             </div>

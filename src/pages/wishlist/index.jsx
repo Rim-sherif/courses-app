@@ -70,8 +70,7 @@ export default function Wishlist() {
         <h2 className='text-4xl text-center mt-10'>My Wishlist</h2>
         <div>
             {courses && courses?.length > 0 ? 
-                <div className='grid w-[90%] mx-auto my-10 gap-6 
-    grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                <div className='grid w-[90%] mx-auto my-10 gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                     {courses.map((course)=><WishlistCard key={course._id} removeFromWishlist={removeFromWishlist} course={course}/>)}
                 </div>
             : <img className='w-[30%] mx-auto' src={noValueImg} alt="no courses founded" />}

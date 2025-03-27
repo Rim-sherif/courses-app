@@ -4,6 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function CourseCard({ course, stars, customWidth }) {
+  console.log(course);
+  
   return (
     <div
       className={`${

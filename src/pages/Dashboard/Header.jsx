@@ -2,8 +2,12 @@ import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
 import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg";
 import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
+import { useNotifications } from '../../hooks/useNotifications';
 
 function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
+  const { notifications, markAsRead } = useNotifications();
+  const unreadCount = notifications.filter(n => n.isNew).length;
+
   return (
     <header className="w-full backdrop-blur-sm bg-white/80 shadow-md border-b border-gray-100">
       <div className="flex items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
@@ -82,26 +86,71 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
 
         {/* Right section */}
         <div className="flex items-center gap-x-4">
-          {/* Notifications */}
-          <button
-            className="p-2 hover:bg-gray-100 rounded-lg relative transition-colors"
-            aria-label="Notifications"
-          >
-            <svg
-              className="w-6 h-6 text-[#410445]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Notifications Menu */}
+          <Menu as="div" className="relative">
+            <Menu.Button
+              className="p-2 hover:bg-gray-100 rounded-lg relative transition-colors"
+              aria-label="Notifications"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              />
-            </svg>
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
-          </button>
+              <svg
+                className="w-6 h-6 text-[#410445]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+              {unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+              )}
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg py-1 focus:outline-none">
+                <div className="px-4 py-3 border-b">
+                  <p className="text-sm font-medium text-gray-900">Notifications</p>
+                </div>
+                <div className="max-h-96 overflow-y-auto">
+                  {notifications.length === 0 ? (
+                    <div className="px-4 py-3 text-sm text-gray-500">
+                      No notifications
+                    </div>
+                  ) : (
+                    notifications.map((notification) => (
+                      <Menu.Item key={notification.id}>
+                        {({ active }) => (
+                          <div
+                            className={`px-4 py-3 ${active ? 'bg-gray-50' : ''} ${
+                              notification.isNew ? 'bg-blue-50' : ''
+                            }`}
+                            onClick={() => markAsRead(notification.id)}
+                          >
+                            <p className="text-sm font-medium text-gray-900">{notification.title}</p>
+                            <p className="text-sm text-gray-500">{notification.message}</p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              {new Date(notification.timestamp).toLocaleString()}
+                            </p>
+                          </div>
+                        )}
+                      </Menu.Item>
+                    ))
+                  )}
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
 
           {/* Messages Menu */}
           <Menu as="div" className="relative">

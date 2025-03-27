@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import { setLoading, setUser } from "../../redux/reducers/userSlice";
 import Header from "./Header";
 import SideMenu from "./SideMenu";
+import { NotificationsProvider } from '../../components/providers/NotificationsProvider';
 
 const DashboardLayout = () => {
   const dispatch = useDispatch();
@@ -74,6 +75,7 @@ const DashboardLayout = () => {
   }
 
   return (
+       <NotificationsProvider>
     <div className="relative flex h-screen bg-gray-50 overflow-hidden">
       {userData && (
         <>
@@ -120,6 +122,7 @@ const DashboardLayout = () => {
         </>
       )}
     </div>
+    </NotificationsProvider>
   );
 };
 

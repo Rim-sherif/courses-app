@@ -1,10 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { faStar, faHeart, faClock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { decrement, increment } from "../../redux/reducers/wishlistCount";
 
-export default function CourseCard({ course, rating, customWidth }) {
+export default function CourseCard({ course, rating, customWidth , wishlist , addToWishlist , removeFromWishlist , wishlistCheckCourse , wishlistTest}) {
+ 
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
@@ -27,6 +32,10 @@ export default function CourseCard({ course, rating, customWidth }) {
     );
   };
 
+  useEffect(()=>{
+    wishlistTest(course._id)
+  },[])
+
   return (
     <div
       className={`${
@@ -37,13 +46,22 @@ export default function CourseCard({ course, rating, customWidth }) {
     >
       {/* Image Container */}
       <div className="relative mb-6 overflow-hidden rounded-xl aspect-video">
-        {/* Favorite Button */}
-        <button className="absolute z-20 top-3 right-3  transition-colors duration-200">
-          <FontAwesomeIcon 
-            icon={faHeart} 
-            className="text-gray-400 hover:text-red-400 text-lg" 
-          />
-        </button>
+        {!wishlist[course._id] ?
+          <button onClick={()=>addToWishlist(course._id)} className="absolute cursor-pointer z-20 top-3 right-3 transition-colors duration-200">
+            <FontAwesomeIcon 
+              icon={faHeart}
+              className="text-gray-400 hover:text-red-400 text-lg" 
+            />
+          </button>
+          :
+          <button onClick={()=>removeFromWishlist(course._id)} className="absolute cursor-pointer z-20 top-3 right-3  transition-colors duration-200">
+            <FontAwesomeIcon 
+              icon={faHeart} 
+              className="text-red-400 hover:text-red-400 text-lg" 
+            />
+          </button>
+        }
+
         <span className="absolute z-20 top-3 left-3 bg-gray-100 text-[#410445] text-xs font-medium px-2 py-1 rounded-lg">
             {course?.access_type}
           </span>

@@ -271,7 +271,6 @@ const Navbar = () => {
               to="/cart"
               className="text-gray-700 text-[20px] relative hover:text-[#A5158C]"
             >
-              <FontAwesomeIcon icon="fa-solid fa-bag-shopping" />
               <FontAwesomeIcon icon={faBagShopping} />
               <span className="absolute top-[-10px] right-[-10px] bg-[#A5158C] text-[12px] text-white w-[22px] h-[22px] font-bold mx-auto text-center rounded-full">
                 {cartCount}

@@ -1,1 +1,45 @@
 @import "tailwindcss";
+@keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+  
+  /* Glassy window effect */
+  .glassy-window {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle window frame */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Depth shadow */
+    background: rgba(255, 255, 255, 0.05); /* Semi-transparent base for glass effect */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(5px); /* For Safari support */
+    transition: transform 0.3s ease, z-index 0.3s ease;
+  }
+  
+  /* On hover, lift the window and enhance the glass reflection */
+  .glassy-window:hover {
+    transform: translateY(-10px) scale(1.05); /* Lift and slight zoom */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    border-color: rgba(255, 255, 255, 0.5); /* Brighter frame on hover */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .glassy-window {
+      position: relative; /* Stack vertically on mobile */
+      left: 0 !important;
+      top: 0 !important;
+      margin: 10px 0; /* Add vertical spacing */
+      width: 100%; /* Full width on mobile */
+      max-width: 300px; /* Limit width for better readability */
+    }
+  }

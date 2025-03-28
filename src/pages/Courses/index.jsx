@@ -2,6 +2,7 @@
 import {
   faChevronLeft,
   faChevronRight,
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
@@ -23,7 +24,7 @@ export default function Instructors() {
   const [selectedStar, setSelectedStar] = useState(0);
   const stars = [1, 2, 3, 4, 5];
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(9);
+  const [pageSize, setPageSize] = useState(6);
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPages, setTotalPages] = useState(1);
   const [sortQuery, setSortQuery] = useState("");
@@ -197,41 +198,67 @@ export default function Instructors() {
           ""
         )}
 
-        {courses?.length > 0 ? (
-          <div className="flex gap-5 justify-end">
-            <div className="text-right mb-4">
-              <span>show: </span>
-              <select
-                defaultValue="limit"
-                onChange={handleLimitSorting}
-                className="w-[150px] cursor-pointer outline-0 rounded border-1 py-2 px-1 border-gray-300"
-              >
-                <option value="all">All</option>
-                <option value="3">3</option>
-                <option value="6">6</option>
-                <option value="9">9</option>
-                <option value="12">12</option>
-                <option value="21">21</option>
-              </select>
+        {courses?.length > 0 && (
+          <div className="flex flex-wrap gap-4 justify-end mb-6">
+            {/* Items Per Page Selector */}
+            <div className="relative w-[200px]">
+              {/* <label className="block text-sm font-medium text-gray-600 mb-1.5">
+        Show items:
+      </label> */}
+              <div className="relative">
+                <select
+                  onChange={handleLimitSorting}
+                  className="w-full pl-4 pr-8 py-2.5 rounded-xl border border-gray-200 
+            bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 
+            text-gray-700 transition-all duration-200 appearance-none
+            hover:border-gray-300 cursor-pointer"
+                  defaultValue="all"
+                >
+                  <option value="all">All Courses</option>
+                  <option value="3">3 per page</option>
+                  <option value="6">6 per page</option>
+                  <option value="9">9 per page</option>
+                  <option value="12">12 per page</option>
+                  <option value="21">21 per page</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-3.5 text-gray-400 text-sm pointer-events-none"
+                />
+              </div>
             </div>
 
-            <div className="text-right mb-4">
-              <select
-                name=""
-                defaultValue="Order"
-                onChange={handleSorting}
-                className="w-[150px] cursor-pointer outline-0 rounded border-1 py-2 px-1 border-gray-300"
-              >
-                <option value="Order" disabled>
-                  Order
-                </option>
-                <option value="Asc">Sort A-Z</option>
-                <option value="Dsc">Sort Z-A</option>
-              </select>
+            {/* Sorting Selector */}
+            <div className="relative w-[200px]">
+              {/* <label className="block text-sm font-medium text-gray-600 mb-1.5">
+        Sort by:
+      </label> */}
+              <div className="relative">
+                <select
+                  onChange={handleSorting}
+                  className="w-full pl-4 pr-8 py-2.5 rounded-xl border border-gray-200 
+            bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 
+            text-gray-700 transition-all duration-200 appearance-none
+            hover:border-gray-300 cursor-pointer"
+                  defaultValue="Order"
+                >
+                  <option value="Order" disabled className="text-gray-400">
+                    Select order
+                  </option>
+                  <option value="Asc" className="hover:bg-purple-50">
+                    A-Z (Ascending)
+                  </option>
+                  <option value="Dsc" className="hover:bg-purple-50">
+                    Z-A (Descending)
+                  </option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-3.5 text-gray-400 text-sm pointer-events-none"
+                />
+              </div>
             </div>
           </div>
-        ) : (
-          ""
         )}
 
         <div className="flex items-start flex-wrap gap-[1.2%]">
@@ -249,37 +276,75 @@ export default function Instructors() {
           )}
         </div>
 
-        {/* Add pagination controls */}
+        {/* Pagination Controls */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-8">
+          <div className="flex justify-center items-center gap-1.5 mt-12 mb-6">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+              className={`p-2 w-10 h-10 rounded-lg border border-gray-200 hover:border-[#410445] transition-all duration-200 ${
+                currentPage === 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-[#410445]"
+              }`}
             >
-              <FontAwesomeIcon icon={faChevronLeft} />
+              <FontAwesomeIcon
+                icon={faChevronLeft}
+                className={`text-sm ${
+                  currentPage === 1 ? "text-gray-400" : "text-[#ffffff]"
+                }`}
+              />
             </button>
 
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-3 py-1 rounded ${
-                  currentPage === index + 1
-                    ? "bg-[#a5158c] text-white"
-                    : "bg-gray-200"
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
+            {/* Visible Page Numbers */}
+            {(() => {
+              const maxVisiblePages = 5;
+              const halfVisible = Math.floor(maxVisiblePages / 2);
+              let startPage = Math.max(currentPage - halfVisible, 1);
+              const endPage = Math.min(
+                startPage + maxVisiblePages - 1,
+                totalPages
+              );
+
+              if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+              }
+
+              return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+              ).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all duration-200 ${
+                    currentPage === page
+                      ? "bg-[#410445]  text-white shadow-md shadow-purple-200"
+                      : "text-gray-600 hover:bg-[#410445] hover:text-white border border-gray-200"
+                  }`}
+                >
+                  {page}
+                </button>
+              ));
+            })()}
 
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+              className={`p-2 w-10 h-10 rounded-lg border border-gray-200 hover:border-purple-500 transition-all duration-200 ${
+                currentPage === totalPages
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-purple-50"
+              }`}
             >
-              <FontAwesomeIcon icon={faChevronRight} />
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                className={`text-sm ${
+                  currentPage === totalPages
+                    ? "text-gray-400"
+                    : "text-[#410445]"
+                }`}
+              />
             </button>
           </div>
         )}

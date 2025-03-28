@@ -1,5 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faClose, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faClose,
+  faStar,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 import noValueImg from "/no-value.png";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -26,7 +31,7 @@ export default function Instructors() {
       );
       setUsers(data?.data);
       setOriginalUsers(data?.data);
-      return data?.data
+      return data?.data;
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +42,7 @@ export default function Instructors() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["instructors"], 
+    queryKey: ["instructors"],
     queryFn: getAllInstructors,
     staleTime: 1000 * 60 * 5,
   });
@@ -51,7 +56,7 @@ export default function Instructors() {
   const handleCategory = (item, e) => {
     let updatedCategories = [...selectedCategories];
     console.log(item);
-    
+
     if (e.target.checked) {
       updatedCategories.push(item);
     } else {
@@ -63,7 +68,7 @@ export default function Instructors() {
     if (updatedCategories.length > 0) {
       console.log(updatedCategories);
       console.log(originalUsers);
-      
+
       setUsers(
         originalUsers.filter((user) =>
           updatedCategories.includes(user.jobTitle)
@@ -78,17 +83,19 @@ export default function Instructors() {
     setClose(!close);
   };
 
-  const getAllCategories = async()=>{
+  const getAllCategories = async () => {
     try {
-      const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/job/all`);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/job/all`
+      );
       setCategories(data?.courses);
       console.log(data);
-      
+
       return data?.courses;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const {
     data: QCategories,
@@ -103,7 +110,8 @@ export default function Instructors() {
     return (
       <div
         style={{ zIndex: 1 }}
-        className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.1)]">
+        className="flex justify-center items-center text-white font-bold  fixed inset-0 bg-[rgba(0,0,0,0.1)]"
+      >
         <Loader />
       </div>
     );
@@ -160,7 +168,8 @@ export default function Instructors() {
     return (
       <div
         style={{ zIndex: 1 }}
-        className="flex justify-center items-center text-white font-bold fixed inset-0 bg-[rgba(255,255,255,1)]">
+        className="flex justify-center items-center text-white font-bold fixed inset-0 bg-[rgba(255,255,255,1)]"
+      >
         <Loader />
       </div>
     );
@@ -264,53 +273,73 @@ export default function Instructors() {
           ""
         )}
 
-        {users?.length > 0 ? (
-          <div className="flex gap-5 justify-end">
-            <div className="text-right mb-4">
-              <span>show: </span>
-              <select
-                defaultValue="limit"
-                onChange={handleLimitSorting}
-                className="w-[150px] cursor-pointer outline-0 rounded border-1 py-2 px-1 border-gray-300"
-              >
-                <option value="all">All</option>
-                <option value="3">3</option>
-                <option value="6">6</option>
-                <option value="8">8</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="75">75</option>
-                <option value="100">100</option>
-              </select>
+        {users?.length > 0 && (
+          <div className="flex flex-wrap gap-4 justify-end mb-6">
+            {/* Items Per Page Selector */}
+            <div className="relative w-[200px]">
+              {/* <label className="block text-sm font-medium text-gray-600 mb-1.5">
+        Show items:
+      </label> */}
+              <div className="relative">
+                <select
+                  onChange={handleLimitSorting}
+                  className="w-full pl-4 pr-8 py-2.5 rounded-xl border border-gray-200 
+            bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 
+            text-gray-700 transition-all duration-200 appearance-none
+            hover:border-gray-300 cursor-pointer"
+                  defaultValue="all"
+                >
+                  <option value="all">All Users</option>
+                  <option value="3">3 per page</option>
+                  <option value="6">6 per page</option>
+                  <option value="9">9 per page</option>
+                  <option value="12">12 per page</option>
+                  <option value="21">21 per page</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-3.5 text-gray-400 text-sm pointer-events-none"
+                />
+              </div>
             </div>
 
-            <div className="text-right mb-4">
-              <select
-                name=""
-                defaultValue="Order"
-                onChange={handleSorting}
-                className="w-[150px] cursor-pointer outline-0 rounded border-1 py-2 px-1 border-gray-300"
-              >
-                <option value="Order" disabled>
-                  Order
-                </option>
-                <option value="Asc">Sort A-Z</option>
-                <option value="Dsc">Sort Z-A</option>
-              </select>
+            {/* Sorting Selector */}
+            <div className="relative w-[200px]">
+              {/* <label className="block text-sm font-medium text-gray-600 mb-1.5">
+        Sort by:
+      </label> */}
+              <div className="relative">
+                <select
+                  onChange={handleSorting}
+                  className="w-full pl-4 pr-8 py-2.5 rounded-xl border border-gray-200 
+            bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 
+            text-gray-700 transition-all duration-200 appearance-none
+            hover:border-gray-300 cursor-pointer"
+                  defaultValue="Order"
+                >
+                  <option value="Order" disabled className="text-gray-400">
+                    Select order
+                  </option>
+                  <option value="Asc" className="hover:bg-purple-50">
+                    A-Z (Ascending)
+                  </option>
+                  <option value="Dsc" className="hover:bg-purple-50">
+                    Z-A (Descending)
+                  </option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-3.5 text-gray-400 text-sm pointer-events-none"
+                />
+              </div>
             </div>
           </div>
-        ) : (
-          ""
         )}
 
         <div className="flex items-start flex-wrap gap-[1.2%] gap-y-[10px]">
           {users ? (
             users.map((user) => (
-              <InstructorCard
-                user={user}
-                key={user._id}
-                stars={stars}
-              />
+              <InstructorCard user={user} key={user._id} stars={stars} />
             ))
           ) : (
             <img src={noValueImg} className="w-[40%] mx-auto" alt="not found" />

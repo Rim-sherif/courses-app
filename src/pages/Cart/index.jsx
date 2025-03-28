@@ -74,9 +74,13 @@ export default function Cart() {
     }
 
   
-    const removeFromWishlist = async(courseId)=>{
+    const removeFromCart = async(courseId)=>{
+      console.log(courseId);
+      
         try {
           const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/cart/remove/${courseId}` , {withCredentials: true});
+          console.log(data.data);
+          
           toast.success(data.message , { autoClose: 500 });
           dispatch(cartDecrement());
           setCourses(prev=>{
@@ -100,9 +104,9 @@ export default function Cart() {
 
   return (
     <div className='w-[85%] mx-auto'>
-      <div className=' py-10 flex flex-wrap items-start justify-between'>
+      <div className='py-10 flex flex-wrap items-start justify-between'>
           
-          <div className='lg:w-[70%] w-full mx-auto'>
+          <div className='lg:w-[70%] w-full'>
             
             <div className=''>
               {error ? <h2>{error}</h2> : ""}
@@ -116,7 +120,7 @@ export default function Cart() {
             <div>
               {courses && courses?.length > 0 ? 
                   <div className=''>
-                      {courses.map((course)=><CartCard key={course._id} removeFromCart={removeFromWishlist} course={course}/>)}
+                      {courses.map((course)=><CartCard key={course._id} removeFromCart={removeFromCart} course={course}/>)}
                   </div>
               : <img className='w-[45%] mx-auto' src={noValueImg} alt="no courses founded" />}
             </div>
@@ -137,14 +141,14 @@ export default function Cart() {
       {courses && courses?.length > 0 &&
         <div>
             <h2 className='text-2xl mb-5 font-bold!'>You might also like</h2>
-            <div>
+            {/* <div>
               {coursesBasedCategory && coursesBasedCategory?.length > 0 ? 
                   <div className='flex flex-wrap my-10 gap-2'>
                       {coursesBasedCategory.map((course)=> 
                       <CourseCard course={course} customWidth={4} key={course._id} stars={stars}/>)}
                   </div>
               : <img className='w-[30%] mx-auto' src={noValueImg} alt="no courses founded" />}
-            </div>
+            </div> */}
         </div>
       }
 

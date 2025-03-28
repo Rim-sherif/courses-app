@@ -12,6 +12,9 @@ import CourseCard from "../../components/courseCard/CourseCard";
 import Loader from "../../components/Loader";
 import Sidemenu from "./sidemenu";
 import noValueImg from "/no-value.png";
+import { useDispatch } from "react-redux";
+import { decrement, increment } from "../../redux/reducers/wishlistCount";
+import { toast } from "react-toastify";
 
 export default function Instructors() {
   const [courses, setCourses] = useState([]);
@@ -28,6 +31,8 @@ export default function Instructors() {
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPages, setTotalPages] = useState(1);
   const [sortQuery, setSortQuery] = useState("");
+  const [wishlist , setWishlist] = useState({});
+  const dispatch = useDispatch();
 
   const getAllCategories = async () => {
     try {
@@ -181,6 +186,69 @@ export default function Instructors() {
 
   if (errorCategories) return <p>Error: {errorCategories.message}</p>;
 
+  const addToWishlist = async(id)=>{ 
+    try {
+      const {data} = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/add/${id}` , {} , {withCredentials: true});
+      setWishlist((prev) => ({ ...prev, [id]: true }));
+      console.log(wishlist);
+      dispatch(increment());
+      toast.success(data.message , { autoClose: 500 });
+    } catch (error) {
+      console.log(error);
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , { autoClose: 500 });
+      }
+      toast.error(error.message);
+    }
+  }
+
+  const removeFromWishlist = async(courseId)=>{
+    try {
+      const {data} = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/remove/${courseId}` , {withCredentials: true});
+      setWishlist((prev) => {
+        const updatedWishlist = { ...prev };
+        delete updatedWishlist[courseId]; 
+        return updatedWishlist;
+      });
+      dispatch(decrement());
+      toast.success(data.message , { autoClose: 500 });
+    } catch (error) {
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message , { autoClose: 500 });
+      }
+      toast.error(data.message , { autoClose: 500 });
+    }
+  }
+
+  const wishlistCheckCourse = async(id)=>{
+      try {
+        const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/wishlistCheckCourse/${id}` , {withCredentials: true});
+        console.log(data.data);
+        setWishlist((prev) => ({
+          ...prev,
+          [data.data._id]: true
+        }));
+        } catch (error) {
+        console.log(error);
+      }
+  }
+
+    const wishlistTest = async(id)=>{
+      try {
+        const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/allCourses` , {withCredentials: true});
+        console.log(data.ids);
+        if(data.ids.includes(id)){
+          setWishlist((prev) => ({
+            ...prev,
+            [id]: true
+          }));
+        }
+        } catch (error) {
+        console.log(error);
+      }
+  }
+
+
   return (
     <div className="flex w-[90%] mx-auto justify-between">
       <Sidemenu
@@ -268,6 +336,11 @@ export default function Instructors() {
                 customWidth={3}
                 key={course._id}
                 stars={stars}
+                wishlist={wishlist}
+                addToWishlist={addToWishlist}
+                removeFromWishlist={removeFromWishlist}
+                wishlistCheckCourse={wishlistCheckCourse}
+                wishlistTest={wishlistTest}
               />
             ))
           ) : (

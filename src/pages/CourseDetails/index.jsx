@@ -27,8 +27,8 @@ export default function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState({});
   const [wishlist , setWishlist] = useState(false);
-  const [cart , setCart] = useState(false);
   const dispatch = useDispatch();
+  const [cart , setCart] = useState(false);
   const stars = [1, 2, 3, 4, 5];
   const whatLearn = [
     "Single responsibility principle",
@@ -337,7 +337,7 @@ Reviews
                   <button onClick={()=>removeFromWishlist(course._id)} className="cursor-pointer w-[17%] border-[#6D28D2] text-[#6D28D2] border rounded text-xl py-2">
                     <FontAwesomeIcon icon={faHeart} />
                   </button>
-              }
+                }
               </div>
               <section className="text-center text-sm my-3 text-gray-500 font-semibold">
                 30-Day Money-Back Guarantee

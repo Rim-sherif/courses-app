@@ -21,7 +21,6 @@ export default function Wishlist() {
             `${import.meta.env.VITE_BASE_URL}/api/v1/course/wishlist/allCourses`
           , {withCredentials: true});
           setCourses(data.data);
-          console.log(data);
           setIsLoading(false);
           setError("");
         } catch (error) {

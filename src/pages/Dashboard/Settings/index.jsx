@@ -6,7 +6,6 @@ const Settings = () => {
     newPassword: '',
     confirmPassword: ''
   });
-  const [deleteConfirm, setDeleteConfirm] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const handlePasswordChange = (e) => {
@@ -22,19 +21,6 @@ const Settings = () => {
     try {
       // Add your API call here
       setMessage({ type: 'success', text: 'Password updated successfully!' });
-    } catch (error) {
-      setMessage({ type: 'error', text: error.message });
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    if (deleteConfirm !== 'DELETE') {
-      setMessage({ type: 'error', text: 'Please type DELETE to confirm' });
-      return;
-    }
-    try {
-      // Add your API call here
-      setMessage({ type: 'success', text: 'Account deleted successfully!' });
     } catch (error) {
       setMessage({ type: 'error', text: error.message });
     }
@@ -96,29 +82,6 @@ const Settings = () => {
               Update Password
             </button>
           </form>
-        </div>
-
-        {/* Delete Account Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4 text-red-600">Delete Account</h3>
-          <p className="text-gray-600 mb-4">
-            This action cannot be undone. Please type "DELETE" to confirm.
-          </p>
-          <div className="space-y-4">
-            <input
-              type="text"
-              value={deleteConfirm}
-              onChange={(e) => setDeleteConfirm(e.target.value)}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-red-500"
-              placeholder="Type DELETE to confirm"
-            />
-            <button
-              onClick={handleDeleteAccount}
-              className=" bg-red-700 text-white p-2 rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Delete My Account
-            </button>
-          </div>
         </div>
       </div>
     </div>

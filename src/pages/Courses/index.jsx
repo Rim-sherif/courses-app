@@ -212,9 +212,8 @@ export default function Instructors() {
             bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 
             text-gray-700 transition-all duration-200 appearance-none
             hover:border-gray-300 cursor-pointer"
-                  defaultValue="all"
+                  defaultValue="6"
                 >
-                  <option value="all">All Courses</option>
                   <option value="3">3 per page</option>
                   <option value="6">6 per page</option>
                   <option value="9">9 per page</option>

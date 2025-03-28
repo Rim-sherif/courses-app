@@ -1,12 +1,28 @@
 import "boxicons/css/boxicons.min.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 const SideMenu = ({ isOpen, onClose }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const toggleSubmenu = (label) => {
     setOpenSubmenu(openSubmenu === label ? null : label);
+  };
+
+  const handleNavigation = () => {
+    if (isMobile) {
+      onClose();
+    }
   };
 
   const navLinks = [
@@ -49,26 +65,18 @@ const SideMenu = ({ isOpen, onClose }) => {
         isOpen ? "translate-x-0" : "-translate-x-full"
       } md:translate-x-0`}
     >
-      {/* Close Button for Mobile */}
-      <button 
-        className="md:hidden self-end text-white mb-4"
-        onClick={onClose}
-        aria-label="Close menu"
-      >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      {/* Mobile Close Button */}
+      {isMobile && (
+        <button 
+          className="self-end text-white mb-4"
+          onClick={onClose}
+          aria-label="Close menu"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      )}
 
       {/* Logo */}
       <div className="flex items-center gap-3 border-b border-gray-300 pb-4">
@@ -78,7 +86,7 @@ const SideMenu = ({ isOpen, onClose }) => {
         <NavLink 
           to="/" 
           className="text-2xl font-bold text-white hover:text-[#A5158C] transition-colors"
-          onClick={onClose}
+          onClick={handleNavigation}
         >
           Mentora
         </NavLink>
@@ -92,51 +100,35 @@ const SideMenu = ({ isOpen, onClose }) => {
               <div>
                 <button
                   onClick={() => toggleSubmenu(link.label)}
-                  className="flex items-center justify-between px-3 py-2 rounded-md w-full text-white transition-all duration-300 hover:bg-[#5b0564]"
-                  aria-expanded={openSubmenu === link.label}
+                  className="flex items-center justify-between px-3 py-2 rounded-md w-full text-white hover:bg-[#5b0564]"
                 >
                   <div className="flex items-center gap-4">
                     <i className={`${link.icon} text-white`}></i>
-                    <span className="text-base">{link.label}</span>
+                    <span>{link.label}</span>
                   </div>
-                  <i 
-                    className={`fa-solid fa-chevron-${
-                      openSubmenu === link.label ? "down" : "right"
-                    } text-white transition-transform duration-200`}
-                  ></i>
+                  <i className={`fa-solid fa-chevron-${openSubmenu === link.label ? "down" : "right"} text-white`}></i>
                 </button>
 
-                <div 
-                  className={`ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ${
-                    openSubmenu === link.label ? "max-h-96" : "max-h-0"
-                  }`}
-                >
-                  {link.subItems.map((subItem) => (
-                    <NavLink
-                      key={subItem.path}
-                      to={subItem.path}
-                      className={({ isActive }) =>
-                        `flex items-center px-3 py-2 rounded-md transition-all duration-300 ${
-                          isActive ? "text-white bg-[#5b0564]" : "text-white hover:bg-[#5b0564]"
-                        }`
-                      }
-                      onClick={onClose}
-                    >
-                      <span className="text-sm">{subItem.label}</span>
-                    </NavLink>
-                  ))}
-                </div>
+                {openSubmenu === link.label && (
+                  <div className="ml-4 mt-2 space-y-2">
+                    {link.subItems.map((subItem) => (
+                      <NavLink
+                        key={subItem.path}
+                        to={subItem.path}
+                        onClick={handleNavigation}
+                        className="flex items-center px-3 py-2 rounded-md text-white hover:bg-[#5b0564]"
+                      >
+                        <span>{subItem.label}</span>
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
               </div>
             ) : (
               <NavLink
                 to={link.path}
-                end
-                className={({ isActive }) =>
-                  `flex items-center px-3 py-2 rounded-md transition-all duration-300 ${
-                    isActive ? "text-white bg-[#5b0564]" : "text-white hover:bg-[#5b0564]"
-                  }`
-                }
-                onClick={onClose}
+                onClick={handleNavigation}
+                className="flex items-center px-3 py-2 rounded-md text-white hover:bg-[#5b0564]"
               >
                 <i className={`${link.icon} text-white`}></i>
                 <span className="ml-3">{link.label}</span>
@@ -149,11 +141,8 @@ const SideMenu = ({ isOpen, onClose }) => {
       {/* Profile & Logout Section */}
       <div className="mt-auto flex flex-col space-y-2">
         <button 
-          className="w-full p-2 text-left text-white flex items-center gap-3 rounded-md transition-all duration-300 hover:bg-[#5b0564]"
-          onClick={() => {
-            // Add logout logic here
-            onClose();
-          }}
+          className="w-full p-2 text-left text-white flex items-center gap-3 rounded-md hover:bg-[#5b0564]"
+          onClick={handleNavigation}
         >
           <i className="fa-solid fa-right-from-bracket"></i>
           <span>Log Out</span>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import Loader from "../../components/Loader";
 
@@ -65,7 +65,14 @@ const CategoryCourses = () => {
           </h2>
           <p className="text-gray-600">
             We currently don't have any courses in this category. Check back
-            later or explore other categories!
+            later or explore other
+            <NavLink
+              to="/categories"
+              className="text-gray-700 font-bold hover:text-[#A5158C] px-4 py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Categories
+            </NavLink>
           </p>
         </div>
       </div>
@@ -88,7 +95,7 @@ const CategoryCourses = () => {
           </motion.h1>
         </div>
       </div>
-      
+
       <div className="py-10 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentCourses.map((course) => (
@@ -119,7 +126,9 @@ const CategoryCourses = () => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-purple-700">
-                    {course.access_type === "free" ? "Free" : `$${course.price}`}
+                    {course.access_type === "free"
+                      ? "Free"
+                      : `$${course.price}`}
                   </span>
                   <span className="text-sm text-gray-600 capitalize">
                     {course.access_type}

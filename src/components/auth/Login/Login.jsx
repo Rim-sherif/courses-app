@@ -10,16 +10,13 @@ import { getToken } from "../../../redux/reducers/tokenSlice";
 import Loader from "../../Loader";
 import LoaderBtn from "../../LoaderBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
-
-
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
-
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
-  const [loading , setLoading] = useState(false);  
-
+  const [loading, setLoading] = useState(false);  
+  const [showPassword, setShowPassword] = useState(false);
 
   const initialValues = {
     email: "",
@@ -31,10 +28,6 @@ export default function Login() {
       .email("Email is not valid")
       .required("Email is required"),
     password: Yup.string()
-      .matches(
-        new RegExp("^(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()]).{8,}$"),
-        "Password must have at least one Number, one special Character , one uppercase letter and count of characters 8 or more"
-      )
       .required("Password is required"),
   });
 
@@ -45,6 +38,10 @@ export default function Login() {
       loginSendData(values);
     },
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const loginSendData = async (values) => {
     try {
@@ -95,7 +92,7 @@ export default function Login() {
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2 bg-white text-sm"
             >
               Email
             </label>
@@ -108,44 +105,42 @@ export default function Login() {
               value={formik.values.email}
             />
 
-            <div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
-              { formik.values.email.length > 0 && !formik.errors.email ? <FontAwesomeIcon icon={faCheck} /> : ""}
-            </div>
-
-            {formik.errors.email && formik.touched.email ? (
+            {formik.errors.email && formik.touched.email && (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                 {formik.errors.email}
               </div>
-            ) : (
-              ""
             )}
           </div>
+
           <div className="mb-5 relative">
             <label
               htmlFor=""
-              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
+              className="absolute left-3 top-[-10px] px-2 bg-white text-sm z-10"
             >
               Password
             </label>
-            <input
-              type="password"
-              className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full"
-              name="password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-            />
-
-            <div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
-              { formik.values.password.length > 0 && !formik.errors.password ? <FontAwesomeIcon icon={faCheck} /> : ""}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full pr-10"
+                name="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
             </div>
 
-            {formik.errors.password && formik.touched.password ? (
+            {formik.errors.password && formik.touched.password && (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                 {formik.errors.password}
               </div>
-            ) : (
-              ""
             )}
           </div>
 
@@ -159,17 +154,19 @@ export default function Login() {
           </section>
 
           <button className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
-            {loading ? <div className="flex items-center py-2 gap-3 justify-center">
-              <LoaderBtn/>
-            </div> : "Login"}
+            {loading ? (
+              <div className="flex items-center py-2 gap-3 justify-center">
+                <LoaderBtn/>
+              </div>
+            ) : "Login"}
           </button>
+          
           <section className="mt-3 text-gray-500 text-sm font-semibold">
             Don't have an account?{" "}
             <Link className="text-[#410445] font-semibold" to={"/signup"}>
               Signup
             </Link>
           </section>
-          
         </form>
       </div>
     </div>

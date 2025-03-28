@@ -56,8 +56,8 @@ const Categories = () => {
         <div className="absolute w-52 h-52 bg-purple-300/25 rounded-full blur-3xl bottom-10 right-20 animate-pulse"></div>
         <div className="absolute w-32 h-32 bg-purple-500/20 rounded-full blur-3xl top-1/2 left-1/3 animate-pulse"></div>
       </div>
-      <div className="absolute top-0 right-0 w-40 h-40 bg-purple-300 rounded-bl-full"></div>
-      <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#614778] rounded-tr-full"></div>
+      <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
+      <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-[#A5158C]/20 rounded-full"></div>
 
       {/* Explore Categories Heading */}
       <div className="text-center relative mb-12">

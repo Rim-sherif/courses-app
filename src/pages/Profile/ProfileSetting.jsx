@@ -1,14 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PasswordValidation from "../Dashboard/PasswordValidation/PasswordValidation";
+
 export default function ProfileSettings({ user, setUser }) {
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef(null);
-  const navigate = useNavigate();
   const [showPasswordFields, setShowPasswordFields] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deletePassword, setDeletePassword] = useState("");
   const [avatarPreview, setavatarPreview] = useState(user.avatar);
   const [formData, setFormData] = useState({
     firstName: user.firstName,
@@ -22,6 +20,10 @@ export default function ProfileSettings({ user, setUser }) {
     newPassword: "",
     confirmPassword: "",
   });
+  const [showValidation, setShowValidation] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
@@ -73,6 +75,20 @@ export default function ProfileSettings({ user, setUser }) {
       ...prevData,
       [name]: value,
     }));
+
+    if (name === 'newPassword') {
+      setShowValidation(value.length > 0);
+    }
+  };
+
+  const allValidationsPass = () => {
+    const { newPassword, confirmPassword } = passwordData;
+    return (
+      newPassword.length >= 8 &&
+      /\d/.test(newPassword) &&
+      /[A-Z]/.test(newPassword) &&
+      newPassword === confirmPassword
+    );
   };
 
   const handleInputChange = (e) => {
@@ -112,9 +128,9 @@ export default function ProfileSettings({ user, setUser }) {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error("New passwords don't match", { autoClose: 600 });
+    
+    if (!allValidationsPass()) {
+      toast.error("Please meet all password requirements");
       return;
     }
 
@@ -140,6 +156,7 @@ export default function ProfileSettings({ user, setUser }) {
           confirmPassword: "",
         });
         setShowPasswordFields(false);
+        setShowValidation(false);
         toast.success("Password updated successfully", { autoClose: 500 });
       }
     } catch (error) {
@@ -156,33 +173,24 @@ export default function ProfileSettings({ user, setUser }) {
     }
   };
 
-  const handleDeleteAccount = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post(
-        "http://localhost:5000/api/v1/user/checkPass",
-        { password: deletePassword },
-        { withCredentials: true }
-      );
-
-      await axios.delete("http://localhost:5000/api/v1/user/delete", {
-        withCredentials: true,
-      });
-
-      toast.success("Account deleted successfully");
-      setUser(null);
-      navigate("/login");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to delete account. Please check your password."
-      );
-      setDeletePassword("");
+  const togglePasswordVisibility = (field) => {
+    switch (field) {
+      case 'current':
+        setShowCurrentPassword(!showCurrentPassword);
+        break;
+      case 'new':
+        setShowNewPassword(!showNewPassword);
+        break;
+      case 'confirm':
+        setShowConfirmPassword(!showConfirmPassword);
+        break;
+      default:
+        break;
     }
   };
 
   return (
-    <div className=" w-full bg-white overflow-hidden  ">
+    <div className="w-full bg-white overflow-hidden">
       <div className="p-8 space-y-8">
         {/* Header Section */}
         <div className="flex justify-between items-start">
@@ -212,7 +220,7 @@ export default function ProfileSettings({ user, setUser }) {
           )}
         </div>
         <div className="flex flex-col md:flex-row justify-between gap-4">
-          {/* avatar Section */}
+          {/* Avatar Section */}
           <div className="flex flex-col items-start space-y-4 w-full md:w-50">
             <div className="relative group">
               <label
@@ -239,52 +247,6 @@ export default function ProfileSettings({ user, setUser }) {
               )}
             </div>
           </div>
-          {/* <div className="flex flex-col items-start space-y-4 w-full md:w-50">
-          <div className="relative group">
-            <label
-              htmlFor="avatar-upload"
-              className={`cursor-pointer ${isEditing ? 'hover:ring-4 hover:ring-blue-100' : ''} rounded-full transition-all duration-300`}
-            >
-              <img
-                src={avatarPreview}
-                alt="avatar"
-                className="w-40 h-40 rounded-full border-4 border-white shadow-xl object-cover transition-transform duration-300 hover:scale-105"
-              />
-              {isEditing && (
-                <div className="absolute bottom-2 right-2 bg-[#410445] p-3 rounded-full shadow-md transform hover:scale-110 transition-transform duration-200 ring-2 ring-white">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </div>
-              )}
-            </label>
-            {isEditing && (
-              <input
-                id="avatar-upload"
-                type="file"
-                accept="avatar/*"
-                onChange={handleavatarChange}
-                className="hidden"
-              />
-            )}
-          </div>
-        </div> */}
 
           {/* Profile Form */}
           <form onSubmit={handleProfileSubmit} className="space-y-6 w-full">
@@ -381,6 +343,7 @@ export default function ProfileSettings({ user, setUser }) {
                       firstName: user.firstName,
                       lastName: user.lastName,
                       email: user.email,
+                      phone: user.phone,
                     });
                     setavatarPreview(user.avatar);
                   }}
@@ -441,25 +404,65 @@ export default function ProfileSettings({ user, setUser }) {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Current Password
                   </label>
-                  <input
-                    type="password"
-                    name="currentPassword"
-                    value={passwordData.currentPassword}
-                    onChange={handlePasswordChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showCurrentPassword ? "text" : "password"}
+                      name="currentPassword"
+                      value={passwordData.currentPassword}
+                      onChange={handlePasswordChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('current')}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showCurrentPassword ? (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        </svg>
+                      ) : (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     New Password
                   </label>
-                  <input
-                    type="password"
-                    name="newPassword"
-                    value={passwordData.newPassword}
-                    onChange={handlePasswordChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      name="newPassword"
+                      value={passwordData.newPassword}
+                      onChange={handlePasswordChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('new')}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showNewPassword ? (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        </svg>
+                      ) : (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                  <PasswordValidation 
+                    password={passwordData.newPassword} 
+                    isVisible={showValidation}
                   />
                 </div>
 
@@ -467,27 +470,64 @@ export default function ProfileSettings({ user, setUser }) {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={passwordData.confirmPassword}
-                    onChange={handlePasswordChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={passwordData.confirmPassword}
+                      onChange={handlePasswordChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('confirm')}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showConfirmPassword ? (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        </svg>
+                      ) : (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                  {passwordData.confirmPassword && (
+                    <div className={`mt-1 text-sm ${
+                      passwordData.newPassword === passwordData.confirmPassword 
+                        ? 'text-green-600' 
+                        : 'text-red-600'
+                    }`}>
+                      {passwordData.newPassword === passwordData.confirmPassword 
+                        ? 'Passwords match' 
+                        : 'Passwords do not match'}
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div className="flex justify-end   gap-4">
+              <div className="flex justify-end gap-4">
                 <button
                   type="submit"
-                  className=" px-4 py-2 text-sm bg-[#410445] hover:bg-[#563458] text-white rounded-xl shadow-md transition-all duration-300"
+                  disabled={!allValidationsPass()}
+                  className={`px-4 py-2 text-sm rounded-xl shadow-md transition-all duration-300 ${
+                    allValidationsPass() 
+                      ? 'bg-[#410445] hover:bg-[#563458] text-white' 
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
                 >
                   Update Password
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowPasswordFields(false)}
-                  className=" px-4 py-3 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors duration-300"
+                  onClick={() => {
+                    setShowPasswordFields(false);
+                    setShowValidation(false);
+                  }}
+                  className="px-4 py-3 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors duration-300"
                 >
                   Cancel
                 </button>
@@ -496,78 +536,6 @@ export default function ProfileSettings({ user, setUser }) {
           )}
         </div>
       </div>
-      <div className="py-8 px-6 border-t border-gray-100">
-        <button
-          onClick={() => setShowDeleteModal(true)}
-          className="w-full  flex justify-between items-center p-4 bg-red-50 hover:bg-red-100 rounded-xl transition-colors duration-200"
-        >
-          <div className="flex items-center space-x-3">
-            <svg
-              className="w-6 h-6 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-            <span className="text-lg font-medium text-gray-900">
-              Delete Account
-            </span>
-          </div>
-        </button>
-      </div>
-
-      {/* Delete Account Modal */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 bg-black/80  flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 space-y-4 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Delete Account
-            </h3>
-            <p className="text-gray-600">
-              This action cannot be undone. Please enter your password to
-              confirm.
-            </p>
-            <form onSubmit={handleDeleteAccount} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Password
-                </label>
-                <input
-                  type="password"
-                  value={deletePassword}
-                  onChange={(e) => setDeletePassword(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all duration-300 outline-none"
-                />
-              </div>
-              <div className="flex justify-end gap-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowDeleteModal(false);
-                    setDeletePassword("");
-                  }}
-                  className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm bg-red-700 hover:bg-red-700 text-white rounded-lg transition-colors duration-200"
-                >
-                  Delete Account
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -161,7 +161,7 @@ export default function Profile() {
     <div className=" bg-gray-50">
       <div className="flex flex-col md:flex-row">
         {/* Side Menu */}
-        <div className="w-full md:w-80 bg-white border-r border-gray-200 max-h-[calc(100vh-80px)] h-[calc(100vh-80px)] flex flex-col overflow-y-auto">
+  <div className="w-full md:w-80 bg-white border-r border-gray-200 max-h-[calc(100vh-80px)] h-[calc(100vh-80px)] flex flex-col overflow-y-auto">
   <div className="p-3 md:p-4 flex-1">
     <div className="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-8 group">
       <div className="relative flex-shrink-0">

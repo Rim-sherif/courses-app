@@ -7,11 +7,16 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import LoaderBtn from "../../LoaderBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import PasswordValidation from "../../../pages/Dashboard/PasswordValidation/PasswordValidation";
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [loading , setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showPasswordValidation, setShowPasswordValidation] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -34,11 +39,10 @@ export default function Signup() {
       .email("Email is not valid")
       .required("Email is required"),
     password: Yup.string()
-      .matches(new RegExp("^(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()]).{8,}$") , "Password must have at least one Number, one special Character , one uppercase letter and count of characters 8 or more")
       .required("Password is required"),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password")], "confirm Password is not match password")
-      .required("confirm Password is required"),
+      .oneOf([Yup.ref("password")], "Passwords must match")
+      .required("Please confirm your password"),
   });
 
   const formik = useFormik({
@@ -49,33 +53,55 @@ export default function Signup() {
     },
   });
 
+  const handlePasswordChange = (e) => {
+    formik.handleChange(e);
+    setShowPasswordValidation(e.target.value.length > 0);
+  };
+
+  const allValidationsPass = () => {
+    const password = formik.values.password;
+    return (
+      password.length >= 8 &&
+      /\d/.test(password) &&
+      /[A-Z]/.test(password)
+    );
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const signupSendData = async (values) => {
+    if (!allValidationsPass()) {
+      toast.error("Please meet all password requirements");
+      return;
+    }
+
     setLoading(true);
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`,
         values
       );
-      console.log(data);
       
-      toast.success(data.message , { autoClose: 500 });
+      toast.success(data.message, { autoClose: 500 });
       if(data?.user.role == "user"){
-        setLoading(false);
         navigate("/login");
-      }else{
-        setLoading(false);
+      } else {
         navigate("/dashboard");
       }
-
     } catch (error) {
-      console.log(error);
-      setLoading(false);
       if(error?.response.data.message){
-        toast.error(error?.response?.data?.message , { autoClose: 600 });
-      }else{
-        toast.error(error.message , { autoClose: 600 });
+        toast.error(error?.response?.data?.message, { autoClose: 600 });
+      } else {
+        toast.error(error.message, { autoClose: 600 });
       }
-      
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,7 +118,7 @@ export default function Signup() {
 
           <div className="flex justify-between flex-wrap mb-5">
             <div className="w-full mb-5 sm:mb-0 sm:w-[49%] relative">
-              <label htmlFor="" className="absolute left-3 top-[-10px] px-2  bg-white text-sm">
+              <label className="absolute left-3 top-[-10px] px-2 bg-white text-sm">
                 FirstName
               </label>
               <input
@@ -103,19 +129,14 @@ export default function Signup() {
                 className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full"
                 name="firstName"
               />
-              {formik.errors.firstName && formik.touched.firstName ? (
+              {formik.errors.firstName && formik.touched.firstName && (
                 <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                   {formik.errors.firstName}
                 </div>
-              ) : (
-                ""
               )}
             </div>
             <div className="w-full sm:w-[49%] relative">
-              <label
-                htmlFor=""
-                className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
-              >
+              <label className="absolute left-3 top-[-10px] px-2 bg-white text-sm">
                 LastName
               </label>
               <input
@@ -126,21 +147,16 @@ export default function Signup() {
                 onBlur={formik.handleBlur}
                 value={formik.values.lastName}
               />
-              {formik.errors.lastName && formik.touched.lastName ? (
+              {formik.errors.lastName && formik.touched.lastName && (
                 <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                   {formik.errors.lastName}
                 </div>
-              ) : (
-                ""
               )}
             </div>
           </div>
 
           <div className="mb-5 relative">
-            <label
-              htmlFor=""
-              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
-            >
+            <label className="absolute left-3 top-[-10px] px-2 bg-white text-sm z-10">
               Email
             </label>
             <input
@@ -148,86 +164,77 @@ export default function Signup() {
               className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full"
               name="email"
               onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
             />
-
-            <div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
-              { formik.values.email.length > 0 && !formik.errors.email ? <FontAwesomeIcon icon={faCheck} /> : ""}
-            </div>
-
-            {formik.errors.email && formik.touched.email ? (
+            {formik.errors.email && formik.touched.email && (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                 {formik.errors.email}
               </div>
-            ) : (
-              ""
             )}
           </div>
-          <div className="mb-5 relative">
-            <label
-              htmlFor=""
-              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
-            >
+
+          <div className="mb-3 relative">
+            <label className="absolute left-3 top-[-10px] px-2 bg-white text-sm z-10">
               Password
             </label>
-            <input
-              type="password"
-              className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full"
-              name="password"
-              onChange={formik.handleChange}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full pr-10"
+                name="password"
+                onChange={handlePasswordChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.password}
-            />
-
-            <div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
-              { formik.values.password.length > 0 && !formik.errors.password ? <FontAwesomeIcon icon={faCheck} /> : ""}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
             </div>
-
-            {formik.errors.password && formik.touched.password ? (
-              <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
-                {formik.errors.password}
-              </div>
-            ) : (
-              ""
+            {showPasswordValidation && (
+              <PasswordValidation 
+                password={formik.values.password} 
+                isVisible={showPasswordValidation} 
+              />
             )}
           </div>
+
           <div className="mb-5 relative">
-            <label
-              htmlFor=""
-              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
-            >
-              confirmPassword
+            <label className="absolute left-3 top-[-10px] px-2 bg-white text-sm z-10">
+              Confirm Password
             </label>
-            <input
-              type="password"
-              className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full"
-              name="confirmPassword"
-              onChange={formik.handleChange}
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                className="border-2 outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full pr-10"
+                name="confirmPassword"
+                onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.confirmPassword}
-            />
-
-            <div div className="absolute top-[50%] -translate-y-1/2 right-5 text-green-500">
-              { formik.values.confirmPassword.length > 0 && !formik.errors.confirmPassword ? <FontAwesomeIcon icon={faCheck} /> : ""}
+              />
+              <button
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+              </button>
             </div>
-
-            {formik.errors.confirmPassword && formik.touched.confirmPassword ? (
+            {formik.errors.confirmPassword && formik.touched.confirmPassword && (
               <div className="bg-red-200 mt-1 rounded px-3 p-2 text-sm">
                 {formik.errors.confirmPassword}
               </div>
-            ) : (
-              ""
             )}
           </div>
+
           <div className="mb-5 relative">
-            <label
-              htmlFor=""
-              className="absolute left-3 top-[-10px] px-2  bg-white text-sm"
-            >
+            <label className="absolute left-3 top-[-10px] px-2 bg-white text-sm">
               Role
             </label>
-
             <select
               className="border-2 text-sm outline-0 focus:border-blue-500 border-gray-300 p-3 rounded w-full bg-white hover:border-blue-400 focus:ring-2 focus:ring-blue-300 transition duration-200 cursor-pointer"
               name="role"
@@ -238,12 +245,18 @@ export default function Signup() {
               <option value="user" className="p-2">Student</option>
               <option value="instructor" className="p-2">Instructor</option>
             </select>
-
           </div>
 
-          <button className="py-3 bg-[#410445] cursor-pointer text-white font-semibold block w-full rounded-[5px] text-sm">
+          <button 
+            type="submit"
+            disabled={!allValidationsPass() || loading}
+            className={`py-3 text-white font-semibold block w-full rounded-[5px] text-sm ${
+              allValidationsPass() ? "bg-[#410445] hover:bg-[#563458]" : "bg-gray-400 cursor-not-allowed"
+            }`}
+          >
             {loading ? <LoaderBtn /> : "Create Account"}
           </button>
+          
           <section className="mt-3 text-gray-500 text-sm font-semibold">
             Already have an account? <Link className="text-[#410445] font-semibold" to={"/login"}>Login</Link>
           </section>

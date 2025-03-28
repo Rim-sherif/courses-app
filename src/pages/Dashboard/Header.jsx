@@ -336,7 +336,7 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+                        href="/dashboard/setting"
                         className={`flex items-center px-4 py-2 text-sm ${
                           active ? "bg-gray-100 text-gray-900" : "text-gray-700"
                         }`}

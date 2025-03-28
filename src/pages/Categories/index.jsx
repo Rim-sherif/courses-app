@@ -49,11 +49,13 @@ const Categories = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#3e005c] to-[#6a0572] py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-center text-white mb-8">
-        Explore Categories
-      </h1>
-      {/* Adjusted container for a cleaner grid layout */}
+    <div className="min-h-screen bg-gradient-to-br from-[#5a124e] to-[#3b0e34] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-extrabold text-gray-100 relative inline-block">
+          Explore Categories
+          <span className="block w-16 h-1 bg-yellow-400 rounded-full mx-auto mt-2 transition-all duration-300 group-hover:w-24"></span>
+        </h1>
+      </div>
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {categories.length === 0 ? (
           <div className="col-span-full text-center text-gray-500 font-medium text-lg bg-white p-8 rounded-lg shadow-md">
@@ -61,35 +63,36 @@ const Categories = () => {
           </div>
         ) : (
           categories.map((category) => (
-            <Link
-              to={`/category/${category._id}`}
+            <motion.div
               key={category._id}
-              className="relative group rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl"
+              whileHover={{ scale: 1.02 }} // Subtle scaling effect
+              transition={{ duration: 0.2 }}
             >
-              {/* Category Image */}
-              <img
-                src={category.thumbnail}
-                alt={category.title}
-                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-                onError={(e) => {
-                  e.target.src =
-                    "https://via.placeholder.com/150?text=Image+Not+Found";
-                }}
-                loading="lazy"
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black to-white opacity-50 transition-opacity duration-300 group-hover:opacity-70" />
-              {/* Category Title */}
-              <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 z-10">
-                <h3 className="text-white text-2xl font-extrabold capitalize drop-shadow-lg transition-colors duration-300 group-hover:text-gray-900">
-                  {category.title}
-                </h3>
-              </div>
-              {/* Badge */}
-              <div className="absolute top-3 right-3 bg-white text-purple-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                {category.tag || "New"}
-              </div>
-            </Link>
+              <Link
+                to={`/category/${category._id}`}
+                className="relative group rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl"
+              >
+                {/* Category Image */}
+                <img
+                  src={category.thumbnail}
+                  alt={category.title}
+                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/150?text=Image+Not+Found";
+                  }}
+                  loading="lazy"
+                />
+                {/* Darker Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
+                {/* Category Title */}
+                <div className="absolute inset-0 flex flex-col justify-end items-start p-6 z-10">
+                  <h3 className="text-white text-2xl font-extrabold capitalize drop-shadow-lg transition-colors duration-300 group-hover:text-yellow-400">
+                    {category.title}
+                  </h3>
+                </div>
+              </Link>
+            </motion.div>
           ))
         )}
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import JitsiMeetComponent from './StreamingComponent';
 
 const LiveStream = () => {
     const [message, setMessage] = useState('');
@@ -17,12 +18,15 @@ const LiveStream = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-full">
                 {/* Main Stream Section */}
                 <div className="lg:col-span-3 space-y-4">
-                    <div className="bg-black aspect-video rounded-lg flex items-center justify-center">
+                    {/* <div className="bg-black aspect-video rounded-lg flex items-center justify-center">
                         <i className="fas fa-video text-4xl text-gray-500"></i>
-                    </div>
+                    </div> */}
+
+                    <JitsiMeetComponent roomName="Course-Live-123" userName="Course Streaming" />
+
                     
                     {/* Stream Info */}
-                    <div className="bg-white p-4 rounded-lg shadow">
+                    {/* <div className="bg-white p-4 rounded-lg shadow">
                         <h2 className="text-xl font-bold mb-2">Live Stream Title</h2>
                         <div className="flex items-center gap-4 text-sm text-gray-600">
                             <span className="flex items-center gap-1">
@@ -32,10 +36,10 @@ const LiveStream = () => {
                                 <i className="fas fa-clock"></i> 00:00:00
                             </span>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Stream Controls */}
-                    <div className="bg-white p-4 rounded-lg shadow">
+                    {/* <div className="bg-white p-4 rounded-lg shadow">
                         <div className="flex gap-4 justify-center">
                             <button className="p-3 rounded-full bg-red-700 text-white hover:bg-red-600">
                                 <i className="fas fa-video"></i>
@@ -50,7 +54,7 @@ const LiveStream = () => {
                                 End Stream
                             </button>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Chat Section */}

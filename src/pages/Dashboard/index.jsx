@@ -2,10 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router-dom";
+import { NotificationsProvider } from '../../components/providers/NotificationsProvider';
 import { setLoading, setUser } from "../../redux/reducers/userSlice";
 import Header from "./Header";
 import SideMenu from "./SideMenu";
-import { NotificationsProvider } from '../../components/providers/NotificationsProvider';
 
 const DashboardLayout = () => {
   const dispatch = useDispatch();
@@ -121,7 +121,7 @@ const DashboardLayout = () => {
 
               <div className="flex-1 overflow-auto">
                 <main className="p-6">
-                  <Outlet />
+                  <Outlet context={{ userData }} />
                 </main>
               </div>
             </div>

@@ -29,6 +29,7 @@ import Categories from "../pages/Categories";
 import CategoryCourses from "../pages/CategoryCourse";
 import Wishlist from "../pages/wishlist";
 import Cart from "../pages/Cart";
+import ProfileInstructor from "../pages/Dashboard/Profile";
 // import ProtectedRoute from "../components/protectedRoute/protectedRoute";
 // import AdminRoute from "../components/AdminRoute/AdminRoute";
 
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
       {
         path: "certificates",
         element: <Certificates />,
+      },
+      {
+        path: "profile",
+        element: <ProfileInstructor />,
       },
       {
         path: "verification",

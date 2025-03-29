@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import instr6 from "../../assets/images/sergio-de-paula-c_GmwfHBDzk-unsplash.jpg";
 import instr7 from "../../assets/images/usman-yousaf-6pmG8XIKE2w-unsplash.jpg";
 import { useNotifications } from '../../hooks/useNotifications';
+import { Link } from "react-router-dom";
 
 function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
   const { notifications, markAsRead } = useNotifications();
@@ -310,8 +311,8 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="/profile"
+                      <Link
+                        to="/dashboard/profile"
                         className={`flex items-center px-4 py-2 text-sm ${
                           active ? "bg-gray-100 text-gray-900" : "text-gray-700"
                         }`}
@@ -330,13 +331,13 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
                           />
                         </svg>
                         Profile
-                      </a>
+                      </Link>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="/dashboard/setting"
+                      <Link
+                        to="/dashboard/setting"
                         className={`flex items-center px-4 py-2 text-sm ${
                           active ? "bg-gray-100 text-gray-900" : "text-gray-700"
                         }`}
@@ -361,7 +362,7 @@ function Header({ userData, toggleSideMenu, isSideMenuOpen }) {
                           />
                         </svg>
                         Settings
-                      </a>
+                      </Link>
                     )}
                   </Menu.Item>
                 </div>
